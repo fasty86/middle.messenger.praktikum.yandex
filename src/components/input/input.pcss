@@ -1,0 +1,19 @@
+.input {
+}
+
+.form__input {
+  font-size: 13px;
+  padding: 10px 10px 10px 5px;
+  display: block;
+  width: 280px;
+  border: none;
+  border-bottom: 1px solid #3369f3;
+  &:focus {
+    outline: none;
+  }
+  &:focus ~ label {
+    top: -8px;
+    font-size: 9px;
+    line-height: 9px;
+  }
+}
