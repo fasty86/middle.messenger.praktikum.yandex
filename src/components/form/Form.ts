@@ -1,13 +1,11 @@
 import './form.pcss';
-export default `<form class="login__form">
-        <div class="form__group">
-            {{> Input id="name_id" type="text" placeholder="" value=""  className="input form__input"}}
-            {{> Label forAttr="username" text="Логин" className="label form__label"}}
-        </div>
-        <div class="form__group">
-            {{> Input id="password_id" name="password" type="password" placeholder="" value="" className="input form__input"}}
-            {{> Label forAttr="password" text="Пароль" className="label form__label"}}
-        </div>
-            {{> Button id="login" text="Авторизоваться" disabled=createButtonEnabled className="button form__button"}}
-            {{> Link href="/register" text="Нет аккаунта?" className="link form__link"}}
+export default `<form class={{formClassName}}>
+          {{#each formGroup}}
+          <div class="form__group">
+            {{> Input id=this.input.id type=this.input.type placeholder=this.input.placeholder value=this.input.value  className=this.input.className}}
+            {{> Label forAttr=this.label.forAttr text=this.label.text className=this.label.className}}
+             </div>
+          {{/each}}
+            {{> Button id=button.id type=button.type text=button.text disabled=button.disabled className=button.className}}
+            {{> Link href=link.href text=link.text className=link.className}}
     </form>`;
