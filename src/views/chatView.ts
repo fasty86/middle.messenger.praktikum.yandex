@@ -31,8 +31,14 @@ export default class ChatView extends AbstractView {
     this.addEvtListeners();
   }
   protected addEvtListeners() {
-    document.addEventListener('submit', (e) => {
-      e.preventDefault();
+    const headerOptionsButton = document.getElementById(
+      'header_options_button_id'
+    ) as HTMLButtonElement;
+    headerOptionsButton.addEventListener('click', () => {
+      // Add your event listener here
+      document
+        .querySelector('.header-options__menu')
+        ?.classList.toggle('hidden');
     });
   }
 }
