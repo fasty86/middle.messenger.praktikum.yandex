@@ -7,7 +7,7 @@ import {
   menuType,
   headerInfoType,
 } from '../types/components.ts';
-import avatar from '../../public/avatar.jpeg';
+// import avatar from '../../public/avatar.jpeg';
 // import { isButtonElement } from '../types/typeguards.ts';
 
 export default class ChatView extends AbstractView {
@@ -52,7 +52,7 @@ const chatList: Array<chatListItemType> = new Array(15).fill({
   imageData: {
     alt: 'аватар',
     className: 'chat_list__image',
-    src: '../../public/avatar.jpeg',
+    src: '/avatar.jpeg',
   },
   message: 'Привет, мир!',
   time: '12:00',
@@ -74,7 +74,7 @@ const headerOptions: menuType = {
       imageData: {
         alt: 'photo',
         className: 'menu-item__img',
-        src: './public/add_user.png',
+        src: '/add_user.png',
       },
       optionClassName: 'header__menu-item',
       text: 'Добавить пользователя',
@@ -84,7 +84,7 @@ const headerOptions: menuType = {
       imageData: {
         alt: 'photo',
         className: 'menu-item__img',
-        src: './public/delete_user.png',
+        src: '/delete_user.png',
       },
       optionClassName: 'header__menu-item',
       text: 'Удалить пользователя',
@@ -96,7 +96,7 @@ const headerInfo: headerInfoType = {
   imageData: {
     alt: 'аватар',
     className: 'user-info__img',
-    src: '../../public/avatar.jpeg',
+    src: '/avatar.jpeg',
   },
   userData: 'Федор',
 };
