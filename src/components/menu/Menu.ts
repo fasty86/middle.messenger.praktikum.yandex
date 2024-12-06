@@ -6,5 +6,5 @@ export default `<div class="options-group">
                      {{> Option data=data.items }}
                     {{/each}}
                 </div>
-                <button class="chat-area__header-options"></button>
+                <button class="chat-area__header-options "></button>
               </div>`;
