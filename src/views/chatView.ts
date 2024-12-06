@@ -61,7 +61,7 @@ const chatList: Array<chatListItemType> = new Array(15).fill({
 });
 
 const headerOptions: menuType = {
-  optionGroupclassName: 'header-options__menu options',
+  optionGroupclassName: 'header-options__menu',
   optionButton: {
     className: 'chat-area__header-options',
     disabled: false,
