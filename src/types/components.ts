@@ -52,3 +52,38 @@ export type formGroupType = {
   label: labelType;
   input: inputType;
 };
+
+export type chatListHeaderType = {
+  search: inputType;
+};
+export type imageType = {
+  src: string;
+  alt: string;
+  className: string;
+};
+
+export type chatListItemType = {
+  username: string;
+  message: string;
+  time: string;
+  unreadMessages: number;
+  imageData: imageType;
+};
+
+export type menuItemType = {
+  imageData: imageType;
+  text: string;
+  textClassName: string;
+  optionClassName: string;
+};
+
+export type menuType = {
+  optionGroupclassName: string;
+  optionButton: buttonType;
+  items: menuItemType[];
+};
+
+export type headerInfoType = {
+  imageData: imageType;
+  userData: string;
+};

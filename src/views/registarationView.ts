@@ -2,7 +2,7 @@ import Handlebars from 'handlebars';
 import AbstractView from './abstractView.ts';
 import * as Pages from '../pages/index.ts';
 import { formGroupType, buttonType, linkType } from '../types/components.ts';
-import { isButtonElement } from '../types/typeguards.ts';
+// import { isButtonElement } from '../types/typeguards.ts';
 
 export default class RegistrationView extends AbstractView {
   protected template: string;

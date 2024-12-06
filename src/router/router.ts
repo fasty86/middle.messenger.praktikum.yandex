@@ -1,5 +1,6 @@
 import LoginView from '../views/loginView';
 import RegistrationView from '../views/registarationView';
+import ChatView from '../views/chatView';
 type route = { path: string; view: () => void };
 
 const navigateTo = (url: string) => {
@@ -23,7 +24,7 @@ const router = async () => {
     },
     {
       path: '/chat',
-      view: () => console.log('chat page'),
+      view: () => new ChatView(root).render(),
     },
     {
       path: '/notFound',
