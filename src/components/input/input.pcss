@@ -1,4 +1,9 @@
 .input {
+  outline: none;
+  border: none;
+  &:focus {
+    outline: none;
+  }
 }
 
 .form__input {
@@ -6,11 +11,9 @@
   padding: 10px 10px 10px 5px;
   display: block;
   width: 280px;
-  border: none;
+  /* border: none; */
   border-bottom: 1px solid #3369f3;
-  &:focus {
-    outline: none;
-  }
+
   &:focus ~ label {
     top: -8px;
     font-size: 9px;

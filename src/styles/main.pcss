@@ -4,6 +4,10 @@
   --background-color: #fff;
   --text-color: #333;
   --error-color: #e74c3c;
+  --underline-color: #eaeaea;
+  --background-color: #eaeaea;
+  --active-elem-color: #e4edfd;
+  --chat-data-elements-color: #999999;
 }
 *,
 ::before,
@@ -24,7 +28,7 @@ body {
   font-family: Inter, sans-serif;
   line-height: 1.6;
   color: var(--text-color);
-  max-width: 800px;
+  max-width: 1280px;
   margin: 0 auto;
   padding: 20px;
 }
@@ -34,10 +38,10 @@ body {
   min-height: 100vh;
   align-items: center;
   justify-content: center;
-  background-color: var(--background-color);
+  /* background-color: var(--background-color); */
   /* padding: 20px; */
   /* border-radius: px; */
-  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
