@@ -1,6 +1,9 @@
 import LoginView from '../views/loginView';
 import RegistrationView from '../views/registarationView';
 import ChatView from '../views/chatView';
+import ProfileView from '../views/profileView';
+import NotFoundView from '../views/notFoundView';
+import ServerErrorview from '../views/serverErrorView';
 type route = { path: string; view: () => void };
 
 const navigateTo = (url: string) => {
@@ -27,8 +30,16 @@ const router = async () => {
       view: () => new ChatView(root).render(),
     },
     {
+      path: '/profile',
+      view: () => new ProfileView(root).render(),
+    },
+    {
       path: '/notFound',
-      view: () => console.log('not found'),
+      view: () => new NotFoundView(root).render(),
+    },
+    {
+      path: '/serverError',
+      view: () => new ServerErrorview(root).render(),
     },
   ];
   const matchedRoutes = routes.map((route) => {

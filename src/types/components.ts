@@ -33,6 +33,7 @@ export type inputType = {
   placeholder: string;
   value: string;
   className: string;
+  disabled?: boolean;
 };
 
 export type buttonType = {
@@ -71,6 +72,7 @@ export type chatListItemType = {
 };
 
 export type menuItemType = {
+  id: string;
   imageData: imageType;
   text: string;
   textClassName: string;
@@ -79,6 +81,7 @@ export type menuItemType = {
 
 export type menuType = {
   optionGroupclassName: string;
+  modal?: modalType[];
   optionButton: buttonType;
   items: menuItemType[];
 };
@@ -98,4 +101,11 @@ export type footerType = {
   input: inputType;
   button: buttonType;
   menu?: menuType;
+};
+
+export type modalType = {
+  id: string;
+  title: string;
+  formGroup: formGroupType;
+  button: buttonType;
 };
