@@ -17,6 +17,7 @@ import ChatList from '../components/chatList/ChatList.ts';
 import ChatAreaBody from '../components/chatAreaBody/ChatAreaBody.ts';
 import ChatFooter from '../components/chatFooter/ChatFooter.ts';
 import Message from '../components/message/Message.ts';
+import Modal from '../components/modal/Modal.ts';
 
 // Handlebars.registerPartial('Input', Input);
 Handlebars.registerPartial('Button', Button);
@@ -35,6 +36,8 @@ Handlebars.registerPartial('ChatAreaHeader', ChatAreaHeader);
 Handlebars.registerPartial('ChatAreaBody', ChatAreaBody);
 Handlebars.registerPartial('ChatFooter', ChatFooter);
 Handlebars.registerPartial('Message', Message);
+Handlebars.registerPartial('Modal', Modal);
+
 Handlebars.registerHelper('ifEquals', function (arg1, arg2) {
   return arg1 == arg2 ? true : false;
 });
@@ -49,6 +52,19 @@ export default class {
   }
   async render() {
     // Implement the render method here
+  }
+  closeModalOutside(dialog: HTMLDialogElement) {
+    dialog.addEventListener('click', function (event) {
+      var rect = dialog.getBoundingClientRect();
+      var isInDialog =
+        rect.top <= event.clientY &&
+        event.clientY <= rect.top + rect.height &&
+        rect.left <= event.clientX &&
+        event.clientX <= rect.left + rect.width;
+      if (!isInDialog) {
+        dialog.close();
+      }
+    });
   }
   protected addEvtListeners() {}
 }
