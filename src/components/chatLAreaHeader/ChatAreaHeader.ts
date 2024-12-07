@@ -7,6 +7,11 @@ export default `<header class="chat-area__header">
                 <p class="user-info__name">{{chatAreaHeaderData.headerInfoData.userData}}</p>
               </div>
              {{> Menu data=chatAreaHeaderData.headerOptionsData }}
+              {{#with chatAreaHeaderData.headerOptionsData}}
+                 {{#each modal}}
+                   {{> Modal  data=this}}
+                  {{/each}}
+              {{/with}}
             </nav>
           </header>
 `;

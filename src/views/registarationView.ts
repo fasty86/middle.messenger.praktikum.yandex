@@ -26,12 +26,6 @@ export default class RegistrationView extends AbstractView {
     document.addEventListener('submit', (e) => {
       e.preventDefault();
     });
-    // const submitBtn = document.querySelector(`#${buttonData.id}`);
-    // if (isButtonElement(submitBtn)) {
-    //   submitBtn.addEventListener('click', (e) => {
-    //     e.preventDefault();
-    //   });
-    // }
   }
 }
 
@@ -47,7 +41,7 @@ const registrationFormData: Array<formGroupType> = [
     },
     label: {
       className: 'label form__label',
-      forAttr: 'email',
+      forAttr: 'email_id',
       text: 'Почта',
     },
   },
@@ -62,7 +56,7 @@ const registrationFormData: Array<formGroupType> = [
     },
     label: {
       className: 'label form__label',
-      forAttr: 'login',
+      forAttr: 'login_id',
       text: 'Логин',
     },
   },
@@ -78,7 +72,7 @@ const registrationFormData: Array<formGroupType> = [
     },
     label: {
       className: 'label form__label',
-      forAttr: 'first_name',
+      forAttr: 'first_name_id',
       text: 'Имя',
     },
   },
@@ -93,7 +87,7 @@ const registrationFormData: Array<formGroupType> = [
     },
     label: {
       className: 'label form__label',
-      forAttr: 'last_name',
+      forAttr: 'last_name_id',
       text: 'Фамилия',
     },
   },
@@ -108,7 +102,7 @@ const registrationFormData: Array<formGroupType> = [
     },
     label: {
       className: 'label form__label',
-      forAttr: 'phone',
+      forAttr: 'phone_id',
       text: 'Телефон',
     },
   },
@@ -123,7 +117,7 @@ const registrationFormData: Array<formGroupType> = [
     },
     label: {
       className: 'label form__label',
-      forAttr: 'password_one',
+      forAttr: 'first_password_id',
       text: 'Пароль',
     },
   },
@@ -138,7 +132,7 @@ const registrationFormData: Array<formGroupType> = [
     },
     label: {
       className: 'label form__label',
-      forAttr: 'password_second',
+      forAttr: 'second_password_id',
       text: 'Пароль еще раз',
     },
   },

@@ -30,9 +30,11 @@ body {
   color: var(--text-color);
   max-width: 1280px;
   margin: 0 auto;
-  padding: 20px;
 }
-
+button {
+  outline: none;
+  border: none;
+}
 button:hover {
   cursor: pointer;
 }
@@ -41,9 +43,6 @@ button:hover {
   min-height: 100vh;
   align-items: center;
   justify-content: center;
-  /* background-color: var(--background-color); */
-  /* padding: 20px; */
-  /* border-radius: px; */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -59,4 +58,21 @@ h1 {
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   padding: 50px 33px;
+}
+.util-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.util-title {
+  font-size: 40px;
+}
+.util-text {
+  margin-top: 20px;
+  font-size: 20px;
+}
+.util-link {
+  margin-top: 70px;
+  font-size: 11px;
 }

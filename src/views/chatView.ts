@@ -9,8 +9,6 @@ import {
   messageType,
   footerType,
 } from '../types/components.ts';
-// import avatar from '../../public/avatar.jpeg';
-// import { isButtonElement } from '../types/typeguards.ts';
 
 export default class ChatView extends AbstractView {
   protected template: string;
@@ -51,6 +49,24 @@ export default class ChatView extends AbstractView {
         .querySelector('.footer__attach-menu')
         ?.classList.toggle('hidden');
     });
+    document
+      .querySelector('#add_user_menu_item_id')
+      ?.addEventListener('click', (_) => {
+        const dialog = document.querySelector(
+          '#model_add_user_id'
+        ) as HTMLDialogElement;
+        super.closeModalOutside(dialog);
+        dialog.showModal();
+      });
+    document
+      .querySelector('#delete_user_menu_item_id')
+      ?.addEventListener('click', (_) => {
+        const dialog = document.querySelector(
+          '#model_delete_user_id'
+        ) as HTMLDialogElement;
+        super.closeModalOutside(dialog);
+        dialog.showModal();
+      });
   }
 }
 
@@ -78,6 +94,62 @@ const chatList: Array<chatListItemType> = new Array(15).fill({
 });
 
 const headerOptions: menuType = {
+  modal: [
+    {
+      id: 'model_add_user_id',
+      button: {
+        className: 'button form__login-button modal__button',
+        disabled: false,
+        id: 'add_user_button_id',
+        text: 'Добавить',
+        type: 'button',
+      },
+      title: 'Добавить пользователя',
+      formGroup: {
+        input: {
+          className: 'input form__input',
+          id: 'add_user_input_id',
+          name: 'add_user_login',
+          placeholder: '',
+          type: 'text',
+          value: '',
+          disabled: false,
+        },
+        label: {
+          className: 'label form__label',
+          forAttr: 'add_user_input_id',
+          text: 'Логин',
+        },
+      },
+    },
+    {
+      id: 'model_delete_user_id',
+      button: {
+        className: 'button form__login-button modal__button',
+        disabled: false,
+        id: 'delete_user_button_id',
+        text: 'Удалить',
+        type: 'button',
+      },
+      title: 'Удалить пользователя',
+      formGroup: {
+        input: {
+          className: 'input form__input',
+          id: 'delete_user_input_id',
+          name: 'delete_user_login',
+          placeholder: '',
+          type: 'text',
+          value: '',
+          disabled: false,
+        },
+        label: {
+          className: 'label form__label',
+          forAttr: 'delete_user_input_id',
+          text: 'Логин',
+        },
+      },
+    },
+  ],
   optionGroupclassName: 'header-options__menu',
   optionButton: {
     className: 'chat-area__header-options',
@@ -88,6 +160,7 @@ const headerOptions: menuType = {
   },
   items: [
     {
+      id: 'add_user_menu_item_id',
       imageData: {
         alt: 'photo',
         className: 'menu-item__img',
@@ -98,6 +171,7 @@ const headerOptions: menuType = {
       textClassName: 'menu-item__text',
     },
     {
+      id: 'delete_user_menu_item_id',
       imageData: {
         alt: 'photo',
         className: 'menu-item__img',
@@ -163,6 +237,7 @@ const footerData: footerType = {
     },
     items: [
       {
+        id: 'attach_photo_menu_item_id',
         imageData: {
           alt: 'photo',
           className: 'menu-item__img',
@@ -173,6 +248,7 @@ const footerData: footerType = {
         textClassName: 'menu-item__text',
       },
       {
+        id: 'attach_file_menu_item_id',
         imageData: {
           alt: 'file',
           className: 'menu-item__img',
@@ -183,6 +259,7 @@ const footerData: footerType = {
         textClassName: 'menu-item__text',
       },
       {
+        id: 'attach_location_menu_item_id',
         imageData: {
           alt: 'location',
           className: 'menu-item__img',
