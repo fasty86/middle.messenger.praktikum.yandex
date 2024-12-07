@@ -2,7 +2,7 @@ import Handlebars from 'handlebars';
 import AbstractView from './abstractView';
 import * as Pages from '../pages/index.ts';
 import { formGroupType, buttonType, linkType } from '../types/components.ts';
-
+import { navigateTo } from '../router/router.ts';
 export default class LoginView extends AbstractView {
   protected template: string;
   constructor(protected root: HTMLElement) {
@@ -25,6 +25,11 @@ export default class LoginView extends AbstractView {
     document.addEventListener('submit', (e) => {
       e.preventDefault();
     });
+    document
+      .querySelector('#login_button_id')
+      ?.addEventListener('click', (_) => {
+        navigateTo('/chat');
+      });
   }
 }
 

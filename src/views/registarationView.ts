@@ -2,7 +2,7 @@ import Handlebars from 'handlebars';
 import AbstractView from './abstractView.ts';
 import * as Pages from '../pages/index.ts';
 import { formGroupType, buttonType, linkType } from '../types/components.ts';
-// import { isButtonElement } from '../types/typeguards.ts';
+import { navigateTo } from '../router/router.ts';
 
 export default class RegistrationView extends AbstractView {
   protected template: string;
@@ -26,6 +26,11 @@ export default class RegistrationView extends AbstractView {
     document.addEventListener('submit', (e) => {
       e.preventDefault();
     });
+    document
+      .querySelector('#registration_button_id')
+      ?.addEventListener('click', (_) => {
+        navigateTo('/chat');
+      });
   }
 }
 
@@ -141,7 +146,7 @@ const registrationFormData: Array<formGroupType> = [
 const buttonData: buttonType = {
   className: 'button form__registration-button',
   disabled: false,
-  id: 'registaration_button_id',
+  id: 'registration_button_id',
   text: 'Зарегистрироваться',
   type: 'submit',
 };
