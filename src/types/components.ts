@@ -87,3 +87,15 @@ export type headerInfoType = {
   imageData: imageType;
   userData: string;
 };
+
+export type messageType = {
+  contentType: 'text' | 'image';
+  content: imageType | string;
+  date: string;
+};
+
+export type footerType = {
+  input: inputType;
+  button: buttonType;
+  menu?: menuType;
+};

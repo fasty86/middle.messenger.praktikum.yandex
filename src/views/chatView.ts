@@ -6,6 +6,8 @@ import {
   chatListItemType,
   menuType,
   headerInfoType,
+  messageType,
+  footerType,
 } from '../types/components.ts';
 // import avatar from '../../public/avatar.jpeg';
 // import { isButtonElement } from '../types/typeguards.ts';
@@ -27,6 +29,8 @@ export default class ChatView extends AbstractView {
         headerOptionsData: headerOptions,
         headerInfoData: headerInfo,
       },
+      messageData: messages,
+      footerData: footerData,
     });
     this.addEvtListeners();
   }
@@ -35,9 +39,16 @@ export default class ChatView extends AbstractView {
       'header_options_button_id'
     ) as HTMLButtonElement;
     headerOptionsButton.addEventListener('click', () => {
-      // Add your event listener here
       document
         .querySelector('.header-options__menu')
+        ?.classList.toggle('hidden');
+    });
+    const attachOptionsButton = document.getElementById(
+      'attach_button_id'
+    ) as HTMLButtonElement;
+    attachOptionsButton.addEventListener('click', () => {
+      document
+        .querySelector('.footer__attach-menu')
         ?.classList.toggle('hidden');
     });
   }
@@ -105,4 +116,82 @@ const headerInfo: headerInfoType = {
     src: '/avatar.jpeg',
   },
   userData: 'Федор',
+};
+
+const messages: messageType[] = [
+  {
+    contentType: 'text',
+    content:
+      'Lorem ipsum dolor sit amet, consectetur adipisic,Lorem ipsum dolor sit amet, consectetur adipisic',
+    date: '11:56',
+  },
+  {
+    contentType: 'image',
+    content: {
+      alt: '',
+      src: 'photo.png',
+      className: 'chat-area__message-image',
+    },
+    date: '13:55',
+  },
+];
+
+const footerData: footerType = {
+  button: {
+    className: 'footer__send-button',
+    disabled: false,
+    id: 'send_button_id',
+    text: '',
+    type: 'button',
+  },
+  input: {
+    className: 'footer__text-input',
+    id: 'message_input_id',
+    name: 'message_input',
+    placeholder: 'Сообщение',
+    type: 'text',
+    value: '',
+  },
+  menu: {
+    optionGroupclassName: 'footer__attach-menu',
+    optionButton: {
+      className: 'footer__attach-button',
+      disabled: false,
+      id: 'attach_button_id',
+      text: '',
+      type: 'button',
+    },
+    items: [
+      {
+        imageData: {
+          alt: 'photo',
+          className: 'menu-item__img',
+          src: '/attach_photo.png',
+        },
+        optionClassName: 'footer__menu-item',
+        text: 'Фото или видео',
+        textClassName: 'menu-item__text',
+      },
+      {
+        imageData: {
+          alt: 'file',
+          className: 'menu-item__img',
+          src: '/attach_file.png',
+        },
+        optionClassName: 'footer__menu-item',
+        text: 'Файл',
+        textClassName: 'menu-item__text',
+      },
+      {
+        imageData: {
+          alt: 'location',
+          className: 'menu-item__img',
+          src: '/attach_location.png',
+        },
+        optionClassName: 'footer__menu-item',
+        text: 'Локация',
+        textClassName: 'menu-item__text',
+      },
+    ],
+  },
 };

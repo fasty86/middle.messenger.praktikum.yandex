@@ -1,11 +1,13 @@
 import './menu.pcss';
 
 export default `<div class="options-group">
-                <div class={{data.optionGroupclassName}}>
-                   {{#each data.items }}
-                     {{> Option data=data.items }}
+               {{#with data}}
+               <div class={{optionGroupclassName}}>
+                   {{#each items }}
+                     {{> Option data=items }}
                     {{/each}}
                 </div>
-                 {{> Button id=data.optionButton.id type=data.optionButton.type text=data.optionButton.text disabled=data.optionButton.disabled className=data.optionButton.className}}
+                 {{> Button id=optionButton.id type=optionButton.type text=optionButton.text disabled=optionButton.disabled className=optionButton.className}}
+               {{/with}}
               </div>
              `;

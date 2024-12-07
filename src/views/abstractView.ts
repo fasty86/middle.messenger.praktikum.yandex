@@ -14,6 +14,9 @@ import Option from '../components/option/Option.ts';
 import Menu from '../components/menu/Menu.ts';
 import ChatAreaHeader from '../components/chatLAreaHeader/ChatAreaHeader.ts';
 import ChatList from '../components/chatList/ChatList.ts';
+import ChatAreaBody from '../components/chatAreaBody/ChatAreaBody.ts';
+import ChatFooter from '../components/chatFooter/ChatFooter.ts';
+import Message from '../components/message/Message.ts';
 
 // Handlebars.registerPartial('Input', Input);
 Handlebars.registerPartial('Button', Button);
@@ -29,6 +32,12 @@ Handlebars.registerPartial('ChatList', ChatList);
 Handlebars.registerPartial('Option', Option);
 Handlebars.registerPartial('Menu', Menu);
 Handlebars.registerPartial('ChatAreaHeader', ChatAreaHeader);
+Handlebars.registerPartial('ChatAreaBody', ChatAreaBody);
+Handlebars.registerPartial('ChatFooter', ChatFooter);
+Handlebars.registerPartial('Message', Message);
+Handlebars.registerHelper('ifEquals', function (arg1, arg2) {
+  return arg1 == arg2 ? true : false;
+});
 
 export default class {
   constructor(protected root: HTMLElement) {
