@@ -2,7 +2,7 @@ import './form.pcss';
 export default `<form class={{formClassName}}>
           {{#each formGroup}}
           <div class="form__group">
-            {{> Input id=this.input.id type=this.input.type placeholder=this.input.placeholder value=this.input.value  className=this.input.className}}
+            {{> Input id=this.input.id name=this.input.name type=this.input.type placeholder=this.input.placeholder value=this.input.value  className=this.input.className disabled=this.input.disabled}}
             {{> Label forAttr=this.label.forAttr text=this.label.text className=this.label.className}}
              </div>
           {{/each}}

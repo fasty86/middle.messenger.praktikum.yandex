@@ -1,0 +1,35 @@
+.dialog {
+  position: fixed;
+  z-index: 1000;
+  top: 40%;
+  border: none;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+}
+
+.dialog__container {
+  width: 340px;
+  height: 257px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 40px 30px;
+  border: none;
+  border-radius: 1rem;
+}
+dialog::backdrop {
+  top: 0;
+  background-color: hsla(277 7% 41% / 0.66);
+}
+:modal {
+  top: 0;
+}
+.modal__button {
+  margin: 0;
+}
+.modal__title {
+  font-weight: 600;
+  line-height: 20px;
+  font-size: 15px;
+  align-self: center;
+}

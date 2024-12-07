@@ -3,9 +3,24 @@
 
 .form__label {
   position: absolute;
-  color: #999999;
+  color: var(--chat-data-elements-color);
   top: 12px;
   bottom: 25px;
   left: 5px;
   transition: 0.2s ease all;
+}
+
+.upload-avatar__label {
+  display: block;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--secondary-color);
+  width: 122px;
+  margin-inline: auto;
+  align-self: center;
+  text-align: center;
+  text-decoration: underline;
+  &:hover {
+    cursor: pointer;
+  }
 }
