@@ -1,5 +1,6 @@
 import './chat.pcss';
 const createChatPage = `<div class="app">
+{{> Navigation}}
       <div class="container">
         <aside class="aside">
         {{> ChatListHeader data=chatListHeaderData }}

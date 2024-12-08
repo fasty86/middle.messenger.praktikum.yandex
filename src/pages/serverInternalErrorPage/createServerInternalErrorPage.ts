@@ -1,4 +1,5 @@
 const serverInternalErrorTemplate = `<div class="app">
+{{> Navigation}}
   <div class="util-container ">
   <h1 class="util-title">500</h1>
   <h3 class="util-text">мы уже фиксим</h3>

@@ -1,5 +1,6 @@
 import './profile.pcss';
 const profilePageTemplate = `<div class="app">
+{{> Navigation}}
 <div class="container profile__container">
 <aside class="profile_aside">
  {{> Button text=sendButton.text id=sendButton.id type=sendButton.type className=sendButton.className disabled=sendButton.disabled}}

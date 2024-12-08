@@ -1,4 +1,5 @@
 const notFoundPageTemplate = `<div class="app">
+{{> Navigation}}
   <div class="util-container">
   <h1 class="util-title">404</h1>
   <h3 class="util-text">Не туда попали</h3>
