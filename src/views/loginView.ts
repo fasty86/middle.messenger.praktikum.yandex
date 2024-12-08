@@ -38,7 +38,7 @@ const loginFormData: Array<formGroupType> = [
     input: {
       className: 'input form__input',
       id: 'name_id',
-      name: 'username',
+      name: 'login',
       placeholder: '',
       type: 'text',
       value: '',
