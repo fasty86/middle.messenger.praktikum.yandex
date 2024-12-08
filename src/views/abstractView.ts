@@ -18,6 +18,7 @@ import ChatAreaBody from '../components/chatAreaBody/ChatAreaBody.ts';
 import ChatFooter from '../components/chatFooter/ChatFooter.ts';
 import Message from '../components/message/Message.ts';
 import Modal from '../components/modal/Modal.ts';
+import Navigation from '../components/util/navigation.ts';
 
 // Handlebars.registerPartial('Input', Input);
 Handlebars.registerPartial('Button', Button);
@@ -37,6 +38,7 @@ Handlebars.registerPartial('ChatAreaBody', ChatAreaBody);
 Handlebars.registerPartial('ChatFooter', ChatFooter);
 Handlebars.registerPartial('Message', Message);
 Handlebars.registerPartial('Modal', Modal);
+Handlebars.registerPartial('Navigation', Navigation);
 
 Handlebars.registerHelper('ifEquals', function (arg1, arg2) {
   return arg1 == arg2 ? true : false;
