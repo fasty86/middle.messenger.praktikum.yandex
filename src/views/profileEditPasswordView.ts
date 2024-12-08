@@ -9,7 +9,7 @@ import {
 } from '../types/components.ts';
 import { navigateTo } from '../router/router.ts';
 
-export default class ProfileView extends AbstractView {
+export default class ProfileEditPassword extends AbstractView {
   protected template: string;
   constructor(protected root: HTMLElement) {
     super(root);
@@ -21,7 +21,7 @@ export default class ProfileView extends AbstractView {
     template = Handlebars.compile(source);
     this.root.innerHTML = template({
       data: profileFormData,
-      formClassName: 'login__form',
+      formClassName: 'profile_form',
       actionButtons: actionButtons,
       username: 'Иван Иванов',
       avatar: avatar,
@@ -37,7 +37,7 @@ export default class ProfileView extends AbstractView {
     document
       .querySelector('#profile_button_back_id')
       ?.addEventListener('click', (_) => {
-        navigateTo('/chat');
+        navigateTo('/profile');
       });
     document
       .querySelector('#avatar_upload_image_id')
@@ -48,16 +48,6 @@ export default class ProfileView extends AbstractView {
         super.closeModalOutside(dialog);
         dialog.showModal();
       });
-    document
-      .querySelector('#profile_edit_button_id')
-      ?.addEventListener('click', (_) => {
-        navigateTo('/profile/edit/data');
-      });
-    document
-      .querySelector('#profile_change_password_button_id')
-      ?.addEventListener('click', (_) => {
-        navigateTo('/profile/edit/data');
-      });
   }
 }
 
@@ -65,88 +55,39 @@ const profileFormData: Array<formGroupType> = [
   {
     input: {
       className: 'input profile__input',
-      id: 'email_id',
-      name: 'email',
+      id: 'old_password_id',
+      name: 'phone',
       placeholder: '',
-      type: 'email',
-      value: 'test@yandex.ru',
-      disabled: true,
+      type: 'password',
+      value: '12345',
+      disabled: false,
     },
     label: {
       className: 'label form__label profile__label',
-      forAttr: 'email_id',
-      text: 'Почта',
+      forAttr: 'old_password_id',
+      text: 'Старый пароль',
     },
   },
   {
     input: {
       className: 'input profile__input',
-      id: 'login_id',
-      name: 'login',
+      id: 'new_password_id',
+      name: 'phone',
       placeholder: '',
-      type: 'text',
-      value: 'test_login',
-      disabled: true,
+      type: 'password',
+      value: '12345',
+      disabled: false,
     },
     label: {
       className: 'label form__label profile__label',
-      forAttr: 'login_id',
-      text: 'Логин',
-    },
-  },
-
-  {
-    input: {
-      className: 'input profile__input',
-      id: 'first_name_id',
-      name: 'first_name',
-      placeholder: '',
-      type: 'text',
-      value: 'Иван',
-      disabled: true,
-    },
-    label: {
-      className: 'label form__label profile__label',
-      forAttr: 'first_name_id',
-      text: 'Имя',
+      forAttr: 'new_password_id',
+      text: 'Новый пароль',
     },
   },
   {
     input: {
       className: 'input profile__input',
-      id: 'last_name_id',
-      name: 'last_name',
-      placeholder: '',
-      type: 'text',
-      value: 'Иванов',
-      disabled: true,
-    },
-    label: {
-      className: 'label form__label profile__label',
-      forAttr: 'last_name_id',
-      text: 'Фамилия',
-    },
-  },
-  {
-    input: {
-      className: 'input profile__input',
-      id: 'chat_name_id',
-      name: 'chat_name',
-      placeholder: '',
-      type: 'text',
-      value: 'Иванов',
-      disabled: true,
-    },
-    label: {
-      className: 'label form__label profile__label',
-      forAttr: 'chat_name_id',
-      text: 'Имя в чате',
-    },
-  },
-  {
-    input: {
-      className: 'input profile__input',
-      id: 'phone_id',
+      id: 'new_password_second_id',
       name: 'phone',
       placeholder: '',
       type: 'tel',
@@ -155,47 +96,17 @@ const profileFormData: Array<formGroupType> = [
     },
     label: {
       className: 'label form__label profile__label',
-      forAttr: 'phone_id',
-      text: 'Телефон',
-    },
-  },
-  {
-    input: {
-      className: 'input profile__input',
-      id: 'first_password_id',
-      name: 'password_one',
-      placeholder: '',
-      type: 'password',
-      value: '12345',
-      disabled: true,
-    },
-    label: {
-      className: 'label form__label profile__label',
-      forAttr: 'first_password_id',
-      text: 'Пароль',
+      forAttr: 'new_password_second_id',
+      text: 'Повторите новый пароль',
     },
   },
 ];
 const actionButtons: buttonType[] = [
   {
-    className: 'profile__action-button',
+    className: 'button form__login-button profile-edit__button',
     disabled: false,
-    id: 'profile_edit_button_id',
-    text: 'Изменить данные',
-    type: 'button',
-  },
-  {
-    className: 'profile__action-button',
-    disabled: false,
-    id: 'profile_change_password_button_id',
-    text: 'Изменить пароль',
-    type: 'button',
-  },
-  {
-    className: 'profile__action-button',
-    disabled: false,
-    id: 'profile_exit_button_id',
-    text: 'Выйти',
+    id: 'profile_save_changed_password_id',
+    text: 'Сохранить',
     type: 'button',
   },
 ];

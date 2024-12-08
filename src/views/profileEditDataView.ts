@@ -9,7 +9,7 @@ import {
 } from '../types/components.ts';
 import { navigateTo } from '../router/router.ts';
 
-export default class ProfileView extends AbstractView {
+export default class ProfileEditData extends AbstractView {
   protected template: string;
   constructor(protected root: HTMLElement) {
     super(root);
@@ -37,7 +37,7 @@ export default class ProfileView extends AbstractView {
     document
       .querySelector('#profile_button_back_id')
       ?.addEventListener('click', (_) => {
-        navigateTo('/chat');
+        navigateTo('/profile');
       });
     document
       .querySelector('#avatar_upload_image_id')
@@ -47,16 +47,6 @@ export default class ProfileView extends AbstractView {
         ) as HTMLDialogElement;
         super.closeModalOutside(dialog);
         dialog.showModal();
-      });
-    document
-      .querySelector('#profile_edit_button_id')
-      ?.addEventListener('click', (_) => {
-        navigateTo('/profile/edit/data');
-      });
-    document
-      .querySelector('#profile_change_password_button_id')
-      ?.addEventListener('click', (_) => {
-        navigateTo('/profile/edit/data');
       });
   }
 }
@@ -91,7 +81,7 @@ const profileFormData: Array<formGroupType> = [
     label: {
       className: 'label form__label profile__label',
       forAttr: 'login_id',
-      text: 'Логин',
+      text: 'Имя в чате',
     },
   },
 
@@ -178,24 +168,10 @@ const profileFormData: Array<formGroupType> = [
 ];
 const actionButtons: buttonType[] = [
   {
-    className: 'profile__action-button',
+    className: 'button form__login-button profile-edit__button',
     disabled: false,
-    id: 'profile_edit_button_id',
-    text: 'Изменить данные',
-    type: 'button',
-  },
-  {
-    className: 'profile__action-button',
-    disabled: false,
-    id: 'profile_change_password_button_id',
-    text: 'Изменить пароль',
-    type: 'button',
-  },
-  {
-    className: 'profile__action-button',
-    disabled: false,
-    id: 'profile_exit_button_id',
-    text: 'Выйти',
+    id: 'profile_save_changed_data_id',
+    text: 'Сохранить',
     type: 'button',
   },
 ];

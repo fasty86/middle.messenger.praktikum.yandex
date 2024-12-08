@@ -10,7 +10,7 @@ const profilePageTemplate = `<div class="app">
    {{> Image data=avatar}}   
 </div>
 <h1 class="profile__username">{{username}}</h1>
-<div class="form profile_form">
+<div id="profile_form_id" class="form profile_form">
  {{> Form  formGroup=data button=button link=link}}
   </div>
   <div class="profile__actions">

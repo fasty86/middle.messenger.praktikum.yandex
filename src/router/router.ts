@@ -4,6 +4,8 @@ import ChatView from '../views/chatView';
 import ProfileView from '../views/profileView';
 import NotFoundView from '../views/notFoundView';
 import ServerErrorview from '../views/serverErrorView';
+import ProfileEditData from '../views/profileEditDataView';
+import ProfileEditPassword from '../views/profileEditPasswordView';
 type route = { path: string; view: () => void };
 
 const navigateTo = (url: string) => {
@@ -32,6 +34,14 @@ const router = async () => {
     {
       path: '/profile',
       view: () => new ProfileView(root).render(),
+    },
+    {
+      path: '/profile/edit/data',
+      view: () => new ProfileEditData(root).render(),
+    },
+    {
+      path: '/profile/edit/password',
+      view: () => new ProfileEditPassword(root).render(),
     },
     {
       path: '/notFound',
