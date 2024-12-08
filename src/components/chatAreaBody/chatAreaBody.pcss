@@ -1,0 +1,25 @@
+.chat-area__body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-basis: 610px;
+}
+.chat-area__message-date {
+  margin-top: 10px;
+  font-size: 12px;
+  line-height: 12px;
+  font-weight: bold;
+  color: var(--chat-data-elements-color);
+  alignt-self: center;
+}
+.chat-area__message-container {
+  height: 550px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: start;
+  border-bottom: 1px solid #eaeaea;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--active-elem-color) var(--background-color);
+}

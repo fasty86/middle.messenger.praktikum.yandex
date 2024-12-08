@@ -1,0 +1,22 @@
+.link {
+  text-decoration: none;
+}
+.form__link {
+  font-size: 11px;
+  line-height: 11px;
+  color: var(--secondary-color);
+}
+.header__profile-link {
+  position: relative;
+  align-self: end;
+  padding-right: 22px;
+  font-size: 12px;
+  line-height: 12px;
+  color: var(--chat-data-elements-color);
+  &::after {
+    right: 10px;
+    top: 2px;
+    position: absolute;
+    content: url(/profile_arrow.png);
+  }
+}
