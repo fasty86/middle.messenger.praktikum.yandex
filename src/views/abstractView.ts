@@ -18,7 +18,7 @@ import ChatAreaBody from '../components/chatAreaBody/ChatAreaBody.ts';
 import ChatFooter from '../components/chatFooter/ChatFooter.ts';
 import Message from '../components/message/Message.ts';
 import Modal from '../components/modal/Modal.ts';
-import Navigation from '../components/util/navigation.ts';
+import Navigation from '../components/util/Navigation.ts';
 
 // Handlebars.registerPartial('Input', Input);
 Handlebars.registerPartial('Button', Button);
