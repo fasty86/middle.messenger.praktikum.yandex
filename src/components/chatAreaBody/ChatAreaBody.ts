@@ -1,7 +1,6 @@
 import './chatAreaBody.pcss';
 export default `<section class="chat-area__body">
-            <div class="chat-area__message-date">12 июня</div>
-          
+            <div class="chat-area__message-date">12 июня</div>   
             <div class="chat-area__message-container">
               {{#each data}}
              {{> Message data=this }}

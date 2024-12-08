@@ -1,6 +1,6 @@
 import './modal.pcss';
 export default `
-<dialog  class="dialog" id={{data.id}}>
+<dialog  class="dialog" id="{{data.id}}">
 <div class="dialog__container">
   <h3 class="modal__title">{{data.title}}</h3>
    <div class="form__group">

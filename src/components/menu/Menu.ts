@@ -2,7 +2,7 @@ import './menu.pcss';
 
 export default `<div class="options-group">
                {{#with data}}
-               <div class={{optionGroupclassName}}>
+               <div class="{{optionGroupclassName}}">
                    {{#each items }}
                      {{> Option data=items }}
                     {{/each}}

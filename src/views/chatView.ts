@@ -202,8 +202,8 @@ const messages: messageType[] = [
   {
     contentType: 'image',
     content: {
-      alt: '',
-      src: 'photo.png',
+      alt: 'изображение',
+      src: '/photo.png',
       className: 'chat-area__message-image',
     },
     date: '13:55',
