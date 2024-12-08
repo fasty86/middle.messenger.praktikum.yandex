@@ -56,7 +56,7 @@ const profileFormData: Array<formGroupType> = [
     input: {
       className: 'input profile__input',
       id: 'old_password_id',
-      name: 'phone',
+      name: 'oldPassword',
       placeholder: '',
       type: 'password',
       value: '12345',
@@ -72,7 +72,7 @@ const profileFormData: Array<formGroupType> = [
     input: {
       className: 'input profile__input',
       id: 'new_password_id',
-      name: 'phone',
+      name: 'newPassword',
       placeholder: '',
       type: 'password',
       value: '12345',
@@ -88,7 +88,7 @@ const profileFormData: Array<formGroupType> = [
     input: {
       className: 'input profile__input',
       id: 'new_password_second_id',
-      name: 'phone',
+      name: 'confirmNewPassword',
       placeholder: '',
       type: 'password',
       value: '32434',
@@ -137,7 +137,7 @@ const uploadAvatarModel: modalType = {
     input: {
       className: 'upload-avatar__input',
       id: 'upload_avatar_input_id',
-      name: 'upload_avatar_login',
+      name: 'avatar',
       placeholder: '',
       type: 'file',
       value: '',
