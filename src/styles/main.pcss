@@ -1,0 +1,83 @@
+:root {
+  --primary-color: #3498db;
+  --secondary-color: #3369f3;
+  --background-color: #fff;
+  --text-color: #333;
+  --error-color: #e74c3c;
+  --underline-color: #eaeaea;
+  --background-color: #eaeaea;
+  --active-elem-color: #e4edfd;
+  --chat-data-elements-color: #999999;
+}
+*,
+::before,
+::after,
+html,
+body {
+  box-sizing: border-box;
+}
+html {
+  height: 100%;
+}
+h1,
+h2,
+h3 {
+  margin: 0;
+}
+body {
+  font-family: Inter, sans-serif;
+  line-height: 1.6;
+  color: var(--text-color);
+  max-width: 1280px;
+  margin: 0 auto;
+}
+button {
+  outline: none;
+  border: none;
+}
+button:hover {
+  cursor: pointer;
+}
+.app {
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  font-size: 20px;
+  line-height: 20px;
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 50px 33px;
+}
+.util-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.util-title {
+  font-size: 40px;
+}
+.util-text {
+  margin-top: 20px;
+  font-size: 20px;
+}
+.util-link {
+  margin-top: 70px;
+  font-size: 11px;
+}
+.util_nav {
+  margin-right: 10px;
+  display: flex;
+  flex-direction: column;
+}
