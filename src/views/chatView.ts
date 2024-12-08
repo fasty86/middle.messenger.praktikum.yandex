@@ -221,7 +221,7 @@ const footerData: footerType = {
   input: {
     className: 'footer__text-input',
     id: 'message_input_id',
-    name: 'message_input',
+    name: 'message',
     placeholder: 'Сообщение',
     type: 'text',
     value: '',

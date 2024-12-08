@@ -105,7 +105,7 @@ const profileFormData: Array<formGroupType> = [
     input: {
       className: 'input profile__input',
       id: 'last_name_id',
-      name: 'last_name',
+      name: 'second_name',
       placeholder: '',
       type: 'text',
       value: 'Иванов',
@@ -121,7 +121,7 @@ const profileFormData: Array<formGroupType> = [
     input: {
       className: 'input profile__input',
       id: 'chat_name_id',
-      name: 'chat_name',
+      name: 'display_name',
       placeholder: '',
       type: 'text',
       value: 'Иванов',
@@ -147,22 +147,6 @@ const profileFormData: Array<formGroupType> = [
       className: 'label form__label profile__label',
       forAttr: 'phone_id',
       text: 'Телефон',
-    },
-  },
-  {
-    input: {
-      className: 'input profile__input',
-      id: 'first_password_id',
-      name: 'password_one',
-      placeholder: '',
-      type: 'password',
-      value: '12345',
-      disabled: true,
-    },
-    label: {
-      className: 'label form__label profile__label',
-      forAttr: 'first_password_id',
-      text: 'Пароль',
     },
   },
 ];

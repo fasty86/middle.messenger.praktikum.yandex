@@ -85,7 +85,7 @@ const registrationFormData: Array<formGroupType> = [
     input: {
       className: 'input form__input',
       id: 'last_name_id',
-      name: 'last_name',
+      name: 'second_name',
       placeholder: '',
       type: 'text',
       value: '',
@@ -115,7 +115,7 @@ const registrationFormData: Array<formGroupType> = [
     input: {
       className: 'input form__input',
       id: 'first_password_id',
-      name: 'password_one',
+      name: 'password',
       placeholder: '',
       type: 'password',
       value: '',
@@ -130,7 +130,7 @@ const registrationFormData: Array<formGroupType> = [
     input: {
       className: 'input form__input',
       id: 'second_password_id',
-      name: 'password_second',
+      name: 'passwordConfirm',
       placeholder: '',
       type: 'password',
       value: '',
