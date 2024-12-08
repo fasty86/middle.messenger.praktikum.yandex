@@ -1,8 +1,8 @@
 import './styles/main.pcss';
-// import App from './App.ts';
 import { isAnchorElement } from './types/typeguards.ts';
 import { router, navigateTo } from './router/router.ts';
 
+window.addEventListener('popstate', router);
 document.addEventListener('DOMContentLoaded', () => {
   document.body.addEventListener('click', (e) => {
     if (isAnchorElement(e.target)) {
@@ -14,7 +14,3 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   router();
 });
-// document.addEventListener('DOMContentLoaded', () => {
-//   const app = new App();
-//   app.render();
-// });
