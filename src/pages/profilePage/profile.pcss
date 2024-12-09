@@ -1,0 +1,109 @@
+.profile__container {
+  grid-template-columns: 64px 1fr;
+  justify-items: center;
+  align-items: center;
+  margin: 0;
+}
+.profile_aside {
+  width: 64px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background-color: #fbfbfb;
+}
+
+.profile__button {
+  height: 25px;
+  width: 25px;
+  padding: 0;
+  margin: 0;
+  transform: rotate(180deg);
+}
+.profile__main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.profile__image-input {
+  display: none;
+}
+
+.profile__avatar-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 130px;
+  width: 130px;
+  background-color: #efefef;
+  border-radius: 50%;
+
+  &:hover::after {
+    content: 'Загрузить аватар';
+    font-size: 13px;
+    cursor: pointer;
+    opacity: 0.5;
+  }
+  &::after {
+    content: '';
+    display: block;
+    width: 130px;
+    height: 130px;
+    position: absolute;
+    vertical-align: middle;
+    transform: translate(0%, 50px);
+    border-radius: 50%;
+  }
+}
+.profile_image {
+  position: relative;
+  &:hover {
+    cursor: pointer;
+    transition: 0.5s;
+  }
+}
+.profile__actions {
+  width: 510px;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.profile__actions > * {
+  text-align: start;
+}
+.profile__input {
+  text-align: end;
+  font-size: 13px;
+  color: var(--chat-data-elements-color);
+  padding: 10px 10px 10px 5px;
+  display: block;
+  width: 510px;
+  border-bottom: 1px solid var(--underline-color);
+  padding-bottom: 2px;
+}
+.profile__label {
+  top: 10px;
+  color: #1e1e1e;
+  font-weight: 500;
+  line-height: 13px;
+  font-weight: 13px;
+}
+.profile__username {
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+.profile__action-button {
+  color: var(--secondary-color);
+  font-size: 13px;
+  width: 510px;
+  border-bottom: 1px solid var(--underline-color);
+  background: none;
+  &:hover {
+    color: red;
+  }
+}
