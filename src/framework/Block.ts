@@ -130,6 +130,7 @@ export default class Block {
         // формируем шаблон с заглушками для Block элементов и списков
         fragment.innerHTML = Handlebars.compile(this.render())({
             ...this.rootData,
+            ...this.attributes,
             ...content,
         });
         // Замещаем заглушки на реальные элементы
