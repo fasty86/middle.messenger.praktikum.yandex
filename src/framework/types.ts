@@ -14,10 +14,10 @@ export type Listener = {
 
 export type PropsType = {
     rootData: RootDataType;
-    attributes: AttributeType;
-    childrens: ChildrensType;
-    lists: ListType;
-    events: EventsType;
+    attributes?: AttributeType;
+    childrens?: ChildrensType;
+    lists?: ListType;
+    events?: EventsType;
 };
 
 export type RootDataType = {
@@ -31,7 +31,7 @@ export type ChildrensType = {
     [key: string]: Block;
 };
 export type ListType = {
-    [key: string]: Block[];
+    [key: string]: Array<Block | string>;
 };
 export type EventsType = {
     [key: string]: (e: Event) => void;

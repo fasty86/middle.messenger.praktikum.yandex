@@ -31,7 +31,7 @@ export default class Block {
     eventBus: () => EventBus;
     bindedEvents: never[];
 
-    constructor(tagName = "div", props: PropsType) {
+    constructor(props: PropsType, tagName = "div") {
         const eventBus = new EventBus();
         this._meta = {
             tagName,
@@ -134,6 +134,7 @@ export default class Block {
         });
         // Замещаем заглушки на реальные элементы
         this.replaceLists(fragment);
+        this.replaceChildrens(fragment);
         const newElement = fragment.content.firstElementChild as HTMLElement;
         if (this._element && newElement) {
             this.removeEventListeners();
@@ -240,7 +241,10 @@ export default class Block {
                 if (item instanceof Block) {
                     listCont.content.append(item.getContent());
                 } else {
-                    listCont.content.append(item);
+                    // listCont.content.append(item);
+                    const template = document.createElement("template");
+                    template.innerHTML = item.trim();
+                    listCont.content.append(template.content);
                 }
             });
             const listPlace = fragment.content.querySelector(
