@@ -11,17 +11,22 @@ export default [
 
     { ignores: [".node_modules/*", "dist"] },
     {
-        plugins: { prettier: eslintPluginPrettier },
+        plugins: {
+            "@typescript-eslint": tseslint.plugin,
+            prettier: eslintPluginPrettier,
+        },
     },
     pluginJs.configs.recommended,
     ...tseslint.configs.recommended,
     {
         rules: {
-            "no-unused-vars": "warn",
+            "no-unused-vars": "off",
             "prefer-const": ["warn", { ignoreReadBeforeAssign: true }],
             ...eslintConfigPrettier.rules,
             "no-expliict-any": "off",
-            "@typescript-eslint/no-unused-vars": "off",
+            "@typescript-eslint/no-unused-vars": ["error"],
+            "@typescript-eslint/no-this-alias": "off",
+            "@typescript-eslint/no-unsafe-function-type": "off",
         },
     },
 ];
