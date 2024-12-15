@@ -1,12 +1,14 @@
-import "./link.pcss";
+import "./avatar.pcss";
 import Block from "../../framework/Block";
 import { PropsType } from "../../framework/types";
-export default class LinkBlock extends Block {
+export default class Avatar extends Block {
     constructor(props: PropsType) {
         super(props);
     }
 
     render() {
-        return `<a href="{{href}}" class="{{className}}" data-link>{{text}}</a>`;
+        return `<div class="{{className}}" id="{{id}}">
+                  {{{Image}}}
+                    </div>`;
     }
 }

@@ -1,4 +1,3 @@
-import Handlebars from "handlebars";
 import AbstractView from "./abstractView";
 import * as Pages from "../pages/index.ts";
 import {
@@ -8,28 +7,371 @@ import {
     headerInfoType,
     messageType,
     footerType,
+    imageType,
 } from "../types/components.ts";
+import ChatListHeader from "../components/chatListHeader/ChatListHeader.ts";
+import Link from "../components/link/Link.ts";
+import Search from "../components/search/Search.ts";
+import Input from "../components/input/Input.ts";
+import ChatList from "../components/chatList/ChatList.ts";
+import ChatListItem from "../components/chatListItem/ChatListItem.ts";
+import Image from "../components/image/Image.ts";
+import ChatAreaHeader from "../components/chatLAreaHeader/ChatAreaHeader.ts";
+import Menu from "../components/menu/Menu.ts";
+import Option from "../components/option/Option.ts";
+import Button from "../components/button/Button.ts";
+import Modal from "../components/modal/Modal.ts";
+import FormGroup from "../components/formGroup/FormGroup.ts";
+import Label from "../components/label/Label.ts";
+import ChatAreaBody from "../components/chatAreaBody/ChatAreaBody.ts";
+import Message from "../components/message/Message.ts";
+import ChatFooter from "../components/chatFooter/ChatFooter.ts";
+import { NavigationComponent } from "../components/util/Navigation.ts";
 
 export default class ChatView extends AbstractView {
-    protected template: string;
     constructor(protected root: HTMLElement) {
         super(root);
-        this.template = Pages.ChatPage;
         this.setTitle("Chat");
     }
     async render() {
-        const template = Handlebars.compile(this.template);
-        this.root.innerHTML = template({
-            chatListHeaderData: chatListHeader,
-            chatListData: chatList,
-            chatAreaHeaderData: {
-                headerOptionsData: headerOptions,
-                headerInfoData: headerInfo,
+        this.root.replaceChildren(this.buildComponents().getContent());
+    }
+    protected buildComponents() {
+        const chatListHeader = new ChatListHeader({
+            childrens: {
+                Link: new Link({
+                    attributes: {
+                        href: "/profile",
+                        text: "Профиль",
+                        className: "link header__profile-link",
+                    },
+                }),
+                Search: new Search({
+                    childrens: {
+                        Input: new Input({
+                            attributes: chatListHeaderData.search,
+                        }),
+                    },
+                }),
             },
-            messageData: messages,
-            footerData: footerData,
         });
-        this.addEvtListeners();
+        const chatList = new ChatList({
+            lists: {
+                List: [
+                    new ChatListItem({
+                        rootData: {
+                            ...chatListData[0],
+                        },
+                        childrens: {
+                            Image: new Image({
+                                attributes: chatListData[0].imageData,
+                            }),
+                        },
+                    }),
+                    new ChatListItem({
+                        rootData: {
+                            ...chatListData[0],
+                        },
+                        childrens: {
+                            Image: new Image({
+                                attributes: chatListData[0].imageData,
+                            }),
+                        },
+                    }),
+                    new ChatListItem({
+                        rootData: {
+                            ...chatListData[0],
+                        },
+                        childrens: {
+                            Image: new Image({
+                                attributes: chatListData[0].imageData,
+                            }),
+                        },
+                    }),
+                    new ChatListItem({
+                        rootData: {
+                            ...chatListData[0],
+                        },
+                        childrens: {
+                            Image: new Image({
+                                attributes: chatListData[0].imageData,
+                            }),
+                        },
+                    }),
+                    new ChatListItem({
+                        rootData: {
+                            ...chatListData[0],
+                        },
+                        childrens: {
+                            Image: new Image({
+                                attributes: chatListData[0].imageData,
+                            }),
+                        },
+                    }),
+                ],
+            },
+        });
+        const headerMenu = new Menu({
+            rootData: {
+                optionGroupclassName: headerOptions.optionGroupclassName,
+            },
+            lists: {
+                Options: [
+                    new Option({
+                        attributes: {
+                            optionClassName:
+                                headerOptions.items[0].optionClassName,
+                            id: headerOptions.items[0].id,
+                            textClassName: headerOptions.items[0].textClassName,
+                            text: headerOptions.items[0].text,
+                        },
+                        childrens: {
+                            Image: new Image({
+                                attributes: headerOptions.items[0].imageData,
+                            }),
+                        },
+                        events: {
+                            click: () => {
+                                const dialog = document.querySelector(
+                                    "#model_add_user_id",
+                                ) as HTMLDialogElement;
+                                super.closeModalOutside(dialog);
+                                dialog.showModal();
+                            },
+                        },
+                    }),
+                    new Option({
+                        attributes: {
+                            optionClassName:
+                                headerOptions.items[1].optionClassName,
+                            id: headerOptions.items[1].id,
+                            textClassName: headerOptions.items[1].textClassName,
+                            text: headerOptions.items[1].text,
+                        },
+                        childrens: {
+                            Image: new Image({
+                                attributes: headerOptions.items[1].imageData,
+                            }),
+                        },
+                        events: {
+                            click: () => {
+                                const dialog = document.querySelector(
+                                    "#model_delete_user_id",
+                                ) as HTMLDialogElement;
+                                super.closeModalOutside(dialog);
+                                dialog.showModal();
+                            },
+                        },
+                    }),
+                ],
+            },
+            childrens: {
+                Button: new Button({
+                    attributes: headerOptions.optionButton,
+                    events: {
+                        click: () => {
+                            document
+                                .querySelector(".header-options__menu")
+                                ?.classList.toggle("hidden");
+                        },
+                    },
+                }),
+            },
+        });
+        const chatAreaHeader = new ChatAreaHeader({
+            childrens: {
+                Image: new Image({
+                    attributes: headerInfo.imageData,
+                }),
+                Menu: headerMenu,
+            },
+            lists: {
+                ModalList: [
+                    new Modal({
+                        rootData: {
+                            title: headerOptions.modal[0].title,
+                        },
+                        attributes: {
+                            id: headerOptions.modal[0].id,
+                        },
+                        childrens: {
+                            FormGroup: new FormGroup({
+                                childrens: {
+                                    Input: new Input({
+                                        attributes:
+                                            headerOptions.modal[0].formGroup
+                                                .input,
+                                    }),
+                                    Label: new Label({
+                                        attributes:
+                                            headerOptions.modal[0].formGroup
+                                                .label,
+                                    }),
+                                },
+                            }),
+                            Button: new Button({
+                                attributes: headerOptions.modal[0].button,
+                                events: {
+                                    submit: (e) => {
+                                        e.preventDefault();
+                                    },
+                                },
+                            }),
+                        },
+                    }),
+                    new Modal({
+                        rootData: {
+                            title: headerOptions.modal[1].title,
+                        },
+                        attributes: {
+                            id: headerOptions.modal[1].id,
+                        },
+                        childrens: {
+                            FormGroup: new FormGroup({
+                                childrens: {
+                                    Input: new Input({
+                                        attributes:
+                                            headerOptions.modal[1].formGroup
+                                                .input,
+                                    }),
+                                    Label: new Label({
+                                        attributes:
+                                            headerOptions.modal[1].formGroup
+                                                .label,
+                                    }),
+                                },
+                            }),
+                            Button: new Button({
+                                attributes: headerOptions.modal[1].button,
+                                events: {
+                                    submit: (e) => {
+                                        e.preventDefault();
+                                    },
+                                },
+                            }),
+                        },
+                    }),
+                ],
+            },
+            rootData: {
+                userData: headerInfo.userData,
+            },
+        });
+        const chatAreaBody = new ChatAreaBody({
+            rootData: {
+                currentDate: " 14 января",
+            },
+            lists: {
+                MessageList: [
+                    new Message({
+                        rootData: {
+                            date: messages[0].date,
+                            Content: messages[0].content,
+                            contentType: messages[0].contentType,
+                        },
+                    }),
+                    new Message({
+                        rootData: {
+                            date: messages[1].date,
+                            contentType: messages[1].contentType,
+                        },
+                        childrens: {
+                            Content: new Image({
+                                attributes: messages[1].content as imageType,
+                            }),
+                        },
+                    }),
+                ],
+            },
+        });
+        const footerMenu = new Menu({
+            rootData: {
+                optionGroupclassName: footerData.menu.optionGroupclassName,
+            },
+            lists: {
+                Options: [
+                    new Option({
+                        attributes: {
+                            optionClassName:
+                                footerData.menu.items[0].optionClassName,
+                            id: footerData.menu.items[0].id,
+                            textClassName:
+                                footerData.menu.items[0].textClassName,
+                            text: footerData.menu.items[0].text,
+                        },
+                        childrens: {
+                            Image: new Image({
+                                attributes: footerData.menu.items[0].imageData,
+                            }),
+                        },
+                    }),
+                    new Option({
+                        attributes: {
+                            optionClassName:
+                                footerData.menu.items[1].optionClassName,
+                            id: footerData.menu.items[1].id,
+                            textClassName:
+                                footerData.menu.items[1].textClassName,
+                            text: footerData.menu.items[1].text,
+                        },
+                        childrens: {
+                            Image: new Image({
+                                attributes: footerData.menu.items[1].imageData,
+                            }),
+                        },
+                    }),
+                    new Option({
+                        attributes: {
+                            optionClassName:
+                                footerData.menu.items[2].optionClassName,
+                            id: footerData.menu.items[1].id,
+                            textClassName:
+                                footerData.menu.items[2].textClassName,
+                            text: footerData.menu.items[2].text,
+                        },
+                        childrens: {
+                            Image: new Image({
+                                attributes: footerData.menu.items[1].imageData,
+                            }),
+                        },
+                    }),
+                ],
+            },
+            childrens: {
+                Button: new Button({
+                    attributes: footerData.menu.optionButton,
+                    events: {
+                        click: () => {
+                            document
+                                .querySelector(".footer__attach-menu")
+                                ?.classList.toggle("hidden");
+                        },
+                    },
+                }),
+            },
+        });
+        const chatFooter = new ChatFooter({
+            childrens: {
+                Menu: footerMenu,
+                Input: new Input({
+                    attributes: footerData.input,
+                }),
+                Button: new Button({
+                    attributes: footerData.button,
+                }),
+            },
+        });
+        const page = new Pages.ChatPage({
+            childrens: {
+                Navigation: NavigationComponent,
+                ChatListHeader: chatListHeader,
+                ChatList: chatList,
+                ChatAreaHeader: chatAreaHeader,
+                ChatAreaBody: chatAreaBody,
+                ChatFooter: chatFooter,
+            },
+        });
+        return page;
     }
     protected addEvtListeners() {
         const headerOptionsButton = document.getElementById(
@@ -69,7 +411,7 @@ export default class ChatView extends AbstractView {
     }
 }
 
-const chatListHeader: chatListHeaderType = {
+const chatListHeaderData: chatListHeaderType = {
     search: {
         className: "input header__search",
         id: "header_search_id",
@@ -80,7 +422,7 @@ const chatListHeader: chatListHeaderType = {
     },
 };
 
-const chatList: Array<chatListItemType> = new Array(15).fill({
+const chatListData: Array<chatListItemType> = new Array(15).fill({
     imageData: {
         alt: "аватар",
         className: "chat_list__image",
@@ -226,6 +568,7 @@ const footerData: footerType = {
         value: "",
     },
     menu: {
+        modal: [],
         optionGroupclassName: "footer__attach-menu",
         optionButton: {
             className: "footer__attach-button",

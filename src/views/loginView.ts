@@ -1,34 +1,69 @@
-import Handlebars from "handlebars";
-import AbstractView from "./abstractView";
+import AbstractView from "./abstractView.ts";
 import * as Pages from "../pages/index.ts";
 import { formGroupType, buttonType, linkType } from "../types/components.ts";
 import { navigateTo } from "../router/router.ts";
+import FormGroup from "../components/formGroup/FormGroup.ts";
+import Button from "../components/button/Button.ts";
+import Input from "../components/input/Input.ts";
+import Label from "../components/label/Label.ts";
+import Form from "../components/form/Form.ts";
+import Link from "../components/link/Link.ts";
+import { NavigationComponent } from "../components/util/Navigation.ts";
 export default class LoginView extends AbstractView {
-    protected template: string;
     constructor(protected root: HTMLElement) {
         super(root);
-        this.template = Pages.LoginPage;
         this.setTitle("Login");
     }
     async render() {
-        const template = Handlebars.compile(this.template);
-        this.root.innerHTML = template({
-            data: loginFormData,
-            button: buttonData,
-            link: linkData,
-            formClassName: "login__form",
-        });
-        this.addEvtListeners();
+        this.root.replaceChildren(this.buildComponents().getContent());
     }
-    protected addEvtListeners() {
-        document.addEventListener("submit", (e) => {
-            e.preventDefault();
+
+    protected buildComponents() {
+        const elements: FormGroup[] = [
+            new FormGroup({
+                childrens: {
+                    Input: new Input({ attributes: loginFormData[0].input }),
+                    Label: new Label({ attributes: loginFormData[0].label }),
+                },
+            }),
+            new FormGroup({
+                childrens: {
+                    Input: new Input({ attributes: loginFormData[1].input }),
+                    Label: new Label({ attributes: loginFormData[1].label }),
+                },
+            }),
+        ];
+        const form = new Form({
+            attributes: {
+                formClassName: "login__form",
+            },
+            childrens: {
+                Button: new Button({
+                    attributes: buttonData,
+                    events: {
+                        submit: (e) => {
+                            e.preventDefault();
+                        },
+                        click: () => {
+                            navigateTo("/chat");
+                        },
+                    },
+                }),
+                Link: new Link({
+                    attributes: linkData,
+                }),
+            },
+            lists: {
+                Elements: elements,
+            },
         });
-        document
-            .querySelector("#login_button_id")
-            ?.addEventListener("click", () => {
-                navigateTo("/chat");
-            });
+        const page = new Pages.LoginPage({
+            childrens: {
+                Form: form,
+                Navigation: NavigationComponent,
+            },
+        });
+        return page;
     }
 }
 
@@ -41,6 +76,7 @@ const loginFormData: Array<formGroupType> = [
             placeholder: "",
             type: "text",
             value: "",
+            disabled: false,
         },
         label: {
             className: "label form__label",
@@ -56,6 +92,7 @@ const loginFormData: Array<formGroupType> = [
             placeholder: "",
             type: "password",
             value: "",
+            disabled: false,
         },
         label: {
             className: "label form__label",

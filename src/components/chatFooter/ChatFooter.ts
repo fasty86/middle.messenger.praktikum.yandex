@@ -1,11 +1,16 @@
-import './chatFooter.pcss';
+import "./chatFooter.pcss";
+import Block from "../../framework/Block";
+import { PropsType } from "../../framework/types";
+export default class ChatFooter extends Block {
+    constructor(props: PropsType) {
+        super(props);
+    }
 
-export default `<footer class="footer">
-            {{> Menu data=footerData.menu }}
-            {{#with footerData.input}}
-              {{> Input id=id name=name type=type placeholder=placeholder value=value class=className}}
-            {{/with}}
-            {{#with footerData.button}}
-              {{> Button id=id class=className type=type text=text}}
-            {{/with}}
+    render() {
+        return `<footer class="footer">
+            {{{Menu}}}
+            {{{Input}}}
+            {{{Button}}}
           </footer>`;
+    }
+}

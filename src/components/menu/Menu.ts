@@ -1,13 +1,19 @@
-import './menu.pcss';
+import "./menu.pcss";
 
-export default `<div class="options-group">
-               {{#with data}}
+import Block from "../../framework/Block";
+import { PropsType } from "../../framework/types";
+export default class Menu extends Block {
+    constructor(props: PropsType) {
+        super(props);
+    }
+
+    render() {
+        return `<div class="options-group">
                <div class="{{optionGroupclassName}}">
-                   {{#each items }}
-                     {{> Option data=items }}
-                    {{/each}}
+                   {{{Options}}}
                 </div>
-                 {{> Button id=optionButton.id type=optionButton.type text=optionButton.text disabled=optionButton.disabled className=optionButton.className}}
-               {{/with}}
+                 {{{Button}}}
               </div>
              `;
+    }
+}

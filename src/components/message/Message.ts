@@ -1,12 +1,17 @@
-import './message.pcss';
+import "./message.pcss";
+import Block from "../../framework/Block";
+import { PropsType } from "../../framework/types";
+export default class Message extends Block {
+    constructor(props: PropsType) {
+        super(props);
+    }
 
-export default `<div class="chat-area__message">
+    render() {
+        return `<div class="chat-area__message">
                 <div class="chat-area__message-content">
-                  {{#if (ifEquals data.contentType "text")}}
-                  {{data.content}}
-                  {{else}}
-                  {{> Image data=data.content}}
-                  {{/if}}
+                 {{{Content}}}
                 </div>
-                <div class="chat-area__message-data">{{data.date}}</div>
+                <div class="chat-area__message-data">{{date}}</div>
               </div>`;
+    }
+}

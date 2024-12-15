@@ -1,9 +1,16 @@
-import './chatList.pcss';
+import "./chatList.pcss";
+import Block from "../../framework/Block";
+import { PropsType } from "../../framework/types";
+export default class ChatList extends Block {
+    constructor(props: PropsType) {
+        super(props);
+    }
 
-export default `<main class="chat-list">
+    render() {
+        return `<main class="chat-list">
             <ul class="chat-list__container">
-           {{#each chatListItem}}
-           {{> ChatListItem data=chatListItem }}
-           {{/each}}
+              {{{List}}}
             </ul>
           </main>`;
+    }
+}

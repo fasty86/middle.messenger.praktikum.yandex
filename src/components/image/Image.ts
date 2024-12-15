@@ -1,7 +1,16 @@
-import './image.pcss';
+import "./image.pcss";
+import Block from "../../framework/Block";
+import { PropsType } from "../../framework/types";
+export default class Image extends Block {
+    constructor(props: PropsType) {
+        super(props);
+    }
 
-export default `<img
-                  src="{{data.src}}"
-                  alt="{{data.alt}}"
-                  class="{{data.className}}"
+    render() {
+        return `<img
+                  src="{{src}}"
+                  alt="{{alt}}"
+                  class="{{className}}"
                 />`;
+    }
+}

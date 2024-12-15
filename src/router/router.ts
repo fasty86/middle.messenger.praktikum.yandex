@@ -3,10 +3,11 @@ import RegistrationView from "../views/registarationView";
 import ChatView from "../views/chatView";
 import ProfileView from "../views/profileView";
 import NotFoundView from "../views/notFoundView";
-import ServerErrorview from "../views/serverErrorView";
+import ServerErrorView from "../views/serverErrorView";
 import ProfileEditData from "../views/profileEditDataView";
 import ProfileEditPassword from "../views/profileEditPasswordView";
-import NotFoundViewBlock from "../views/notFoundViewBlock";
+// import NotFoundViewBlock from "../views/notFoundView";
+// import ServerErrorViewBlock from "../views/serverErrorViewBlock";
 type route = { path: string; view: () => void };
 
 const navigateTo = (url: string) => {
@@ -50,11 +51,7 @@ const router = async () => {
         },
         {
             path: "/serverError",
-            view: () => new ServerErrorview(root).render(),
-        },
-        {
-            path: "/block",
-            view: () => new NotFoundViewBlock(root).render(),
+            view: () => new ServerErrorView(root).render(),
         },
     ];
     const matchedRoutes = routes.map((route) => {

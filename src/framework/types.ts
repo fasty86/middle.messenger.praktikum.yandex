@@ -13,7 +13,7 @@ export type Listener = {
 };
 
 export type PropsType = {
-    rootData: RootDataType;
+    rootData?: RootDataType;
     attributes?: AttributeType;
     childrens?: ChildrensType;
     lists?: ListType;
@@ -24,7 +24,7 @@ export type RootDataType = {
     [key: string]: unknown;
 };
 export type AttributeType = {
-    [key: string]: string;
+    [key: string]: string | boolean;
 };
 
 export type ChildrensType = {

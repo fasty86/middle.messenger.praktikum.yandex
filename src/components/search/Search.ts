@@ -1,6 +1,16 @@
-import './search.pcss';
+import "./search.pcss";
 
-export default `<div class='header__search-container'>
-  <i class='header__search-icon'></i>
-    {{> Input id=search.id type=search.type placeholder=search.placeholder value=search.value  className=search.className}}
-</div>`;
+import Block from "../../framework/Block";
+import { PropsType } from "../../framework/types";
+export default class Search extends Block {
+    constructor(props: PropsType) {
+        super(props);
+    }
+
+    render() {
+        return `<div class='header__search-container'>
+                  <i class='header__search-icon'></i>
+                   {{{Input}}}
+                </div>`;
+    }
+}

@@ -242,7 +242,6 @@ export default class Block {
                 if (item instanceof Block) {
                     listCont.content.append(item.getContent());
                 } else {
-                    // listCont.content.append(item);
                     const template = document.createElement("template");
                     template.innerHTML = item.trim();
                     listCont.content.append(template.content);

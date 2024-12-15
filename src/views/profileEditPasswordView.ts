@@ -1,4 +1,3 @@
-import Handlebars from "handlebars";
 import AbstractView from "./abstractView.ts";
 import * as Pages from "../pages/index.ts";
 import {
@@ -8,45 +7,132 @@ import {
     modalType,
 } from "../types/components.ts";
 import { navigateTo } from "../router/router.ts";
-
+import FormGroup from "../components/formGroup/FormGroup.ts";
+import Button from "../components/button/Button.ts";
+import Input from "../components/input/Input.ts";
+import Label from "../components/label/Label.ts";
+import Form from "../components/form/Form.ts";
+import Image from "../components/image/Image.ts";
+import { NavigationComponent } from "../components/util/Navigation.ts";
+import Modal from "../components/modal/Modal.ts";
+import Avatar from "../components/avatar/Avatar.ts";
 export default class ProfileEditPassword extends AbstractView {
-    protected template: string;
     constructor(protected root: HTMLElement) {
         super(root);
-        this.template = Pages.ProfilePage;
         this.setTitle("Profile");
     }
-    async render(source = this.template) {
-        const template = Handlebars.compile(source);
-        this.root.innerHTML = template({
-            data: profileFormData,
-            formClassName: "profile_form",
-            actionButtons: actionButtons,
-            username: "Иван Иванов",
-            avatar: avatar,
-            sendButton,
-            modal: uploadAvatarModel,
-        });
-        this.addEvtListeners();
+    async render() {
+        this.root.replaceChildren(this.buildComponents().getContent());
     }
-    protected addEvtListeners() {
-        document.addEventListener("submit", (e) => {
-            e.preventDefault();
+
+    protected buildComponents() {
+        const actions: Button[] = [
+            new Button({
+                attributes: actionButtons[0],
+                events: {
+                    click: () => {
+                        navigateTo("/profile/edit/data");
+                    },
+                },
+            }),
+        ];
+        const elements: FormGroup[] = [
+            new FormGroup({
+                childrens: {
+                    Input: new Input({ attributes: profileFormData[0].input }),
+                    Label: new Label({ attributes: profileFormData[0].label }),
+                },
+            }),
+            new FormGroup({
+                childrens: {
+                    Input: new Input({ attributes: profileFormData[1].input }),
+                    Label: new Label({ attributes: profileFormData[1].label }),
+                },
+            }),
+            new FormGroup({
+                childrens: {
+                    Input: new Input({ attributes: profileFormData[2].input }),
+                    Label: new Label({ attributes: profileFormData[2].label }),
+                },
+            }),
+        ];
+        const form = new Form({
+            attributes: {
+                formClassName: "form profile_form",
+            },
+            lists: {
+                Elements: elements,
+            },
         });
-        document
-            .querySelector("#profile_button_back_id")
-            ?.addEventListener("click", () => {
-                navigateTo("/profile");
-            });
-        document
-            .querySelector("#avatar_upload_image_id")
-            ?.addEventListener("click", () => {
-                const dialog = document.querySelector(
-                    "#modal_upload_avatar_id",
-                ) as HTMLDialogElement;
-                super.closeModalOutside(dialog);
-                dialog.showModal();
-            });
+        const page = new Pages.ProfilePage({
+            childrens: {
+                Button: new Button({
+                    attributes: sendButton,
+                    events: {
+                        click: () => {
+                            navigateTo("/chat");
+                        },
+                    },
+                }),
+                Avatar: new Avatar({
+                    attributes: {
+                        className: "profile__avatar-container",
+                        id: "avatar_upload_image_id",
+                    },
+                    childrens: {
+                        Image: new Image({
+                            attributes: avatar,
+                        }),
+                    },
+                    events: {
+                        click: () => {
+                            console.log("imds");
+                            const dialog = document.querySelector(
+                                "#modal_upload_avatar_id",
+                            ) as HTMLDialogElement;
+                            super.closeModalOutside(dialog);
+                            dialog.showModal();
+                        },
+                    },
+                }),
+                Form: form,
+                Navigation: NavigationComponent,
+                Modal: new Modal({
+                    rootData: {
+                        title: uploadAvatarModel.title,
+                    },
+                    attributes: {
+                        id: uploadAvatarModel.id,
+                    },
+                    childrens: {
+                        FormGroup: new FormGroup({
+                            childrens: {
+                                Input: new Input({
+                                    attributes:
+                                        uploadAvatarModel.formGroup.input,
+                                }),
+                                Label: new Label({
+                                    attributes:
+                                        uploadAvatarModel.formGroup.label,
+                                }),
+                            },
+                        }),
+                        Button: new Button({
+                            attributes: uploadAvatarModel.button,
+                            events: {
+                                submit: (e) => {
+                                    e.preventDefault();
+                                },
+                            },
+                        }),
+                    },
+                }),
+            },
+            lists: {
+                ActionButtons: actions,
+            },
+        });
+        return page;
     }
 }
 
@@ -69,7 +155,7 @@ const profileFormData: Array<formGroupType> = [
     },
     {
         input: {
-            className: "input profile__input",
+            className: "profile__input input",
             id: "new_password_id",
             name: "newPassword",
             placeholder: "",
