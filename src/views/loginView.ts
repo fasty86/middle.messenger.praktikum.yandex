@@ -28,29 +28,20 @@ export default class LoginView extends AbstractView {
                     Input: new Input({
                         attributes: loginFormData[0].input,
                         events: {
-                            blur: function (e) {
+                            blur: function (this: Input, e) {
                                 if (isInputElement(e.target)) {
-                                    const that = this as unknown as Input;
                                     const value = e.target.value;
-                                    console.log("blur", e.target.value);
                                     const validationResult =
-                                        Validator.validateUsername(value);
-                                    console.log("validation", validationResult);
-                                    that.showTooltip();
+                                        Validator.validateLogin(value);
+                                    if (!validationResult) this.showTooltip();
                                 }
                             },
-                            focus: function (e) {
-                                if (isInputElement(e.target)) {
-                                    const that = this as unknown as Input;
-                                    console.log("focus");
-
-                                    that.hideTooltip();
-                                }
+                            focus: function (this: Input) {
+                                this.hideTooltip();
                             },
-                            keyup: function (e) {
+                            keyup: function (this: Input, e) {
                                 if (isInputElement(e.target)) {
-                                    const that = this as unknown as FormGroup;
-                                    that.setAtrributies({
+                                    this.setAtrributies({
                                         value: e.target.value ? "nonempty" : "",
                                     });
                                 }
@@ -59,7 +50,7 @@ export default class LoginView extends AbstractView {
                         childrens: {
                             Tooltip: new Tooltip({
                                 rootData: {
-                                    text: "Имя должно начинаться с заглавной буквы и содержать только буквы",
+                                    text: "от 3 до 20 символов, латиница/кириллица,",
                                 },
                                 attributes: {},
                             }),
@@ -70,12 +61,54 @@ export default class LoginView extends AbstractView {
             }),
             new FormGroup({
                 childrens: {
-                    Input: new Input({ attributes: loginFormData[1].input }),
+                    Input: new Input({
+                        attributes: loginFormData[1].input,
+                        events: {
+                            blur: function (this: Input, e) {
+                                if (isInputElement(e.target)) {
+                                    const value = e.target.value;
+                                    const validationResult =
+                                        Validator.validatePassword(value);
+                                    if (!validationResult) this.showTooltip();
+                                }
+                            },
+                            focus: function (this: Input) {
+                                this.hideTooltip();
+                            },
+                            keyup: function (this: Input, e) {
+                                if (isInputElement(e.target)) {
+                                    this.setAtrributies({
+                                        value: e.target.value ? "nonempty" : "",
+                                    });
+                                }
+                            },
+                        },
+                        childrens: {
+                            Tooltip: new Tooltip({
+                                rootData: {
+                                    text: "от 8 до 40 символов, хотя бы одна заглавная буква и цифра",
+                                },
+                                attributes: {},
+                            }),
+                        },
+                    }),
                     Label: new Label({ attributes: loginFormData[1].label }),
                 },
             }),
         ];
         const form = new Form({
+            events: {
+                submit: function (this: Form, e) {
+                    e.preventDefault();
+                    console.log(
+                        (this.getContent() as HTMLFormElement).elements,
+                    );
+                    console.log(
+                        (this.getContent() as HTMLFormElement).elements["login"]
+                            .value,
+                    );
+                },
+            },
             attributes: {
                 formClassName: "login__form",
             },
@@ -83,11 +116,11 @@ export default class LoginView extends AbstractView {
                 Button: new Button({
                     attributes: buttonData,
                     events: {
-                        submit: (e) => {
+                        submit: function (e) {
                             e.preventDefault();
                         },
                         click: () => {
-                            navigateTo("/chat");
+                            // navigateTo("/chat");
                         },
                     },
                 }),
