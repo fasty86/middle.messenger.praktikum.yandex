@@ -7,6 +7,6 @@ export default class Button extends Block {
     }
 
     render() {
-        return `<button id="{{id}}" class="{{className}} type="{{type}}">{{text}}</button>`;
+        return `<button id="{{id}}" class="{{className}}" type="{{type}}">{{text}}</button>`;
     }
 }
