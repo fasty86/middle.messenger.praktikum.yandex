@@ -9,6 +9,9 @@ import Label from "../components/label/Label.ts";
 import Form from "../components/form/Form.ts";
 import Link from "../components/link/Link.ts";
 import { NavigationComponent } from "../components/util/Navigation.ts";
+import { isInputElement } from "../types/typeguards.ts";
+import { Validator } from "../utils/Validator.ts";
+import Tooltip from "../components/tooltip/Tooltip.ts";
 export default class LoginView extends AbstractView {
     constructor(protected root: HTMLElement) {
         super(root);
@@ -22,7 +25,46 @@ export default class LoginView extends AbstractView {
         const elements: FormGroup[] = [
             new FormGroup({
                 childrens: {
-                    Input: new Input({ attributes: loginFormData[0].input }),
+                    Input: new Input({
+                        attributes: loginFormData[0].input,
+                        events: {
+                            blur: function (e) {
+                                if (isInputElement(e.target)) {
+                                    const that = this as unknown as Input;
+                                    const value = e.target.value;
+                                    console.log("blur", e.target.value);
+                                    const validationResult =
+                                        Validator.validateUsername(value);
+                                    console.log("validation", validationResult);
+                                    that.showTooltip();
+                                }
+                            },
+                            focus: function (e) {
+                                if (isInputElement(e.target)) {
+                                    const that = this as unknown as Input;
+                                    console.log("focus");
+
+                                    that.hideTooltip();
+                                }
+                            },
+                            keyup: function (e) {
+                                if (isInputElement(e.target)) {
+                                    const that = this as unknown as FormGroup;
+                                    that.setAtrributies({
+                                        value: e.target.value ? "nonempty" : "",
+                                    });
+                                }
+                            },
+                        },
+                        childrens: {
+                            Tooltip: new Tooltip({
+                                rootData: {
+                                    text: "Имя должно начинаться с заглавной буквы и содержать только буквы",
+                                },
+                                attributes: {},
+                            }),
+                        },
+                    }),
                     Label: new Label({ attributes: loginFormData[0].label }),
                 },
             }),
@@ -76,7 +118,6 @@ const loginFormData: Array<formGroupType> = [
             placeholder: "",
             type: "text",
             value: "",
-            disabled: false,
         },
         label: {
             className: "label form__label",
@@ -92,7 +133,6 @@ const loginFormData: Array<formGroupType> = [
             placeholder: "",
             type: "password",
             value: "",
-            disabled: false,
         },
         label: {
             className: "label form__label",

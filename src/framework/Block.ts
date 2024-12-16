@@ -116,9 +116,9 @@ export default class Block {
 
         Object.assign(this.rootData, nextProps.rootData);
     };
-
-    get element() {
-        return this._element;
+    setHtmlAttribute(attrs: { [key: string]: string }) {
+        this.attributes = { ...this.attributes, ...attrs };
+        this.setAtrributies(this.attributes);
     }
 
     _render() {
@@ -190,9 +190,10 @@ export default class Block {
     }
 
     setAtrributies(attributes: AttributeType) {
+        this.attributes = { ...this.attributes, ...attributes };
         Object.entries(attributes).forEach(([key, value]) => {
             if (isHTMLElement(this._element))
-                this._element.setAttribute(key, value);
+                this._element.setAttribute(key, String(value));
         });
     }
     generateId() {

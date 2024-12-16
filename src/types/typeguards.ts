@@ -14,3 +14,6 @@ export function isFunction(prop: unknown): prop is Function {
 export function isHTMLElement(element: unknown): element is HTMLElement {
     return element instanceof HTMLElement;
 }
+export function isInputElement(element: unknown): element is HTMLInputElement {
+    return element instanceof HTMLInputElement;
+}
