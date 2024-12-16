@@ -1,25 +1,31 @@
 class Validator {
     public static validateEmail(email: string): boolean {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const emailRegex = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+\.[a-zA-Z]+$/;
         return emailRegex.test(email);
     }
+    public static validateLogin(login: string): boolean {
+        const loginRegex = /^(?!\d+$)[a-zA-Z0-9_-]{3,20}$/;
+        return loginRegex.test(login);
+    }
     public static validatePassword(password: string): boolean {
-        const passwordRegex =
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        const passwordRegex = /^(?=.*[A-Z])(?=.*\d)[a-zA-Z0-9_-]{8,40}$/;
         return passwordRegex.test(password);
     }
     public static validateUsername(username: string): boolean {
-        const usernameRegex = /^[A-ZА-Я][а-яА-Яa-zA-Z]{0,}/;
-        return usernameRegex.test(username);
+        const russianCapitalStart = /^[А-Я][а-яА-Я-]{0,}$/;
+        const latinCapitalStart = /^[A-Z][A-Za-z-]{0,}$/;
+        return (
+            russianCapitalStart.test(username) ||
+            latinCapitalStart.test(username)
+        );
     }
     public static validatePhoneNumber(phoneNumber: string): boolean {
-        const phoneNumberRegex = /^\+?\d{10,15}/;
-        // /^\+?\d{1,3}[-.\s]?\d{1,3}[-.\s]?\d{1,4}[-.\s]?\d{1,4}$/;
+        const phoneNumberRegex = /^\+?\d{10,15}$/;
         return phoneNumberRegex.test(phoneNumber);
     }
-    public static validateText(text: string): boolean {
-        const textRegex = /^[a-zA-Z0-9\s]+$/;
-        return textRegex.test(text);
+    public static validateMessage(message: string): boolean {
+        const messageRegex = /^.+$/;
+        return messageRegex.test(message);
     }
 }
 
