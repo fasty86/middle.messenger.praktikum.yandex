@@ -1,4 +1,4 @@
-import './chatAreaHeader.pcss';
+import "./chatAreaHeader.pcss";
 
 export default `<header class="chat-area__header">
             <nav class="chat-area_navigation">

@@ -1,4 +1,4 @@
-import './message.pcss';
+import "./message.pcss";
 
 export default `<div class="chat-area__message">
                 <div class="chat-area__message-content">

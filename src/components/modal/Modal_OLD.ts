@@ -1,4 +1,4 @@
-import './modal.pcss';
+import "./modal.pcss";
 export default `
 <dialog  class="dialog" id="{{data.id}}">
 <div class="dialog__container">

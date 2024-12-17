@@ -1,4 +1,4 @@
-import './menu.pcss';
+import "./menu.pcss";
 
 export default `<div class="options-group">
                {{#with data}}

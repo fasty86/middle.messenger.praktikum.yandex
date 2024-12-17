@@ -1,4 +1,4 @@
-import './image.pcss';
+import "./image.pcss";
 
 export default `<img
                   src="{{data.src}}"

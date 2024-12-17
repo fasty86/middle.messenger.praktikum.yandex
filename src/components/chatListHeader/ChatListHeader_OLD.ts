@@ -1,4 +1,4 @@
-import './chatListHeader.pcss';
+import "./chatListHeader.pcss";
 
 export default `<header class="header">
             <nav class="header__nav">

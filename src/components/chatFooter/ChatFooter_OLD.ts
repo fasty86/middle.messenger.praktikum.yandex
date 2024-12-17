@@ -1,4 +1,4 @@
-import './chatFooter.pcss';
+import "./chatFooter.pcss";
 
 export default `<footer class="footer">
             {{> Menu data=footerData.menu }}

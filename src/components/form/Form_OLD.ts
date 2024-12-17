@@ -1,4 +1,4 @@
-import './form.pcss';
+import "./form.pcss";
 export default `<form class={{formClassName}}>
           {{#each formGroup}}
           <div class="form__group">

@@ -1,4 +1,4 @@
-import './chatList.pcss';
+import "./chatList.pcss";
 
 export default `<main class="chat-list">
             <ul class="chat-list__container">

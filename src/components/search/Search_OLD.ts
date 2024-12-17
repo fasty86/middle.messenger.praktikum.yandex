@@ -1,4 +1,4 @@
-import './search.pcss';
+import "./search.pcss";
 
 export default `<div class='header__search-container'>
   <i class='header__search-icon'></i>
