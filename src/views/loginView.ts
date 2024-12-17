@@ -1,7 +1,6 @@
 import AbstractView from "./abstractView.ts";
 import * as Pages from "../pages/index.ts";
 import { formGroupType, buttonType, linkType } from "../types/components.ts";
-import { navigateTo } from "../router/router.ts";
 import FormGroup from "../components/formGroup/FormGroup.ts";
 import Button from "../components/button/Button.ts";
 import Input from "../components/input/Input.ts";
@@ -29,12 +28,8 @@ export default class LoginView extends AbstractView {
                         attributes: loginFormData[0].input,
                         events: {
                             blur: function (this: Input, e) {
-                                if (isInputElement(e.target)) {
-                                    const value = e.target.value;
-                                    const validationResult =
-                                        Validator.validateLogin(value);
-                                    if (!validationResult) this.showTooltip();
-                                }
+                                e.preventDefault();
+                                this.validate(Validator.validateLogin);
                             },
                             focus: function (this: Input) {
                                 this.hideTooltip();
@@ -65,12 +60,8 @@ export default class LoginView extends AbstractView {
                         attributes: loginFormData[1].input,
                         events: {
                             blur: function (this: Input, e) {
-                                if (isInputElement(e.target)) {
-                                    const value = e.target.value;
-                                    const validationResult =
-                                        Validator.validatePassword(value);
-                                    if (!validationResult) this.showTooltip();
-                                }
+                                e.preventDefault();
+                                this.validate(Validator.validatePassword);
                             },
                             focus: function (this: Input) {
                                 this.hideTooltip();
@@ -100,13 +91,7 @@ export default class LoginView extends AbstractView {
             events: {
                 submit: function (this: Form, e) {
                     e.preventDefault();
-                    console.log(
-                        (this.getContent() as HTMLFormElement).elements,
-                    );
-                    console.log(
-                        (this.getContent() as HTMLFormElement).elements["login"]
-                            .value,
-                    );
+                    this.validateForm();
                 },
             },
             attributes: {
@@ -177,7 +162,7 @@ const loginFormData: Array<formGroupType> = [
 
 const buttonData: buttonType = {
     className: "button form__login-button",
-    disabled: false,
+    disabled: "false",
     id: "login_button_id",
     text: "Авторизоваться",
     type: "submit",

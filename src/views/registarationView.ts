@@ -1,7 +1,6 @@
 import AbstractView from "./abstractView.ts";
 import * as Pages from "../pages/index.ts";
 import { formGroupType, buttonType, linkType } from "../types/components.ts";
-import { navigateTo } from "../router/router.ts";
 import FormGroup from "../components/formGroup/FormGroup.ts";
 import Button from "../components/button/Button.ts";
 import Input from "../components/input/Input.ts";
@@ -9,6 +8,9 @@ import Label from "../components/label/Label.ts";
 import Form from "../components/form/Form.ts";
 import Link from "../components/link/Link.ts";
 import { NavigationComponent } from "../components/util/Navigation.ts";
+import { isInputElement } from "../types/typeguards.ts";
+import { Validator } from "../utils/Validator.ts";
+import Tooltip from "../components/tooltip/Tooltip.ts";
 
 export default class RegistrationView extends AbstractView {
     constructor(protected root: HTMLElement) {
@@ -24,6 +26,30 @@ export default class RegistrationView extends AbstractView {
                 childrens: {
                     Input: new Input({
                         attributes: registrationFormData[0].input,
+                        events: {
+                            blur: function (this: Input, e) {
+                                e.preventDefault();
+                                this.validate(Validator.validateEmail);
+                            },
+                            focus: function (this: Input) {
+                                this.hideTooltip();
+                            },
+                            keyup: function (this: Input, e) {
+                                if (isInputElement(e.target)) {
+                                    this.setAtrributies({
+                                        value: e.target.value ? "nonempty" : "",
+                                    });
+                                }
+                            },
+                        },
+                        childrens: {
+                            Tooltip: new Tooltip({
+                                rootData: {
+                                    text: "латиница, цифры ,- ,_ обязательно должна быть «собака»",
+                                },
+                                attributes: {},
+                            }),
+                        },
                     }),
                     Label: new Label({
                         attributes: registrationFormData[0].label,
@@ -34,6 +60,30 @@ export default class RegistrationView extends AbstractView {
                 childrens: {
                     Input: new Input({
                         attributes: registrationFormData[1].input,
+                        events: {
+                            blur: function (this: Input, e) {
+                                e.preventDefault();
+                                this.validate(Validator.validateLogin);
+                            },
+                            focus: function (this: Input) {
+                                this.hideTooltip();
+                            },
+                            keyup: function (this: Input, e) {
+                                if (isInputElement(e.target)) {
+                                    this.setAtrributies({
+                                        value: e.target.value ? "nonempty" : "",
+                                    });
+                                }
+                            },
+                        },
+                        childrens: {
+                            Tooltip: new Tooltip({
+                                rootData: {
+                                    text: "от 3 до 20 символов, латиница, может содержать цифры",
+                                },
+                                attributes: {},
+                            }),
+                        },
                     }),
                     Label: new Label({
                         attributes: registrationFormData[1].label,
@@ -44,6 +94,30 @@ export default class RegistrationView extends AbstractView {
                 childrens: {
                     Input: new Input({
                         attributes: registrationFormData[2].input,
+                        events: {
+                            blur: function (this: Input, e) {
+                                e.preventDefault();
+                                this.validate(Validator.validateUsername);
+                            },
+                            focus: function (this: Input) {
+                                this.hideTooltip();
+                            },
+                            keyup: function (this: Input, e) {
+                                if (isInputElement(e.target)) {
+                                    this.setAtrributies({
+                                        value: e.target.value ? "nonempty" : "",
+                                    });
+                                }
+                            },
+                        },
+                        childrens: {
+                            Tooltip: new Tooltip({
+                                rootData: {
+                                    text: "латиница или кириллица, первая буква должна быть заглавной",
+                                },
+                                attributes: {},
+                            }),
+                        },
                     }),
                     Label: new Label({
                         attributes: registrationFormData[2].label,
@@ -54,6 +128,30 @@ export default class RegistrationView extends AbstractView {
                 childrens: {
                     Input: new Input({
                         attributes: registrationFormData[3].input,
+                        events: {
+                            blur: function (this: Input, e) {
+                                e.preventDefault();
+                                this.validate(Validator.validateUsername);
+                            },
+                            focus: function (this: Input) {
+                                this.hideTooltip();
+                            },
+                            keyup: function (this: Input, e) {
+                                if (isInputElement(e.target)) {
+                                    this.setAtrributies({
+                                        value: e.target.value ? "nonempty" : "",
+                                    });
+                                }
+                            },
+                        },
+                        childrens: {
+                            Tooltip: new Tooltip({
+                                rootData: {
+                                    text: "латиница или кириллица, первая буква должна быть заглавной",
+                                },
+                                attributes: {},
+                            }),
+                        },
                     }),
                     Label: new Label({
                         attributes: registrationFormData[3].label,
@@ -64,6 +162,30 @@ export default class RegistrationView extends AbstractView {
                 childrens: {
                     Input: new Input({
                         attributes: registrationFormData[4].input,
+                        events: {
+                            blur: function (this: Input, e) {
+                                e.preventDefault();
+                                this.validate(Validator.validatePhoneNumber);
+                            },
+                            focus: function (this: Input) {
+                                this.hideTooltip();
+                            },
+                            keyup: function (this: Input, e) {
+                                if (isInputElement(e.target)) {
+                                    this.setAtrributies({
+                                        value: e.target.value ? "nonempty" : "",
+                                    });
+                                }
+                            },
+                        },
+                        childrens: {
+                            Tooltip: new Tooltip({
+                                rootData: {
+                                    text: "от 10 до 15 символов, состоит из цифр, может начинается с плюса",
+                                },
+                                attributes: {},
+                            }),
+                        },
                     }),
                     Label: new Label({
                         attributes: registrationFormData[4].label,
@@ -74,6 +196,30 @@ export default class RegistrationView extends AbstractView {
                 childrens: {
                     Input: new Input({
                         attributes: registrationFormData[5].input,
+                        events: {
+                            blur: function (this: Input, e) {
+                                e.preventDefault();
+                                this.validate(Validator.validatePassword);
+                            },
+                            focus: function (this: Input) {
+                                this.hideTooltip();
+                            },
+                            keyup: function (this: Input, e) {
+                                if (isInputElement(e.target)) {
+                                    this.setAtrributies({
+                                        value: e.target.value ? "nonempty" : "",
+                                    });
+                                }
+                            },
+                        },
+                        childrens: {
+                            Tooltip: new Tooltip({
+                                rootData: {
+                                    text: "от 8 до 40 символов,  одна заглавная буква и цифра",
+                                },
+                                attributes: {},
+                            }),
+                        },
                     }),
                     Label: new Label({
                         attributes: registrationFormData[5].label,
@@ -84,6 +230,30 @@ export default class RegistrationView extends AbstractView {
                 childrens: {
                     Input: new Input({
                         attributes: registrationFormData[6].input,
+                        events: {
+                            blur: function (this: Input, e) {
+                                e.preventDefault();
+                                this.validate(Validator.validatePassword);
+                            },
+                            focus: function (this: Input) {
+                                this.hideTooltip();
+                            },
+                            keyup: function (this: Input, e) {
+                                if (isInputElement(e.target)) {
+                                    this.setAtrributies({
+                                        value: e.target.value ? "nonempty" : "",
+                                    });
+                                }
+                            },
+                        },
+                        childrens: {
+                            Tooltip: new Tooltip({
+                                rootData: {
+                                    text: "от 8 до 40 символов,  одна заглавная буква и цифра",
+                                },
+                                attributes: {},
+                            }),
+                        },
                     }),
                     Label: new Label({
                         attributes: registrationFormData[6].label,
@@ -92,6 +262,12 @@ export default class RegistrationView extends AbstractView {
             }),
         ];
         const form = new Form({
+            events: {
+                submit: function (this: Form, e: Event) {
+                    e.preventDefault();
+                    this.validateForm();
+                },
+            },
             attributes: {
                 formClassName: "login__form",
             },
@@ -99,12 +275,7 @@ export default class RegistrationView extends AbstractView {
                 Button: new Button({
                     attributes: buttonData,
                     events: {
-                        submit: (e) => {
-                            e.preventDefault();
-                        },
-                        click: () => {
-                            navigateTo("/chat");
-                        },
+                        click: () => {},
                     },
                 }),
                 Link: new Link({
@@ -236,7 +407,7 @@ const registrationFormData: Array<formGroupType> = [
 
 const buttonData: buttonType = {
     className: "button form__registration-button",
-    disabled: false,
+    disabled: "false",
     id: "registration_button_id",
     text: "Зарегистрироваться",
     type: "submit",
