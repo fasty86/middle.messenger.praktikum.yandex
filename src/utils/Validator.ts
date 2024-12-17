@@ -1,4 +1,16 @@
 class Validator {
+    public static mapping: {
+        [key in ValidatorMapping]: (value: string) => boolean;
+    } = {
+        login: Validator.validateLogin,
+        first_name: Validator.validateUsername,
+        second_name: Validator.validateUsername,
+        email: Validator.validateEmail,
+        password: Validator.validatePassword,
+        phone: Validator.validatePhoneNumber,
+        message: Validator.validateMessage,
+        passwordConfirm: Validator.validatePassword,
+    };
     public static validateEmail(email: string): boolean {
         const emailRegex = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+\.[a-zA-Z]+$/;
         return emailRegex.test(email);
@@ -28,5 +40,15 @@ class Validator {
         return messageRegex.test(message);
     }
 }
+
+export type ValidatorMapping =
+    | "login"
+    | "first_name"
+    | "second_name"
+    | "email"
+    | "password"
+    | "phone"
+    | "message"
+    | "passwordConfirm";
 
 export { Validator };
