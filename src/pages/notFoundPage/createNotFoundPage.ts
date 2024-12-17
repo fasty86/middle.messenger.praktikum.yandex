@@ -1,12 +1,12 @@
 import { PropsType } from "../../framework/types";
 import Block from "../../framework/Block";
 class NotFoundPage extends Block {
-    constructor(props: PropsType) {
-        super(props);
-    }
+  constructor(props: PropsType) {
+    super(props);
+  }
 
-    render() {
-        return `
+  render() {
+    return `
               <div class="app">
                 {{{Navigation}}}
                 <div class="util-container">
@@ -16,7 +16,7 @@ class NotFoundPage extends Block {
                   </div>
                 </div>
                </div> `;
-    }
+  }
 }
 
 export { NotFoundPage };

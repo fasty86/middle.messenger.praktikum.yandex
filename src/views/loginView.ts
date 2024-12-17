@@ -12,163 +12,161 @@ import { isInputElement } from "../types/typeguards.ts";
 import { Validator } from "../utils/Validator.ts";
 import Tooltip from "../components/tooltip/Tooltip.ts";
 export default class LoginView extends AbstractView {
-    constructor(protected root: HTMLElement) {
-        super(root);
-        this.setTitle("Login");
-    }
-    async render() {
-        this.root.replaceChildren(this.buildComponents().getContent());
-    }
+  constructor(protected root: HTMLElement) {
+    super(root);
+    this.setTitle("Login");
+  }
+  async render() {
+    this.root.replaceChildren(this.buildComponents().getContent());
+  }
 
-    protected buildComponents() {
-        const elements: FormGroup[] = [
-            new FormGroup({
-                childrens: {
-                    Input: new Input({
-                        attributes: loginFormData[0].input,
-                        events: {
-                            blur: function (this: Input, e) {
-                                e.preventDefault();
-                                this.validate(Validator.validateLogin);
-                            },
-                            focus: function (this: Input) {
-                                this.hideTooltip();
-                            },
-                            keyup: function (this: Input, e) {
-                                if (isInputElement(e.target)) {
-                                    this.setAtrributies({
-                                        value: e.target.value ? "nonempty" : "",
-                                    });
-                                }
-                            },
-                        },
-                        childrens: {
-                            Tooltip: new Tooltip({
-                                rootData: {
-                                    text: "от 3 до 20 символов, латиница/кириллица,",
-                                },
-                                attributes: {},
-                            }),
-                        },
-                    }),
-                    Label: new Label({ attributes: loginFormData[0].label }),
-                },
-            }),
-            new FormGroup({
-                childrens: {
-                    Input: new Input({
-                        attributes: loginFormData[1].input,
-                        events: {
-                            blur: function (this: Input, e) {
-                                e.preventDefault();
-                                this.validate(Validator.validatePassword);
-                            },
-                            focus: function (this: Input) {
-                                this.hideTooltip();
-                            },
-                            keyup: function (this: Input, e) {
-                                if (isInputElement(e.target)) {
-                                    this.setAtrributies({
-                                        value: e.target.value ? "nonempty" : "",
-                                    });
-                                }
-                            },
-                        },
-                        childrens: {
-                            Tooltip: new Tooltip({
-                                rootData: {
-                                    text: "от 8 до 40 символов, хотя бы одна заглавная буква и цифра",
-                                },
-                                attributes: {},
-                            }),
-                        },
-                    }),
-                    Label: new Label({ attributes: loginFormData[1].label }),
-                },
-            }),
-        ];
-        const form = new Form({
+  protected buildComponents() {
+    const elements: FormGroup[] = [
+      new FormGroup({
+        childrens: {
+          Input: new Input({
+            attributes: loginFormData[0].input,
             events: {
-                submit: function (this: Form, e) {
-                    e.preventDefault();
-                    this.validateForm();
+              blur: function (this: Input, e) {
+                e.preventDefault();
+                this.validate(Validator.validateLogin);
+              },
+              focus: function (this: Input) {
+                this.hideTooltip();
+              },
+              keyup: function (this: Input, e) {
+                if (isInputElement(e.target)) {
+                  this.setAtrributies({
+                    value: e.target.value ? "nonempty" : "",
+                  });
+                }
+              },
+            },
+            childrens: {
+              Tooltip: new Tooltip({
+                rootData: {
+                  text: "от 3 до 20 символов, латиница/кириллица,",
                 },
+                attributes: {},
+              }),
             },
-            attributes: {
-                formClassName: "login__form",
+          }),
+          Label: new Label({ attributes: loginFormData[0].label }),
+        },
+      }),
+      new FormGroup({
+        childrens: {
+          Input: new Input({
+            attributes: loginFormData[1].input,
+            events: {
+              blur: function (this: Input, e) {
+                e.preventDefault();
+                this.validate(Validator.validatePassword);
+              },
+              focus: function (this: Input) {
+                this.hideTooltip();
+              },
+              keyup: function (this: Input, e) {
+                if (isInputElement(e.target)) {
+                  this.setAtrributies({
+                    value: e.target.value ? "nonempty" : "",
+                  });
+                }
+              },
             },
             childrens: {
-                Button: new Button({
-                    attributes: buttonData,
-                    events: {
-                        submit: function (e) {
-                            e.preventDefault();
-                        },
-                        click: () => {
-                            // navigateTo("/chat");
-                        },
-                    },
-                }),
-                Link: new Link({
-                    attributes: linkData,
-                }),
+              Tooltip: new Tooltip({
+                rootData: {
+                  text: "от 8 до 40 символов, хотя бы одна заглавная буква и цифра",
+                },
+                attributes: {},
+              }),
             },
-            lists: {
-                Elements: elements,
+          }),
+          Label: new Label({ attributes: loginFormData[1].label }),
+        },
+      }),
+    ];
+    const form = new Form({
+      events: {
+        submit: function (this: Form, e) {
+          e.preventDefault();
+          this.validateForm();
+        },
+      },
+      attributes: {
+        formClassName: "login__form",
+      },
+      childrens: {
+        Button: new Button({
+          attributes: buttonData,
+          events: {
+            submit: function (e) {
+              e.preventDefault();
             },
-        });
-        const page = new Pages.LoginPage({
-            childrens: {
-                Form: form,
-                Navigation: NavigationComponent,
-            },
-        });
-        return page;
-    }
+            click: () => {},
+          },
+        }),
+        Link: new Link({
+          attributes: linkData,
+        }),
+      },
+      lists: {
+        Elements: elements,
+      },
+    });
+    const page = new Pages.LoginPage({
+      childrens: {
+        Form: form,
+        Navigation: NavigationComponent,
+      },
+    });
+    return page;
+  }
 }
 
 const loginFormData: Array<formGroupType> = [
-    {
-        input: {
-            className: "input form__input",
-            id: "name_id",
-            name: "login",
-            placeholder: "",
-            type: "text",
-            value: "",
-        },
-        label: {
-            className: "label form__label",
-            forAttr: "name_id",
-            text: "Логин",
-        },
+  {
+    input: {
+      className: "input form__input",
+      id: "name_id",
+      name: "login",
+      placeholder: "",
+      type: "text",
+      value: "",
     },
-    {
-        input: {
-            className: "input form__input",
-            id: "password_id",
-            name: "password",
-            placeholder: "",
-            type: "password",
-            value: "",
-        },
-        label: {
-            className: "label form__label",
-            forAttr: "password_id",
-            text: "Пароль",
-        },
+    label: {
+      className: "label form__label",
+      forAttr: "name_id",
+      text: "Логин",
     },
+  },
+  {
+    input: {
+      className: "input form__input",
+      id: "password_id",
+      name: "password",
+      placeholder: "",
+      type: "password",
+      value: "",
+    },
+    label: {
+      className: "label form__label",
+      forAttr: "password_id",
+      text: "Пароль",
+    },
+  },
 ];
 
 const buttonData: buttonType = {
-    className: "button form__login-button",
-    disabled: "false",
-    id: "login_button_id",
-    text: "Авторизоваться",
-    type: "submit",
+  className: "button form__login-button",
+  disabled: "false",
+  id: "login_button_id",
+  text: "Авторизоваться",
+  type: "submit",
 };
 const linkData: linkType = {
-    className: "link form__link",
-    href: "/registration",
-    text: "Нет аккаунта?",
+  className: "link form__link",
+  href: "/registration",
+  text: "Нет аккаунта?",
 };

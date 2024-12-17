@@ -1,19 +1,19 @@
 import { PropsType } from "../../framework/types";
 import Block from "../../framework/Block";
 class RegistrationPage extends Block {
-    constructor(props: PropsType) {
-        super(props);
-    }
+  constructor(props: PropsType) {
+    super(props);
+  }
 
-    render() {
-        return `<div class="app">
+  render() {
+    return `<div class="app">
                   {{{Navigation}}}
                   <div class="form">
                     <h1>Регистрация</h1>
                      {{{Form}}}
                   </div>
                 </div>`;
-    }
+  }
 }
 
 export { RegistrationPage };

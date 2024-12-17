@@ -2,12 +2,12 @@ import "./chatListItem.pcss";
 import Block from "../../framework/Block";
 import { PropsType } from "../../framework/types";
 export default class ChatListItem extends Block {
-    constructor(props: PropsType) {
-        super(props);
-    }
+  constructor(props: PropsType) {
+    super(props);
+  }
 
-    render() {
-        return `<li class="chat-list__item">
+  render() {
+    return `<li class="chat-list__item">
               {{{Image}}}
                 <div class="chat-list__info">
                   <span class="chat-list__name">{{username}}</span>
@@ -19,5 +19,5 @@ export default class ChatListItem extends Block {
                   <div class="chat-list__time">{{time}}</div>
                   <div class="chat-list__unread-message">{{unreadMessages}}</div>
                 </div>`;
-    }
+  }
 }

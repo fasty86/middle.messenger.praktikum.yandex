@@ -2,12 +2,12 @@ import "./profile.pcss";
 import { PropsType } from "../../framework/types";
 import Block from "../../framework/Block";
 class ProfilePage extends Block {
-    constructor(props: PropsType) {
-        super(props);
-    }
+  constructor(props: PropsType) {
+    super(props);
+  }
 
-    render() {
-        return `<div class="app">
+  render() {
+    return `<div class="app">
         {{{Navigation}}}
         <div class="container profile__container">
         <aside class="profile_aside">
@@ -26,7 +26,7 @@ class ProfilePage extends Block {
           </main>
         </div>
         </div>`;
-    }
+  }
 }
 
 export { ProfilePage };
