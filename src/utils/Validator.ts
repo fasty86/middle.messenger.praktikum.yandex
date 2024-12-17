@@ -10,6 +10,7 @@ class Validator {
         phone: Validator.validatePhoneNumber,
         message: Validator.validateMessage,
         passwordConfirm: Validator.validatePassword,
+        display_name: Validator.validateUsername,
     };
     public static validateEmail(email: string): boolean {
         const emailRegex = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+\.[a-zA-Z]+$/;
@@ -49,6 +50,7 @@ export type ValidatorMapping =
     | "password"
     | "phone"
     | "message"
-    | "passwordConfirm";
+    | "passwordConfirm"
+    | "display_name";
 
 export { Validator };

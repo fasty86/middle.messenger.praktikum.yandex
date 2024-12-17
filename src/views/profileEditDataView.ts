@@ -16,6 +16,9 @@ import Image from "../components/image/Image.ts";
 import { NavigationComponent } from "../components/util/Navigation.ts";
 import Modal from "../components/modal/Modal.ts";
 import Avatar from "../components/avatar/Avatar.ts";
+import Tooltip from "../components/tooltip/Tooltip.ts";
+import { isInputElement } from "../types/typeguards.ts";
+import { Validator } from "../utils/Validator.ts";
 export default class ProfileEditData extends AbstractView {
     constructor(protected root: HTMLElement) {
         super(root);
@@ -30,8 +33,9 @@ export default class ProfileEditData extends AbstractView {
             new Button({
                 attributes: actionButtons[0],
                 events: {
-                    click: () => {
-                        navigateTo("/profile/edit/data");
+                    click: () => {},
+                    submit: (e) => {
+                        e.preventDefault();
                     },
                 },
             }),
@@ -39,47 +43,214 @@ export default class ProfileEditData extends AbstractView {
         const elements: FormGroup[] = [
             new FormGroup({
                 childrens: {
-                    Input: new Input({ attributes: profileFormData[0].input }),
+                    Input: new Input({
+                        attributes: profileFormData[0].input,
+                        events: {
+                            blur: function (this: Input, e) {
+                                e.preventDefault();
+                                this.validate(Validator.validateEmail);
+                            },
+                            focus: function (this: Input) {
+                                this.hideTooltip();
+                            },
+                            keyup: function (this: Input, e) {
+                                if (isInputElement(e.target)) {
+                                    this.setAtrributies({
+                                        value: e.target.value ? "nonempty" : "",
+                                    });
+                                }
+                            },
+                        },
+                        childrens: {
+                            Tooltip: new Tooltip({
+                                rootData: {
+                                    text: "латиница, цифры ,- ,_ обязательно должна быть «собака»",
+                                },
+                                attributes: { className: "tooltip__profile" },
+                            }),
+                        },
+                    }),
                     Label: new Label({ attributes: profileFormData[0].label }),
                 },
             }),
             new FormGroup({
                 childrens: {
-                    Input: new Input({ attributes: profileFormData[1].input }),
+                    Input: new Input({
+                        attributes: profileFormData[1].input,
+                        events: {
+                            blur: function (this: Input, e) {
+                                e.preventDefault();
+                                this.validate(Validator.validateLogin);
+                            },
+                            focus: function (this: Input) {
+                                this.hideTooltip();
+                            },
+                            keyup: function (this: Input, e) {
+                                if (isInputElement(e.target)) {
+                                    this.setAtrributies({
+                                        value: e.target.value ? "nonempty" : "",
+                                    });
+                                }
+                            },
+                        },
+                        childrens: {
+                            Tooltip: new Tooltip({
+                                rootData: {
+                                    text: "от 3 до 20 символов, латиница, может содержать цифры",
+                                },
+                                attributes: { className: "tooltip__profile" },
+                            }),
+                        },
+                    }),
                     Label: new Label({ attributes: profileFormData[1].label }),
                 },
             }),
             new FormGroup({
                 childrens: {
-                    Input: new Input({ attributes: profileFormData[2].input }),
+                    Input: new Input({
+                        attributes: profileFormData[2].input,
+                        events: {
+                            blur: function (this: Input, e) {
+                                e.preventDefault();
+                                this.validate(Validator.validateUsername);
+                            },
+                            focus: function (this: Input) {
+                                this.hideTooltip();
+                            },
+                            keyup: function (this: Input, e) {
+                                if (isInputElement(e.target)) {
+                                    this.setAtrributies({
+                                        value: e.target.value ? "nonempty" : "",
+                                    });
+                                }
+                            },
+                        },
+                        childrens: {
+                            Tooltip: new Tooltip({
+                                rootData: {
+                                    text: "латиница или кириллица, первая буква должна быть заглавной",
+                                },
+                                attributes: { className: "tooltip__profile" },
+                            }),
+                        },
+                    }),
                     Label: new Label({ attributes: profileFormData[2].label }),
                 },
             }),
             new FormGroup({
                 childrens: {
-                    Input: new Input({ attributes: profileFormData[3].input }),
+                    Input: new Input({
+                        attributes: profileFormData[3].input,
+                        events: {
+                            blur: function (this: Input, e) {
+                                e.preventDefault();
+                                this.validate(Validator.validateUsername);
+                            },
+                            focus: function (this: Input) {
+                                this.hideTooltip();
+                            },
+                            keyup: function (this: Input, e) {
+                                if (isInputElement(e.target)) {
+                                    this.setAtrributies({
+                                        value: e.target.value ? "nonempty" : "",
+                                    });
+                                }
+                            },
+                        },
+                        childrens: {
+                            Tooltip: new Tooltip({
+                                rootData: {
+                                    text: "латиница или кириллица, первая буква должна быть заглавной",
+                                },
+                                attributes: { className: "tooltip__profile" },
+                            }),
+                        },
+                    }),
                     Label: new Label({ attributes: profileFormData[3].label }),
                 },
             }),
             new FormGroup({
                 childrens: {
-                    Input: new Input({ attributes: profileFormData[4].input }),
+                    Input: new Input({
+                        attributes: profileFormData[4].input,
+                        events: {
+                            blur: function (this: Input, e) {
+                                e.preventDefault();
+                                this.validate(Validator.validateUsername);
+                            },
+                            focus: function (this: Input) {
+                                this.hideTooltip();
+                            },
+                            keyup: function (this: Input, e) {
+                                if (isInputElement(e.target)) {
+                                    this.setAtrributies({
+                                        value: e.target.value ? "nonempty" : "",
+                                    });
+                                }
+                            },
+                        },
+                        childrens: {
+                            Tooltip: new Tooltip({
+                                rootData: {
+                                    text: "латиница или кириллица, первая буква должна быть заглавной",
+                                },
+                                attributes: { className: "tooltip__profile" },
+                            }),
+                        },
+                    }),
                     Label: new Label({ attributes: profileFormData[4].label }),
                 },
             }),
             new FormGroup({
                 childrens: {
-                    Input: new Input({ attributes: profileFormData[5].input }),
+                    Input: new Input({
+                        attributes: profileFormData[5].input,
+                        events: {
+                            blur: function (this: Input, e) {
+                                e.preventDefault();
+                                this.validate(Validator.validatePhoneNumber);
+                            },
+                            focus: function (this: Input) {
+                                this.hideTooltip();
+                            },
+                            keyup: function (this: Input, e) {
+                                if (isInputElement(e.target)) {
+                                    this.setAtrributies({
+                                        value: e.target.value ? "nonempty" : "",
+                                    });
+                                }
+                            },
+                        },
+                        childrens: {
+                            Tooltip: new Tooltip({
+                                rootData: {
+                                    text: "от 10 до 15 символов, состоит из цифр, может начинается с плюса",
+                                },
+                                attributes: {
+                                    className: "tooltip__profile",
+                                },
+                            }),
+                        },
+                    }),
                     Label: new Label({ attributes: profileFormData[5].label }),
                 },
             }),
         ];
         const form = new Form({
+            events: {
+                submit: function (this: Form, e: Event) {
+                    e.preventDefault();
+                    this.validateForm();
+                },
+            },
             attributes: {
                 formClassName: "form profile_form",
             },
             lists: {
                 Elements: elements,
+            },
+            childrens: {
+                Button: actions[0],
             },
         });
         const page = new Pages.ProfilePage({
@@ -146,9 +317,7 @@ export default class ProfileEditData extends AbstractView {
                     },
                 }),
             },
-            lists: {
-                ActionButtons: actions,
-            },
+            lists: {},
         });
         return page;
     }
@@ -163,7 +332,7 @@ const profileFormData: Array<formGroupType> = [
             placeholder: "",
             type: "email",
             value: "test@yandex.ru",
-            disabled: true,
+            disabled: "",
         },
         label: {
             className: "label form__label profile__label",
@@ -179,12 +348,12 @@ const profileFormData: Array<formGroupType> = [
             placeholder: "",
             type: "text",
             value: "test_login",
-            disabled: true,
+            disabled: "",
         },
         label: {
             className: "label form__label profile__label",
             forAttr: "login_id",
-            text: "Имя в чате",
+            text: "Логин",
         },
     },
 
@@ -196,7 +365,7 @@ const profileFormData: Array<formGroupType> = [
             placeholder: "",
             type: "text",
             value: "Иван",
-            disabled: true,
+            disabled: "",
         },
         label: {
             className: "label form__label profile__label",
@@ -212,7 +381,7 @@ const profileFormData: Array<formGroupType> = [
             placeholder: "",
             type: "text",
             value: "Иванов",
-            disabled: true,
+            disabled: "",
         },
         label: {
             className: "label form__label profile__label",
@@ -228,7 +397,7 @@ const profileFormData: Array<formGroupType> = [
             placeholder: "",
             type: "text",
             value: "Иванов",
-            disabled: true,
+            disabled: "",
         },
         label: {
             className: "label form__label profile__label",
@@ -244,7 +413,7 @@ const profileFormData: Array<formGroupType> = [
             placeholder: "",
             type: "tel",
             value: "+7 (909) 967 30 30",
-            disabled: true,
+            disabled: "",
         },
         label: {
             className: "label form__label profile__label",
@@ -256,10 +425,10 @@ const profileFormData: Array<formGroupType> = [
 const actionButtons: buttonType[] = [
     {
         className: "button form__login-button profile-edit__button",
-        disabled: false,
+        disabled: "",
         id: "profile_save_changed_data_id",
         text: "Сохранить",
-        type: "button",
+        type: "submit",
     },
 ];
 const avatar: imageType = {
@@ -270,7 +439,7 @@ const avatar: imageType = {
 
 const sendButton: buttonType = {
     className: "footer__send-button profile__button",
-    disabled: false,
+    disabled: "",
     id: "profile_button_back_id",
     text: "",
     type: "button",
@@ -279,7 +448,7 @@ const uploadAvatarModel: modalType = {
     id: "modal_upload_avatar_id",
     button: {
         className: "button form__login-button modal__button",
-        disabled: false,
+        disabled: "",
         id: "upload_avatar_button_id",
         text: "Поменять",
         type: "button",
@@ -293,7 +462,7 @@ const uploadAvatarModel: modalType = {
             placeholder: "",
             type: "file",
             value: "",
-            disabled: false,
+            disabled: "",
         },
         label: {
             className: "upload-avatar__label",

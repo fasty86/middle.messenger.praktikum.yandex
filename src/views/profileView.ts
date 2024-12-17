@@ -60,7 +60,9 @@ export default class ProfileView extends AbstractView {
         const elements: FormGroup[] = [
             new FormGroup({
                 childrens: {
-                    Input: new Input({ attributes: profileFormData[0].input }),
+                    Input: new Input({
+                        attributes: profileFormData[0].input,
+                    }),
                     Label: new Label({ attributes: profileFormData[0].label }),
                 },
             }),
@@ -103,7 +105,7 @@ export default class ProfileView extends AbstractView {
         ];
         const form = new Form({
             attributes: {
-                formClassName: "login__form",
+                formClassName: "profile_form",
             },
             lists: {
                 Elements: elements,
@@ -190,7 +192,7 @@ const profileFormData: Array<formGroupType> = [
             placeholder: "",
             type: "email",
             value: "test@yandex.ru",
-            disabled: true,
+            disabled: "disabled",
         },
         label: {
             className: "label form__label profile__label",
@@ -206,7 +208,7 @@ const profileFormData: Array<formGroupType> = [
             placeholder: "",
             type: "text",
             value: "test_login",
-            disabled: true,
+            disabled: "disabled",
         },
         label: {
             className: "label form__label profile__label",
@@ -223,7 +225,7 @@ const profileFormData: Array<formGroupType> = [
             placeholder: "",
             type: "text",
             value: "Иван",
-            disabled: true,
+            disabled: "disabled",
         },
         label: {
             className: "label form__label profile__label",
@@ -239,7 +241,7 @@ const profileFormData: Array<formGroupType> = [
             placeholder: "",
             type: "text",
             value: "Иванов",
-            disabled: true,
+            disabled: "disabled",
         },
         label: {
             className: "label form__label profile__label",
@@ -255,7 +257,7 @@ const profileFormData: Array<formGroupType> = [
             placeholder: "",
             type: "text",
             value: "Иванов",
-            disabled: true,
+            disabled: "disabled",
         },
         label: {
             className: "label form__label profile__label",
@@ -271,7 +273,7 @@ const profileFormData: Array<formGroupType> = [
             placeholder: "",
             type: "tel",
             value: "+7 (909) 967 30 30",
-            disabled: true,
+            disabled: "disabled",
         },
         label: {
             className: "label form__label profile__label",
@@ -287,7 +289,7 @@ const profileFormData: Array<formGroupType> = [
             placeholder: "",
             type: "password",
             value: "12345",
-            disabled: true,
+            disabled: "disabled",
         },
         label: {
             className: "label form__label profile__label",
@@ -299,21 +301,21 @@ const profileFormData: Array<formGroupType> = [
 const actionButtons: buttonType[] = [
     {
         className: "profile__action-button",
-        disabled: false,
+        disabled: "",
         id: "profile_edit_button_id",
         text: "Изменить данные",
         type: "button",
     },
     {
         className: "profile__action-button",
-        disabled: false,
+        disabled: "",
         id: "profile_change_password_button_id",
         text: "Изменить пароль",
         type: "button",
     },
     {
         className: "profile__action-button",
-        disabled: false,
+        disabled: "",
         id: "profile_exit_button_id",
         text: "Выйти",
         type: "button",
@@ -327,7 +329,7 @@ const avatar: imageType = {
 
 const sendButton: buttonType = {
     className: "footer__send-button profile__button",
-    disabled: false,
+    disabled: "",
     id: "profile_button_back_id",
     text: "",
     type: "button",
@@ -336,7 +338,7 @@ const uploadAvatarModel: modalType = {
     id: "modal_upload_avatar_id",
     button: {
         className: "button form__login-button modal__button",
-        disabled: false,
+        disabled: "",
         id: "upload_avatar_button_id",
         text: "Поменять",
         type: "button",
@@ -350,7 +352,7 @@ const uploadAvatarModel: modalType = {
             placeholder: "",
             type: "file",
             value: "",
-            disabled: false,
+            disabled: "",
         },
         label: {
             className: "upload-avatar__label",
