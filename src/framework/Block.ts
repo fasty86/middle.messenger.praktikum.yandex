@@ -57,24 +57,24 @@ export default class Block {
         eventBus.emit(BusEvents.INIT);
     }
 
-    _registerEvents(eventBus: EventBus) {
+    private _registerEvents(eventBus: EventBus) {
         eventBus.on(BusEvents.INIT, this.init.bind(this));
         eventBus.on(BusEvents.FLOW_CDM, this._componentDidMount.bind(this));
         eventBus.on(BusEvents.FLOW_CDU, this._componentDidUpdate.bind(this));
         eventBus.on(BusEvents.FLOW_RENDER, this._render.bind(this));
     }
 
-    _createResources() {}
+    private _createResources() {}
 
-    init() {
+    private init() {
         this._createResources();
         this.eventBus().emit(BusEvents.FLOW_RENDER);
     }
 
-    _componentDidMount() {
+    private _componentDidMount() {
         this.componentDidMount();
     }
-    _parseProps(initialProps: PropsType) {
+    parseProps(initialProps: PropsType) {
         let [props, childrens, lists] = [{}, {}, {}];
         Object.entries(initialProps).forEach(([key, value]) => {
             if (value instanceof Block)
@@ -87,24 +87,21 @@ export default class Block {
         return [props, childrens];
     }
     // Может переопределять пользователь, необязательно трогать
-    componentDidMount() {
-        console.log("Компанент замаунтился");
-    }
+    protected componentDidMount() {}
 
-    dispatchComponentDidMount() {
+    protected dispatchComponentDidMount() {
         this.eventBus().emit(BusEvents.FLOW_CDM);
     }
 
-    _componentDidUpdate(oldProps: unknown, newProps: unknown) {
-        const response = this.componentDidUpdate(oldProps, newProps);
+    private _componentDidUpdate() {
+        const response = this.componentDidUpdate();
         if (response) {
             this.eventBus().emit(BusEvents.FLOW_RENDER);
         }
     }
 
     // Может переопределять пользователь, необязательно трогать
-    componentDidUpdate(oldProps: unknown, newProps: unknown) {
-        console.log(`Old vs new props`, oldProps, newProps);
+    componentDidUpdate() {
         return true;
     }
 
@@ -121,7 +118,6 @@ export default class Block {
     }
 
     _render() {
-        console.log("рендер");
         const fragment = this._createDocumentElement(
             "template",
         ) as HTMLTemplateElement;
@@ -155,7 +151,7 @@ export default class Block {
         return this._element as HTMLElement;
     }
 
-    _makePropsProxy<T extends object>(target: T) {
+    private _makePropsProxy<T extends object>(target: T) {
         const that = this;
 
         return new Proxy(target, {
@@ -176,7 +172,7 @@ export default class Block {
         });
     }
 
-    _createDocumentElement(tagName: string) {
+    private _createDocumentElement(tagName: string) {
         return document.createElement(tagName);
     }
 
@@ -195,22 +191,22 @@ export default class Block {
                 this._element.setAttribute(key, String(value));
         });
     }
-    generateId() {
+    protected generateId() {
         const id = Math.floor(Math.random() * Date.now());
         return id;
     }
-    addEventListeners(events: EventsType, target: HTMLElement) {
+    protected addEventListeners(events: EventsType, target: HTMLElement) {
         Object.entries(events).forEach(([eventName, callback]) => {
             target.addEventListener(eventName, callback);
         });
     }
-    removeEventListeners() {
+    protected removeEventListeners() {
         Object.entries(this.events).forEach(([eventName, callback]) => {
             if (isHTMLElement(this._element))
                 this._element.removeEventListener(eventName, callback);
         });
     }
-    getContentElements() {
+    protected getContentElements() {
         const content: DefaultObject = {};
         // добавляем заготовки для Block элементов
         Object.entries(this.childrens).forEach(([key, value]) => {
@@ -222,7 +218,7 @@ export default class Block {
         });
         return content;
     }
-    replaceChildrens(fragment: HTMLTemplateElement) {
+    protected replaceChildrens(fragment: HTMLTemplateElement) {
         Object.values(this.childrens).forEach((child) => {
             const childPlace = fragment.content.querySelector(
                 `[data-id="${child._meta._id}"]`,
@@ -233,7 +229,7 @@ export default class Block {
         });
     }
 
-    replaceLists(fragment: HTMLTemplateElement) {
+    protected replaceLists(fragment: HTMLTemplateElement) {
         Object.entries(this.lists).forEach(([key, child]) => {
             const listCont = this._createDocumentElement(
                 "template",
@@ -256,7 +252,7 @@ export default class Block {
         });
     }
 
-    bindEvents(events: EventsType) {
+    protected bindEvents(events: EventsType) {
         const that = this;
         Object.keys(events).forEach(
             (eventName) => (events[eventName] = events[eventName].bind(that)),

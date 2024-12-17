@@ -1,7 +1,7 @@
 import { Validator, ValidatorMapping } from "../utils/Validator";
 
 export function isAnchorElement(
-    element: HTMLElement,
+    element: HTMLElement | null | EventTarget,
 ): element is HTMLAnchorElement {
     return element instanceof HTMLAnchorElement;
 }
