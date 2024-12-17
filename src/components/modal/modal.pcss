@@ -1,35 +1,39 @@
 .dialog {
-  position: fixed;
-  z-index: 1000;
-  top: 40%;
   border: none;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 12px;
+  box-shadow: 0 0 10px rgb(0 0 0 / 10%);
+  position: fixed;
+  top: 40%;
+  z-index: 1000;
 }
 
 .dialog__container {
-  width: 340px;
-  height: 257px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 40px 30px;
   border: none;
   border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  height: 257px;
+  justify-content: space-between;
+  padding: 40px 30px;
+  width: 340px;
 }
+
 dialog::backdrop {
+  background-color: hsla(277deg 7% 41% / 66%);
   top: 0;
-  background-color: hsla(277 7% 41% / 0.66);
 }
+
 :modal {
   top: 0;
 }
+
 .modal__button {
   margin: 0;
 }
+
 .modal__title {
+  align-self: center;
+  font-size: 15px;
   font-weight: 600;
   line-height: 20px;
-  font-size: 15px;
-  align-self: center;
 }
