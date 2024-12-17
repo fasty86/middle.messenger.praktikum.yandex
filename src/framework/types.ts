@@ -24,7 +24,7 @@ export type RootDataType = {
     [key: string]: unknown;
 };
 export type AttributeType = {
-    [key: string]: string | boolean;
+    [key: string]: string;
 };
 
 export type ChildrensType = {

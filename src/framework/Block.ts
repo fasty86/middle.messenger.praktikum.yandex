@@ -38,7 +38,6 @@ export default class Block {
             props,
             _id: this.generateId(),
         };
-        // const [propsParsed, childrens, lists] = this._parseProps(props);
         const {
             rootData = {},
             attributes = {},
