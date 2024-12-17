@@ -27,6 +27,10 @@ import ChatAreaBody from "../components/chatAreaBody/ChatAreaBody.ts";
 import Message from "../components/message/Message.ts";
 import ChatFooter from "../components/chatFooter/ChatFooter.ts";
 import { NavigationComponent } from "../components/util/Navigation.ts";
+import Form from "../components/form/Form.ts";
+import Tooltip from "../components/tooltip/Tooltip.ts";
+import { isInputElement } from "../types/typeguards.ts";
+import { Validator } from "../utils/Validator.ts";
 
 export default class ChatView extends AbstractView {
     constructor(protected root: HTMLElement) {
@@ -353,11 +357,66 @@ export default class ChatView extends AbstractView {
         const chatFooter = new ChatFooter({
             childrens: {
                 Menu: footerMenu,
-                Input: new Input({
-                    attributes: footerData.input,
-                }),
-                Button: new Button({
-                    attributes: footerData.button,
+                Form: new Form({
+                    events: {
+                        submit: function (this: Form, e) {
+                            e.preventDefault();
+                            this.validateForm();
+                        },
+                    },
+
+                    attributes: {
+                        formClassName: "message__form ",
+                    },
+                    lists: {
+                        Elements: [
+                            new FormGroup({
+                                attributes: {
+                                    className: "form__message",
+                                },
+                                childrens: {
+                                    Input: new Input({
+                                        attributes: footerData.input,
+                                        events: {
+                                            blur: function (this: Input, e) {
+                                                e.preventDefault();
+                                                this.validate(
+                                                    Validator.validateMessage,
+                                                );
+                                            },
+                                            focus: function (this: Input) {
+                                                this.hideTooltip();
+                                            },
+                                            keyup: function (this: Input, e) {
+                                                if (isInputElement(e.target)) {
+                                                    this.setAtrributies({
+                                                        value: e.target.value
+                                                            ? "nonempty"
+                                                            : "",
+                                                    });
+                                                }
+                                            },
+                                        },
+                                        childrens: {
+                                            Tooltip: new Tooltip({
+                                                rootData: {
+                                                    text: "не должно быть пустым",
+                                                },
+                                                attributes: {
+                                                    className: "tooltip__top",
+                                                },
+                                            }),
+                                        },
+                                    }),
+                                },
+                            }),
+                        ],
+                    },
+                    childrens: {
+                        Button: new Button({
+                            attributes: footerData.button,
+                        }),
+                    },
                 }),
             },
         });
@@ -440,7 +499,7 @@ const headerOptions: menuType = {
             id: "model_add_user_id",
             button: {
                 className: "button form__login-button modal__button",
-                disabled: false,
+                disabled: "false",
                 id: "add_user_button_id",
                 text: "Добавить",
                 type: "button",
@@ -454,7 +513,7 @@ const headerOptions: menuType = {
                     placeholder: "",
                     type: "text",
                     value: "",
-                    disabled: false,
+                    disabled: "false",
                 },
                 label: {
                     className: "label form__label",
@@ -467,7 +526,7 @@ const headerOptions: menuType = {
             id: "model_delete_user_id",
             button: {
                 className: "button form__login-button modal__button",
-                disabled: false,
+                disabled: "false",
                 id: "delete_user_button_id",
                 text: "Удалить",
                 type: "button",
@@ -481,7 +540,7 @@ const headerOptions: menuType = {
                     placeholder: "",
                     type: "text",
                     value: "",
-                    disabled: false,
+                    disabled: "false",
                 },
                 label: {
                     className: "label form__label",
@@ -494,7 +553,7 @@ const headerOptions: menuType = {
     optionGroupclassName: "header-options__menu",
     optionButton: {
         className: "chat-area__header-options",
-        disabled: false,
+        disabled: "false",
         id: "header_options_button_id",
         text: "",
         type: "button",
@@ -554,10 +613,10 @@ const messages: messageType[] = [
 const footerData: footerType = {
     button: {
         className: "footer__send-button",
-        disabled: false,
+        disabled: "false",
         id: "send_button_id",
         text: "",
-        type: "button",
+        type: "submit",
     },
     input: {
         className: "footer__text-input",
@@ -572,7 +631,7 @@ const footerData: footerType = {
         optionGroupclassName: "footer__attach-menu",
         optionButton: {
             className: "footer__attach-button",
-            disabled: false,
+            disabled: "false",
             id: "attach_button_id",
             text: "",
             type: "button",
