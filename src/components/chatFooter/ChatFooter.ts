@@ -9,8 +9,7 @@ export default class ChatFooter extends Block {
     render() {
         return `<footer class="footer">
             {{{Menu}}}
-            {{{Input}}}
-            {{{Button}}}
+            {{{Form}}}
           </footer>`;
     }
 }

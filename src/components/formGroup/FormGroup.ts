@@ -7,7 +7,7 @@ export default class FormGroup extends Block {
     }
 
     render() {
-        return `<div class="form__group" >
+        return `<div class="form__group {{className}}" >
                   {{{Input}}}
                   {{{Label}}}
                 </div>`;

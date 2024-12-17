@@ -13,6 +13,6 @@ export default class Tooltip extends Block {
         this.getContent().classList.remove(`tooltip-active`);
     }
     render() {
-        return `<div class="tooltip">{{text}}</div>`;
+        return `<div class="tooltip {{className}}">{{text}}</div>`;
     }
 }
