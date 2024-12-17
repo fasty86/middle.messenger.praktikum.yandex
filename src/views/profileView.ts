@@ -11,6 +11,9 @@ import Image from "../components/image/Image.ts";
 import { NavigationComponent } from "../components/util/Navigation.ts";
 import Modal from "../components/modal/Modal.ts";
 import Avatar from "../components/avatar/Avatar.ts";
+import Tooltip from "../components/tooltip/Tooltip.ts";
+import { isInputElement } from "../types/typeguards.ts";
+import { Validator } from "../utils/Validator.ts";
 export default class ProfileView extends AbstractView {
   constructor(protected root: HTMLElement) {
     super(root);
@@ -104,6 +107,77 @@ export default class ProfileView extends AbstractView {
         Elements: elements,
       },
     });
+    const avatarModal = new Modal({
+      rootData: {
+        title: uploadAvatarModel.title,
+      },
+      attributes: {
+        id: uploadAvatarModel.id,
+      },
+      childrens: {
+        Form: new Form({
+          attributes: {
+            formClassName: "login__form modal__form",
+          },
+          events: {
+            submit: function (this: Form, e) {
+              e.preventDefault();
+              this.validateForm();
+            },
+          },
+          lists: {
+            Elements: [
+              new FormGroup({
+                childrens: {
+                  Input: new Input({
+                    attributes: uploadAvatarModel.formGroup.input,
+                    events: {
+                      blur: function (this: Input, e) {
+                        e.preventDefault();
+                        this.validate(Validator.validateMessage);
+                      },
+                      focus: function (this: Input) {
+                        this.hideTooltip();
+                      },
+                      keyup: function (this: Input, e) {
+                        if (isInputElement(e.target)) {
+                          this.setAtrributies({
+                            value: e.target.value ? "nonempty" : "",
+                          });
+                        }
+                      },
+                    },
+                    childrens: {
+                      Tooltip: new Tooltip({
+                        rootData: {
+                          text: "пустой путь к файлу",
+                        },
+                        attributes: {
+                          className: "tooltip__modal",
+                        },
+                      }),
+                    },
+                  }),
+                  Label: new Label({
+                    attributes: uploadAvatarModel.formGroup.label,
+                  }),
+                },
+              }),
+            ],
+          },
+          childrens: {
+            Button: new Button({
+              attributes: uploadAvatarModel.button,
+              events: {
+                submit: (e) => {
+                  e.preventDefault();
+                },
+              },
+            }),
+          },
+        }),
+      },
+    });
     const page = new Pages.ProfilePage({
       childrens: {
         Button: new Button({
@@ -126,7 +200,6 @@ export default class ProfileView extends AbstractView {
           },
           events: {
             click: () => {
-              console.log("imds");
               const dialog = document.querySelector("#modal_upload_avatar_id") as HTMLDialogElement;
               super.closeModalOutside(dialog);
               dialog.showModal();
@@ -135,34 +208,7 @@ export default class ProfileView extends AbstractView {
         }),
         Form: form,
         Navigation: NavigationComponent,
-        Modal: new Modal({
-          rootData: {
-            title: uploadAvatarModel.title,
-          },
-          attributes: {
-            id: uploadAvatarModel.id,
-          },
-          childrens: {
-            FormGroup: new FormGroup({
-              childrens: {
-                Input: new Input({
-                  attributes: uploadAvatarModel.formGroup.input,
-                }),
-                Label: new Label({
-                  attributes: uploadAvatarModel.formGroup.label,
-                }),
-              },
-            }),
-            Button: new Button({
-              attributes: uploadAvatarModel.button,
-              events: {
-                submit: (e) => {
-                  e.preventDefault();
-                },
-              },
-            }),
-          },
-        }),
+        Modal: avatarModal,
       },
       lists: {
         ActionButtons: actions,
@@ -330,14 +376,14 @@ const uploadAvatarModel: modalType = {
     disabled: "",
     id: "upload_avatar_button_id",
     text: "Поменять",
-    type: "button",
+    type: "submit",
   },
   title: "Загрузите файл",
   formGroup: {
     input: {
       className: "upload-avatar__input",
       id: "upload_avatar_input_id",
-      name: "upload_avatar_login",
+      name: "file",
       placeholder: "",
       type: "file",
       value: "",

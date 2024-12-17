@@ -14,6 +14,7 @@ class Validator {
     oldPassword: Validator.validatePassword,
     newPassword: Validator.validatePassword,
     confirmNewPassword: Validator.validatePassword,
+    file: Validator.validateMessage,
   };
   public static validateEmail(email: string): boolean {
     const emailRegex = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+\.[a-zA-Z]+$/;
@@ -54,6 +55,7 @@ export type ValidatorMapping =
   | "display_name"
   | "oldPassword"
   | "newPassword"
-  | "confirmNewPassword";
+  | "confirmNewPassword"
+  | "file";
 
 export { Validator };
