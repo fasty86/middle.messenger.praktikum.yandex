@@ -2,7 +2,9 @@ import "./input.pcss";
 import Block from "../../framework/Block";
 import { PropsType } from "../../framework/types";
 import Tooltip from "../tooltip/Tooltip";
+import { isInputElement } from "../../types/typeguards";
 export default class Input extends Block {
+    // this._element: HTMLInputElement
     constructor(props: PropsType) {
         super(props);
     }
@@ -18,6 +20,15 @@ export default class Input extends Block {
             const tooltip = this.childrens.Tooltip as Tooltip;
             tooltip.onHide();
         }
+    }
+    validate(validator: (value: string) => boolean): boolean {
+        const input = this.getContent();
+        if (isInputElement(input)) {
+            const validationResult = validator(input.value);
+            if (!validationResult) this.showTooltip();
+            return validationResult;
+        }
+        return false;
     }
 
     render() {
