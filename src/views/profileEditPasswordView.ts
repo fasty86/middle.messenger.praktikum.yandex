@@ -16,6 +16,9 @@ import Image from "../components/image/Image.ts";
 import { NavigationComponent } from "../components/util/Navigation.ts";
 import Modal from "../components/modal/Modal.ts";
 import Avatar from "../components/avatar/Avatar.ts";
+import Tooltip from "../components/tooltip/Tooltip.ts";
+import { isInputElement } from "../types/typeguards.ts";
+import { Validator } from "../utils/Validator.ts";
 export default class ProfileEditPassword extends AbstractView {
     constructor(protected root: HTMLElement) {
         super(root);
@@ -30,8 +33,9 @@ export default class ProfileEditPassword extends AbstractView {
             new Button({
                 attributes: actionButtons[0],
                 events: {
-                    click: () => {
-                        navigateTo("/profile/edit/data");
+                    click: () => {},
+                    submit: (e) => {
+                        e.preventDefault();
                     },
                 },
             }),
@@ -39,29 +43,116 @@ export default class ProfileEditPassword extends AbstractView {
         const elements: FormGroup[] = [
             new FormGroup({
                 childrens: {
-                    Input: new Input({ attributes: profileFormData[0].input }),
+                    Input: new Input({
+                        attributes: profileFormData[0].input,
+                        events: {
+                            blur: function (this: Input, e) {
+                                e.preventDefault();
+                                this.validate(Validator.validatePassword);
+                            },
+                            focus: function (this: Input) {
+                                this.hideTooltip();
+                            },
+                            keyup: function (this: Input, e) {
+                                if (isInputElement(e.target)) {
+                                    this.setAtrributies({
+                                        value: e.target.value ? "nonempty" : "",
+                                    });
+                                }
+                            },
+                        },
+                        childrens: {
+                            Tooltip: new Tooltip({
+                                rootData: {
+                                    text: "от 8 до 40 символов,  одна заглавная буква и цифра",
+                                },
+                                attributes: { className: "tooltip__profile" },
+                            }),
+                        },
+                    }),
                     Label: new Label({ attributes: profileFormData[0].label }),
                 },
             }),
             new FormGroup({
                 childrens: {
-                    Input: new Input({ attributes: profileFormData[1].input }),
+                    Input: new Input({
+                        attributes: profileFormData[1].input,
+                        events: {
+                            blur: function (this: Input, e) {
+                                e.preventDefault();
+                                this.validate(Validator.validatePassword);
+                            },
+                            focus: function (this: Input) {
+                                this.hideTooltip();
+                            },
+                            keyup: function (this: Input, e) {
+                                if (isInputElement(e.target)) {
+                                    this.setAtrributies({
+                                        value: e.target.value ? "nonempty" : "",
+                                    });
+                                }
+                            },
+                        },
+                        childrens: {
+                            Tooltip: new Tooltip({
+                                rootData: {
+                                    text: "от 8 до 40 символов,  одна заглавная буква и цифра",
+                                },
+                                attributes: { className: "tooltip__profile" },
+                            }),
+                        },
+                    }),
                     Label: new Label({ attributes: profileFormData[1].label }),
                 },
             }),
             new FormGroup({
                 childrens: {
-                    Input: new Input({ attributes: profileFormData[2].input }),
+                    Input: new Input({
+                        attributes: profileFormData[2].input,
+                        events: {
+                            blur: function (this: Input, e) {
+                                e.preventDefault();
+                                this.validate(Validator.validatePassword);
+                            },
+                            focus: function (this: Input) {
+                                this.hideTooltip();
+                            },
+                            keyup: function (this: Input, e) {
+                                if (isInputElement(e.target)) {
+                                    this.setAtrributies({
+                                        value: e.target.value ? "nonempty" : "",
+                                    });
+                                }
+                            },
+                        },
+                        childrens: {
+                            Tooltip: new Tooltip({
+                                rootData: {
+                                    text: "от 8 до 40 символов,  одна заглавная буква и цифра",
+                                },
+                                attributes: { className: "tooltip__profile" },
+                            }),
+                        },
+                    }),
                     Label: new Label({ attributes: profileFormData[2].label }),
                 },
             }),
         ];
         const form = new Form({
+            events: {
+                submit: function (this: Form, e: Event) {
+                    e.preventDefault();
+                    this.validateForm();
+                },
+            },
             attributes: {
                 formClassName: "form profile_form",
             },
             lists: {
                 Elements: elements,
+            },
+            childrens: {
+                Button: actions[0],
             },
         });
         const page = new Pages.ProfilePage({
@@ -128,9 +219,6 @@ export default class ProfileEditPassword extends AbstractView {
                     },
                 }),
             },
-            lists: {
-                ActionButtons: actions,
-            },
         });
         return page;
     }
@@ -145,7 +233,7 @@ const profileFormData: Array<formGroupType> = [
             placeholder: "",
             type: "password",
             value: "12345",
-            disabled: false,
+            disabled: "",
         },
         label: {
             className: "label form__label profile__label",
@@ -161,7 +249,7 @@ const profileFormData: Array<formGroupType> = [
             placeholder: "",
             type: "password",
             value: "12345",
-            disabled: false,
+            disabled: "",
         },
         label: {
             className: "label form__label profile__label",
@@ -177,7 +265,7 @@ const profileFormData: Array<formGroupType> = [
             placeholder: "",
             type: "password",
             value: "32434",
-            disabled: true,
+            disabled: "",
         },
         label: {
             className: "label form__label profile__label",
@@ -189,10 +277,10 @@ const profileFormData: Array<formGroupType> = [
 const actionButtons: buttonType[] = [
     {
         className: "button form__login-button profile-edit__button",
-        disabled: false,
+        disabled: "",
         id: "profile_save_changed_password_id",
         text: "Сохранить",
-        type: "button",
+        type: "submit",
     },
 ];
 const avatar: imageType = {
@@ -203,7 +291,7 @@ const avatar: imageType = {
 
 const sendButton: buttonType = {
     className: "footer__send-button profile__button",
-    disabled: false,
+    disabled: "",
     id: "profile_button_back_id",
     text: "",
     type: "button",
@@ -212,7 +300,7 @@ const uploadAvatarModel: modalType = {
     id: "modal_upload_avatar_id",
     button: {
         className: "button form__login-button modal__button",
-        disabled: false,
+        disabled: "",
         id: "upload_avatar_button_id",
         text: "Поменять",
         type: "button",
@@ -226,7 +314,7 @@ const uploadAvatarModel: modalType = {
             placeholder: "",
             type: "file",
             value: "",
-            disabled: false,
+            disabled: "",
         },
         label: {
             className: "upload-avatar__label",

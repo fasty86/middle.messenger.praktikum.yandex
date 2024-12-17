@@ -23,7 +23,6 @@ export default [
             "no-unused-vars": "off",
             "prefer-const": ["warn", { ignoreReadBeforeAssign: true }],
             ...eslintConfigPrettier.rules,
-            "no-expliict-any": "off",
             "@typescript-eslint/no-unused-vars": ["error"],
             "@typescript-eslint/no-this-alias": "off",
             "@typescript-eslint/no-unsafe-function-type": "off",
