@@ -3,44 +3,44 @@ export type labelType = {
     className: string;
     text: string;
 };
-
+export type inputTypes =
+    | "button"
+    | "checkbox"
+    | "color"
+    | "date"
+    | "datetime-local"
+    | "email"
+    | "file"
+    | "hidden"
+    | "image"
+    | "month"
+    | "number"
+    | "password"
+    | "radio"
+    | "range"
+    | "reset"
+    | "search"
+    | "submit"
+    | "tel"
+    | "text"
+    | "time"
+    | "url"
+    | "week";
 export type inputType = {
     id: string;
     name: string;
-    type:
-        | "button"
-        | "checkbox"
-        | "color"
-        | "date"
-        | "datetime-local"
-        | "email"
-        | "file"
-        | "hidden"
-        | "image"
-        | "month"
-        | "number"
-        | "password"
-        | "radio"
-        | "range"
-        | "reset"
-        | "search"
-        | "submit"
-        | "tel"
-        | "text"
-        | "time"
-        | "url"
-        | "week";
+    type: inputTypes;
     placeholder: string;
     value: string;
     className: string;
-    disabled?: boolean;
+    disabled?: string;
 };
 
 export type buttonType = {
     id: string;
     type: "button" | "submit" | "reset";
     text: string;
-    disabled: boolean;
+    disabled: string;
     className: string;
 };
 export type linkType = {
