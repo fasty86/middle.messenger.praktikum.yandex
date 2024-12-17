@@ -1,3 +1,5 @@
+import { Validator, ValidatorMapping } from "../utils/Validator";
+
 export function isAnchorElement(
     element: HTMLElement,
 ): element is HTMLAnchorElement {
@@ -16,4 +18,8 @@ export function isHTMLElement(element: unknown): element is HTMLElement {
 }
 export function isInputElement(element: unknown): element is HTMLInputElement {
     return element instanceof HTMLInputElement;
+}
+
+export function isValidatorExist(value: string): value is ValidatorMapping {
+    return value in Validator.mapping;
 }
