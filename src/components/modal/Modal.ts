@@ -1,11 +1,8 @@
 import "./modal.pcss";
 import Block from "../../framework/Block";
 import { PropsType } from "../../framework/types";
-export default class Modal extends Block {
-  constructor(props: PropsType) {
-    super(props);
-  }
-
+import Form from "../form/Form";
+export default class Modal extends Block<ModalPropsType> {
   render() {
     return `<dialog  class="dialog" id="{{id}}">
                   <div class="dialog__container">
@@ -14,3 +11,15 @@ export default class Modal extends Block {
                   </dialog>`;
   }
 }
+
+type ModalPropsType = PropsType & {
+  rootData: {
+    title: string;
+  };
+  attributes: {
+    id: string;
+  };
+  childrens: {
+    Form: Form;
+  };
+};

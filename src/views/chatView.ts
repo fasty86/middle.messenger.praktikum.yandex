@@ -31,6 +31,7 @@ import Form from "../components/form/Form.ts";
 import Tooltip from "../components/tooltip/Tooltip.ts";
 import { isInputElement } from "../types/typeguards.ts";
 import { Validator } from "../utils/Validator.ts";
+import Text from "../components/Text/Text.ts";
 
 export default class ChatView extends AbstractView {
   constructor(protected root: HTMLElement) {
@@ -116,7 +117,7 @@ export default class ChatView extends AbstractView {
       },
     });
     const headerMenu = new Menu({
-      rootData: {
+      attributes: {
         optionGroupclassName: headerOptions.optionGroupclassName,
       },
       lists: {
@@ -126,6 +127,8 @@ export default class ChatView extends AbstractView {
               optionClassName: headerOptions.items[0].optionClassName,
               id: headerOptions.items[0].id,
               textClassName: headerOptions.items[0].textClassName,
+            },
+            rootData: {
               text: headerOptions.items[0].text,
             },
             childrens: {
@@ -146,6 +149,8 @@ export default class ChatView extends AbstractView {
               optionClassName: headerOptions.items[1].optionClassName,
               id: headerOptions.items[1].id,
               textClassName: headerOptions.items[1].textClassName,
+            },
+            rootData: {
               text: headerOptions.items[1].text,
             },
             childrens: {
@@ -220,7 +225,9 @@ export default class ChatView extends AbstractView {
                           rootData: {
                             text: "от 3 до 20 символов, латиница/кириллица",
                           },
-                          attributes: {},
+                          attributes: {
+                            className: "",
+                          },
                         }),
                       },
                     }),
@@ -289,7 +296,9 @@ export default class ChatView extends AbstractView {
                           rootData: {
                             text: "от 3 до 20 символов, латиница/кириллица",
                           },
-                          attributes: {},
+                          attributes: {
+                            className: "",
+                          },
                         }),
                       },
                     }),
@@ -337,8 +346,13 @@ export default class ChatView extends AbstractView {
           new Message({
             rootData: {
               date: messages[0].date,
-              Content: messages[0].content,
-              contentType: messages[0].contentType,
+            },
+            childrens: {
+              Content: new Text({
+                rootData: {
+                  text: messages[0].content as string,
+                },
+              }),
             },
           }),
           new Message({
@@ -356,7 +370,7 @@ export default class ChatView extends AbstractView {
       },
     });
     const footerMenu = new Menu({
-      rootData: {
+      attributes: {
         optionGroupclassName: footerData.menu.optionGroupclassName,
       },
       lists: {
@@ -366,6 +380,8 @@ export default class ChatView extends AbstractView {
               optionClassName: footerData.menu.items[0].optionClassName,
               id: footerData.menu.items[0].id,
               textClassName: footerData.menu.items[0].textClassName,
+            },
+            rootData: {
               text: footerData.menu.items[0].text,
             },
             childrens: {
@@ -379,6 +395,8 @@ export default class ChatView extends AbstractView {
               optionClassName: footerData.menu.items[1].optionClassName,
               id: footerData.menu.items[1].id,
               textClassName: footerData.menu.items[1].textClassName,
+            },
+            rootData: {
               text: footerData.menu.items[1].text,
             },
             childrens: {
@@ -392,6 +410,8 @@ export default class ChatView extends AbstractView {
               optionClassName: footerData.menu.items[2].optionClassName,
               id: footerData.menu.items[1].id,
               textClassName: footerData.menu.items[2].textClassName,
+            },
+            rootData: {
               text: footerData.menu.items[2].text,
             },
             childrens: {

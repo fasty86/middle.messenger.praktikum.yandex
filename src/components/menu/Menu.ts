@@ -2,11 +2,9 @@ import "./menu.pcss";
 
 import Block from "../../framework/Block";
 import { PropsType } from "../../framework/types";
-export default class Menu extends Block {
-  constructor(props: PropsType) {
-    super(props);
-  }
-
+import Option from "../option/Option";
+import Button from "../button/Button";
+export default class Menu extends Block<MenuPropsType> {
   render() {
     return `<div class="options-group">
                <div class="{{optionGroupclassName}}">
@@ -17,3 +15,15 @@ export default class Menu extends Block {
              `;
   }
 }
+
+type MenuPropsType = PropsType & {
+  attributes: {
+    optionGroupclassName: string;
+  };
+  childrens: {
+    Button: Button;
+  };
+  lists: {
+    Options: Option[];
+  };
+};

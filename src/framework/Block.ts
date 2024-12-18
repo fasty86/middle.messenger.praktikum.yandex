@@ -4,7 +4,7 @@ import { AttributeType, BusEvents, ChildrensType, DefaultObject, EventsType, Lis
 import { PropsType } from "./types";
 import { isFunction, isHTMLElement } from "../types/typeguards";
 
-export default class Block {
+export default class Block<T extends PropsType = PropsType> {
   static EVENTS = {
     INIT: "init",
     FLOW_CDM: "flow:component-did-mount",
@@ -23,7 +23,7 @@ export default class Block {
   eventBus: () => EventBus;
   bindedEvents: never[];
 
-  constructor(props: PropsType, tagName = "div") {
+  constructor(props: T, tagName = "div") {
     const eventBus = new EventBus();
     this._meta = {
       tagName,

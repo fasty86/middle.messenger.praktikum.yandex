@@ -1,10 +1,7 @@
 import Block from "../../framework/Block";
 import { PropsType } from "../../framework/types";
-export default class Option extends Block {
-  constructor(props: PropsType) {
-    super(props);
-  }
-
+import Image from "../image/Image";
+export default class Option extends Block<OptionPropsType> {
   render() {
     return `
               <div class="{{optionClassName}}" id="{{id}}">
@@ -13,3 +10,17 @@ export default class Option extends Block {
               </div>`;
   }
 }
+
+type OptionPropsType = PropsType & {
+  attributes: {
+    optionClassName: string;
+    textClassName: string;
+    id: string;
+  };
+  rootData: {
+    text: string;
+  };
+  childrens: {
+    Image: Image;
+  };
+};
