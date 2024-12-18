@@ -34,7 +34,7 @@ export default class Block {
     this.rootData = this._makePropsProxy(rootData);
     this.lists = this._makePropsProxy(lists);
     this.attributes = attributes;
-    this.childrens = childrens;
+    this.childrens = this._makePropsProxy(childrens);
     this.events = this.bindEvents(events);
     this._id = this.generateId();
     this.eventBus = (): EventBus => eventBus;
@@ -70,7 +70,7 @@ export default class Block {
     console.log("parsedProps", props, childrens);
     return [props, childrens];
   }
-  // Может переопределять пользователь, необязательно трогать
+
   protected componentDidMount() {}
 
   protected dispatchComponentDidMount() {
@@ -84,7 +84,6 @@ export default class Block {
     }
   }
 
-  // Может переопределять пользователь, необязательно трогать
   componentDidUpdate() {
     return true;
   }
@@ -115,10 +114,10 @@ export default class Block {
     this.replaceChildrens(fragment);
     const newElement = fragment.content.firstElementChild as HTMLElement;
     if (this._element && newElement) {
-      this.removeEventListeners();
       this.addEventListeners(this.events, newElement);
       this._element.replaceWith(newElement);
     } else {
+      this.removeEventListeners();
       this._element = newElement;
       this.addEventListeners(this.events, this._element as HTMLElement);
     }
@@ -126,7 +125,6 @@ export default class Block {
     this.eventBus().emit(BusEvents.FLOW_CDM);
   }
 
-  // Может переопределять пользователь, необязательно трогать
   render() {}
 
   getContent(): HTMLElement {
@@ -149,7 +147,7 @@ export default class Block {
         return true;
       },
       deleteProperty() {
-        throw new Error("No access");
+        throw new Error("Нет доступа");
       },
     });
   }
