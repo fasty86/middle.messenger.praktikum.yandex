@@ -25,6 +25,12 @@
 
 - `npm run start` — сборка и запуск проекта на localhost:3000
 - `npm run dev` — dev запуск через Vite localhost:3000
+- `npm run build` — сборка проекта в production
+- `npm run lint`, - проверка кода на ошибки линтера
+- `npm run lint:fix` - автоматическое исправление ошибок линтером
+- `npm format` — форматирование кода согласно Prettier
+- `npm lint:style` — проверка кода на ошибки стилей stylelint
+- `npm run lint:style:fix` — автоматическое исправление ошибок стилей stylelint
 
 ### Использованные технологии
 
@@ -32,3 +38,6 @@
 - [Handlebars](https://handlebarsjs.com/guide/#what-is-handlebars)
 - [Vite](https://vite.dev/)
 - [PostCSS](https://postcss.org/)
+- [Prettier](https://prettier.io/)
+- [Stylelint](https://stylelint.io/)
+- [ESlint](https://eslint.org/)
