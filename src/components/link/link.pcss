@@ -1,22 +1,25 @@
 .link {
   text-decoration: none;
 }
+
 .form__link {
+  color: var(--secondary-color);
   font-size: 11px;
   line-height: 11px;
-  color: var(--secondary-color);
 }
+
 .header__profile-link {
-  position: relative;
   align-self: end;
-  padding-right: 22px;
+  color: var(--chat-data-elements-color);
   font-size: 12px;
   line-height: 12px;
-  color: var(--chat-data-elements-color);
+  padding-right: 22px;
+  position: relative;
+
   &::after {
+    content: url("/profile_arrow.png");
+    position: absolute;
     right: 10px;
     top: 2px;
-    position: absolute;
-    content: url(/profile_arrow.png);
   }
 }

@@ -1,9 +1,22 @@
-const serverInternalErrorTemplate = `<div class="app">
-{{> Navigation}}
-  <div class="util-container ">
-  <h1 class="util-title">500</h1>
-  <h3 class="util-text">мы уже фиксим</h3>
-   {{> Link href="/chat" text="назад к чатам" className="util-link"}}
-  </div>
-</div>`;
-export { serverInternalErrorTemplate as ServerErrorPage };
+import { PropsType } from "../../framework/types";
+import Block from "../../framework/Block";
+class ServerErrorPage extends Block {
+  constructor(props: PropsType) {
+    super(props);
+  }
+
+  render() {
+    return `
+              <div class="app">
+                {{{Navigation}}}
+                <div class="util-container">
+                  <h1 class="util-title">505</h1>
+                  <h3 class="util-text">{{text}}</h3>
+                  {{{Link}}}
+                  </div>
+                </div>
+               </div> `;
+  }
+}
+
+export { ServerErrorPage };

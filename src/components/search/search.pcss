@@ -1,25 +1,28 @@
 .header__search-container {
   position: relative;
 }
+
 .header__search {
+  background-color: var(--background-color);
+  border-radius: 5px;
+  height: 32px;
   padding-left: 5px;
   width: 280px;
-  height: 32px;
-  border-radius: 5px;
-  background-color: var(--background-color);
 }
+
 .header__search::placeholder {
   text-align: center;
 }
+
 .header__search-icon::after {
-  content: url(/search.png);
-  width: 20px;
+  content: url("/search.png");
   height: 20px;
-  position: absolute;
   left: 115px;
-  top: 5px;
   pointer-events: none;
+  position: absolute;
+  top: 5px;
   transition: all 0.2s easy;
+  width: 20px;
 }
 
 .header__search-container:focus-within > .header__search-icon::after {

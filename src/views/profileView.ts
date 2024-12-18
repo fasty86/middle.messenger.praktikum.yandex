@@ -1,241 +1,398 @@
-import Handlebars from 'handlebars';
-import AbstractView from './abstractView.ts';
-import * as Pages from '../pages/index.ts';
-import {
-  formGroupType,
-  buttonType,
-  imageType,
-  modalType,
-} from '../types/components.ts';
-import { navigateTo } from '../router/router.ts';
-
+import AbstractView from "./abstractView.ts";
+import * as Pages from "../pages/index.ts";
+import { formGroupType, buttonType, imageType, modalType } from "../types/components.ts";
+import { navigateTo } from "../router/router.ts";
+import FormGroup from "../components/formGroup/FormGroup.ts";
+import Button from "../components/button/Button.ts";
+import Input from "../components/input/Input.ts";
+import Label from "../components/label/Label.ts";
+import Form from "../components/form/Form.ts";
+import Image from "../components/image/Image.ts";
+import { NavigationComponent } from "../components/util/Navigation.ts";
+import Modal from "../components/modal/Modal.ts";
+import Avatar from "../components/avatar/Avatar.ts";
+import Tooltip from "../components/tooltip/Tooltip.ts";
+import { isInputElement } from "../types/typeguards.ts";
+import { Validator } from "../utils/Validator.ts";
 export default class ProfileView extends AbstractView {
-  protected template: string;
   constructor(protected root: HTMLElement) {
     super(root);
-    this.template = Pages.ProfilePage;
-    this.setTitle('Profile');
+    this.setTitle("profile");
   }
-  async render(source = this.template) {
-    let template;
-    template = Handlebars.compile(source);
-    this.root.innerHTML = template({
-      data: profileFormData,
-      formClassName: 'login__form',
-      actionButtons: actionButtons,
-      username: 'Иван Иванов',
-      avatar: avatar,
-      sendButton,
-      modal: uploadAvatarModel,
-    });
-    this.addEvtListeners();
+  async render() {
+    this.root.replaceChildren(this.buildComponents().getContent());
   }
-  protected addEvtListeners() {
-    document.addEventListener('submit', (e) => {
-      e.preventDefault();
+
+  protected buildComponents() {
+    const actions: Button[] = [
+      new Button({
+        attributes: actionButtons[0],
+        events: {
+          click: () => {
+            navigateTo("/profile/edit/data");
+          },
+        },
+      }),
+      new Button({
+        attributes: actionButtons[1],
+        events: {
+          click: () => {
+            navigateTo("/profile/edit/password");
+          },
+        },
+      }),
+      new Button({
+        attributes: actionButtons[2],
+        events: {
+          click: () => {
+            console.log("imds");
+            const dialog = document.querySelector("#modal_upload_avatar_id") as HTMLDialogElement;
+            super.closeModalOutside(dialog);
+            dialog.showModal();
+          },
+        },
+      }),
+    ];
+    const elements: FormGroup[] = [
+      new FormGroup({
+        childrens: {
+          Input: new Input({
+            attributes: profileFormData[0].input,
+          }),
+          Label: new Label({ attributes: profileFormData[0].label }),
+        },
+      }),
+      new FormGroup({
+        childrens: {
+          Input: new Input({ attributes: profileFormData[1].input }),
+          Label: new Label({ attributes: profileFormData[1].label }),
+        },
+      }),
+      new FormGroup({
+        childrens: {
+          Input: new Input({ attributes: profileFormData[2].input }),
+          Label: new Label({ attributes: profileFormData[2].label }),
+        },
+      }),
+      new FormGroup({
+        childrens: {
+          Input: new Input({ attributes: profileFormData[3].input }),
+          Label: new Label({ attributes: profileFormData[3].label }),
+        },
+      }),
+      new FormGroup({
+        childrens: {
+          Input: new Input({ attributes: profileFormData[4].input }),
+          Label: new Label({ attributes: profileFormData[4].label }),
+        },
+      }),
+      new FormGroup({
+        childrens: {
+          Input: new Input({ attributes: profileFormData[5].input }),
+          Label: new Label({ attributes: profileFormData[5].label }),
+        },
+      }),
+      new FormGroup({
+        childrens: {
+          Input: new Input({ attributes: profileFormData[6].input }),
+          Label: new Label({ attributes: profileFormData[6].label }),
+        },
+      }),
+    ];
+    const form = new Form({
+      attributes: {
+        formClassName: "profile_form",
+      },
+      lists: {
+        Elements: elements,
+      },
     });
-    document
-      .querySelector('#profile_button_back_id')
-      ?.addEventListener('click', (_) => {
-        navigateTo('/chat');
-      });
-    document
-      .querySelector('#avatar_upload_image_id')
-      ?.addEventListener('click', (_) => {
-        const dialog = document.querySelector(
-          '#modal_upload_avatar_id'
-        ) as HTMLDialogElement;
-        super.closeModalOutside(dialog);
-        dialog.showModal();
-      });
-    document
-      .querySelector('#profile_edit_button_id')
-      ?.addEventListener('click', (_) => {
-        navigateTo('/profile/edit/data');
-      });
-    document
-      .querySelector('#profile_change_password_button_id')
-      ?.addEventListener('click', (_) => {
-        navigateTo('/profile/edit/data');
-      });
+    const avatarModal = new Modal({
+      rootData: {
+        title: uploadAvatarModel.title,
+      },
+      attributes: {
+        id: uploadAvatarModel.id,
+      },
+      childrens: {
+        Form: new Form({
+          attributes: {
+            formClassName: "login__form modal__form",
+          },
+          events: {
+            submit: function (this: Form, e) {
+              e.preventDefault();
+              this.validateForm();
+            },
+          },
+          lists: {
+            Elements: [
+              new FormGroup({
+                childrens: {
+                  Input: new Input({
+                    attributes: uploadAvatarModel.formGroup.input,
+                    events: {
+                      blur: function (this: Input, e) {
+                        e.preventDefault();
+                        this.validate(Validator.validateMessage);
+                      },
+                      focus: function (this: Input) {
+                        this.hideTooltip();
+                      },
+                      keyup: function (this: Input, e) {
+                        if (isInputElement(e.target)) {
+                          this.setAtrributies({
+                            value: e.target.value ? "nonempty" : "",
+                          });
+                        }
+                      },
+                    },
+                    childrens: {
+                      Tooltip: new Tooltip({
+                        rootData: {
+                          text: "пустой путь к файлу",
+                        },
+                        attributes: {
+                          className: "tooltip__modal",
+                        },
+                      }),
+                    },
+                  }),
+                  Label: new Label({
+                    attributes: uploadAvatarModel.formGroup.label,
+                  }),
+                },
+              }),
+            ],
+          },
+          childrens: {
+            Button: new Button({
+              attributes: uploadAvatarModel.button,
+              events: {
+                submit: (e) => {
+                  e.preventDefault();
+                },
+              },
+            }),
+          },
+        }),
+      },
+    });
+    const page = new Pages.ProfilePage({
+      childrens: {
+        Button: new Button({
+          attributes: sendButton,
+          events: {
+            click: () => {
+              navigateTo("/chat");
+            },
+          },
+        }),
+        Avatar: new Avatar({
+          attributes: {
+            className: "profile__avatar-container",
+            id: "avatar_upload_image_id",
+          },
+          childrens: {
+            Image: new Image({
+              attributes: avatar,
+            }),
+          },
+          events: {
+            click: () => {
+              const dialog = document.querySelector("#modal_upload_avatar_id") as HTMLDialogElement;
+              super.closeModalOutside(dialog);
+              dialog.showModal();
+            },
+          },
+        }),
+        Form: form,
+        Navigation: NavigationComponent,
+        Modal: avatarModal,
+      },
+      lists: {
+        ActionButtons: actions,
+      },
+    });
+    return page;
   }
 }
 
 const profileFormData: Array<formGroupType> = [
   {
     input: {
-      className: 'input profile__input',
-      id: 'email_id',
-      name: 'email',
-      placeholder: '',
-      type: 'email',
-      value: 'test@yandex.ru',
-      disabled: true,
+      className: "input profile__input",
+      id: "email_id",
+      name: "email",
+      placeholder: "",
+      type: "email",
+      value: "test@yandex.ru",
+      disabled: "disabled",
     },
     label: {
-      className: 'label form__label profile__label',
-      forAttr: 'email_id',
-      text: 'Почта',
+      className: "label form__label profile__label",
+      forAttr: "email_id",
+      text: "Почта",
     },
   },
   {
     input: {
-      className: 'input profile__input',
-      id: 'login_id',
-      name: 'login',
-      placeholder: '',
-      type: 'text',
-      value: 'test_login',
-      disabled: true,
+      className: "input profile__input",
+      id: "login_id",
+      name: "login",
+      placeholder: "",
+      type: "text",
+      value: "test_login",
+      disabled: "disabled",
     },
     label: {
-      className: 'label form__label profile__label',
-      forAttr: 'login_id',
-      text: 'Логин',
+      className: "label form__label profile__label",
+      forAttr: "login_id",
+      text: "Логин",
     },
   },
 
   {
     input: {
-      className: 'input profile__input',
-      id: 'first_name_id',
-      name: 'first_name',
-      placeholder: '',
-      type: 'text',
-      value: 'Иван',
-      disabled: true,
+      className: "input profile__input",
+      id: "first_name_id",
+      name: "first_name",
+      placeholder: "",
+      type: "text",
+      value: "Иван",
+      disabled: "disabled",
     },
     label: {
-      className: 'label form__label profile__label',
-      forAttr: 'first_name_id',
-      text: 'Имя',
+      className: "label form__label profile__label",
+      forAttr: "first_name_id",
+      text: "Имя",
     },
   },
   {
     input: {
-      className: 'input profile__input',
-      id: 'last_name_id',
-      name: 'second_name',
-      placeholder: '',
-      type: 'text',
-      value: 'Иванов',
-      disabled: true,
+      className: "input profile__input",
+      id: "last_name_id",
+      name: "second_name",
+      placeholder: "",
+      type: "text",
+      value: "Иванов",
+      disabled: "disabled",
     },
     label: {
-      className: 'label form__label profile__label',
-      forAttr: 'last_name_id',
-      text: 'Фамилия',
+      className: "label form__label profile__label",
+      forAttr: "last_name_id",
+      text: "Фамилия",
     },
   },
   {
     input: {
-      className: 'input profile__input',
-      id: 'chat_name_id',
-      name: 'display_name',
-      placeholder: '',
-      type: 'text',
-      value: 'Иванов',
-      disabled: true,
+      className: "input profile__input",
+      id: "chat_name_id",
+      name: "display_name",
+      placeholder: "",
+      type: "text",
+      value: "Иванов",
+      disabled: "disabled",
     },
     label: {
-      className: 'label form__label profile__label',
-      forAttr: 'chat_name_id',
-      text: 'Имя в чате',
+      className: "label form__label profile__label",
+      forAttr: "chat_name_id",
+      text: "Имя в чате",
     },
   },
   {
     input: {
-      className: 'input profile__input',
-      id: 'phone_id',
-      name: 'phone',
-      placeholder: '',
-      type: 'tel',
-      value: '+7 (909) 967 30 30',
-      disabled: true,
+      className: "input profile__input",
+      id: "phone_id",
+      name: "phone",
+      placeholder: "",
+      type: "tel",
+      value: "+7 (909) 967 30 30",
+      disabled: "disabled",
     },
     label: {
-      className: 'label form__label profile__label',
-      forAttr: 'phone_id',
-      text: 'Телефон',
+      className: "label form__label profile__label",
+      forAttr: "phone_id",
+      text: "Телефон",
     },
   },
   {
     input: {
-      className: 'input profile__input',
-      id: 'first_password_id',
-      name: 'password',
-      placeholder: '',
-      type: 'password',
-      value: '12345',
-      disabled: true,
+      className: "input profile__input",
+      id: "first_password_id",
+      name: "password",
+      placeholder: "",
+      type: "password",
+      value: "12345",
+      disabled: "disabled",
     },
     label: {
-      className: 'label form__label profile__label',
-      forAttr: 'first_password_id',
-      text: 'Пароль',
+      className: "label form__label profile__label",
+      forAttr: "first_password_id",
+      text: "Пароль",
     },
   },
 ];
 const actionButtons: buttonType[] = [
   {
-    className: 'profile__action-button',
-    disabled: false,
-    id: 'profile_edit_button_id',
-    text: 'Изменить данные',
-    type: 'button',
+    className: "profile__action-button",
+    disabled: "",
+    id: "profile_edit_button_id",
+    text: "Изменить данные",
+    type: "button",
   },
   {
-    className: 'profile__action-button',
-    disabled: false,
-    id: 'profile_change_password_button_id',
-    text: 'Изменить пароль',
-    type: 'button',
+    className: "profile__action-button",
+    disabled: "",
+    id: "profile_change_password_button_id",
+    text: "Изменить пароль",
+    type: "button",
   },
   {
-    className: 'profile__action-button',
-    disabled: false,
-    id: 'profile_exit_button_id',
-    text: 'Выйти',
-    type: 'button',
+    className: "profile__action-button",
+    disabled: "",
+    id: "profile_exit_button_id",
+    text: "Выйти",
+    type: "button",
   },
 ];
 const avatar: imageType = {
-  alt: 'avatar',
-  className: 'profile_image',
-  src: '/avatar_default.png',
+  alt: "avatar",
+  className: "profile_image",
+  src: "/avatar_default.png",
 };
 
 const sendButton: buttonType = {
-  className: 'footer__send-button profile__button',
-  disabled: false,
-  id: 'profile_button_back_id',
-  text: '',
-  type: 'button',
+  className: "footer__send-button profile__button",
+  disabled: "",
+  id: "profile_button_back_id",
+  text: "",
+  type: "button",
 };
 const uploadAvatarModel: modalType = {
-  id: 'modal_upload_avatar_id',
+  id: "modal_upload_avatar_id",
   button: {
-    className: 'button form__login-button modal__button',
-    disabled: false,
-    id: 'upload_avatar_button_id',
-    text: 'Поменять',
-    type: 'button',
+    className: "button form__login-button modal__button",
+    disabled: "",
+    id: "upload_avatar_button_id",
+    text: "Поменять",
+    type: "submit",
   },
-  title: 'Загрузите файл',
+  title: "Загрузите файл",
   formGroup: {
     input: {
-      className: 'upload-avatar__input',
-      id: 'upload_avatar_input_id',
-      name: 'upload_avatar_login',
-      placeholder: '',
-      type: 'file',
-      value: '',
-      disabled: false,
+      className: "upload-avatar__input",
+      id: "upload_avatar_input_id",
+      name: "file",
+      placeholder: "",
+      type: "file",
+      value: "",
+      disabled: "",
     },
     label: {
-      className: 'upload-avatar__label',
-      forAttr: 'upload_avatar_input_id',
-      text: 'Выбрать файл  на компьютере',
+      className: "upload-avatar__label",
+      forAttr: "upload_avatar_input_id",
+      text: "Выбрать файл  на компьютере",
     },
   },
 };

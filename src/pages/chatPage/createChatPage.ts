@@ -1,18 +1,28 @@
-import './chat.pcss';
-const createChatPage = `<div class="app">
-{{> Navigation}}
+import "./chat.pcss";
+import Block from "../../framework/Block";
+import { PropsType } from "../../framework/types";
+export default class ChatPage extends Block {
+  constructor(props: PropsType) {
+    super(props);
+  }
+
+  render() {
+    return `<div class="app">
+        {{{Navigation}}}
       <div class="container">
         <aside class="aside">
-        {{> ChatListHeader data=chatListHeaderData }}
-        {{> ChatList chatListItem=chatListData }}
+        {{{ChatListHeader}}}
+        {{{ChatList}}}
         </aside>
         <main class="chat-area">
           <header class="chat-area__header">
-            {{> ChatAreaHeader chatAreaHeaderData=chatAreaHeaderData }}
+            {{{ChatAreaHeader}}}
           </header>
-          {{> ChatAreaBody data=messageData}}
-          {{> ChatFooter footerData=footerData}}
+          {{{ChatAreaBody}}}
+          {{{ChatFooter}}}
         </main>
       </div>
     </div>`;
-export { createChatPage as ChatPage };
+  }
+}
+export { ChatPage };

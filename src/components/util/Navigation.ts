@@ -1,12 +1,146 @@
-export default `<nav class="util_nav">
-<ul>
-   <li> {{> Link href="/login" text="логин" className=""}}</li>
-    <li>{{> Link href="/registration" text="регистрация" className=""}}</li>
-    <li>{{> Link href="/chat" text='чат' className=""}}</li>
-    <li>{{> Link href="/profile" text='профиль' className=""}}</li>
-    <li>{{> Link href="/profile/edit/data" text='изменение данных профиля' className=""}}</li>
-    <li>{{> Link href="/profile/edit/password" text='изменение пароля' className=""}}</li>
-    <li>{{> Link href="/notFound" text="404" className=""}}</li>
-    <li>{{> Link href="/serverError" text="500" className=""}}</li>
-     </ul>
-</nav>`;
+import Block from "../../framework/Block";
+import { PropsType } from "../../framework/types";
+import Link from "../link/Link";
+import ListElement from "../list/ListElement";
+export default class Navigation extends Block {
+  constructor(props: PropsType) {
+    super(props);
+  }
+
+  render() {
+    return `<nav class="util_nav">
+                    <ul>
+                     {{{List}}}
+                    </ul>
+                </nav>`;
+  }
+}
+
+const NavigationComponent = new Navigation({
+  lists: {
+    List: [
+      new ListElement({
+        attributes: {
+          className: "list",
+        },
+        childrens: {
+          content: new Link({
+            rootData: {
+              text: "логин",
+            },
+            attributes: {
+              href: "/login",
+            },
+          }),
+        },
+      }),
+      new ListElement({
+        attributes: {
+          className: "list",
+        },
+        childrens: {
+          content: new Link({
+            rootData: {
+              text: "регистрация",
+            },
+            attributes: {
+              href: "/registration",
+            },
+          }),
+        },
+      }),
+      new ListElement({
+        attributes: {
+          className: "list",
+        },
+        childrens: {
+          content: new Link({
+            rootData: {
+              text: "чат",
+            },
+            attributes: {
+              href: "/chat",
+            },
+          }),
+        },
+      }),
+      new ListElement({
+        attributes: {
+          className: "list",
+        },
+        childrens: {
+          content: new Link({
+            rootData: {
+              text: "профиль",
+            },
+            attributes: {
+              href: "/profile",
+            },
+          }),
+        },
+      }),
+      new ListElement({
+        attributes: {
+          className: "list",
+        },
+        childrens: {
+          content: new Link({
+            rootData: {
+              text: "изменение данных профиля",
+            },
+            attributes: {
+              href: "/profile/edit/data",
+            },
+          }),
+        },
+      }),
+      new ListElement({
+        attributes: {
+          className: "list",
+        },
+        childrens: {
+          content: new Link({
+            rootData: {
+              text: "изменение пароля",
+            },
+            attributes: {
+              href: "/profile/edit/password",
+            },
+          }),
+        },
+      }),
+      new ListElement({
+        attributes: {
+          className: "list",
+        },
+        childrens: {
+          content: new Link({
+            rootData: {
+              text: "404",
+            },
+            attributes: {
+              href: "/notFound",
+            },
+          }),
+        },
+      }),
+      new ListElement({
+        attributes: {
+          className: "list",
+        },
+        childrens: {
+          content: new Link({
+            rootData: {
+              text: "500",
+            },
+            attributes: {
+              href: "/serverError",
+            },
+          }),
+        },
+      }),
+    ],
+  },
+});
+
+export { NavigationComponent };

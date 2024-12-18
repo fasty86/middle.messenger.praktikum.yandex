@@ -1,16 +1,16 @@
 .chat-list {
   max-height: 600px;
 }
+
 .chat-list__container {
-  margin-top: 14px;
   display: flex;
-  flex-direction: column;
-  padding: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
-  height: 100%;
   flex-flow: column;
+  flex-direction: column;
   flex-grow: 1;
-  scrollbar-width: thin;
+  height: 100%;
+  margin-top: 14px;
+  overflow: hidden auto;
+  padding: 0;
   scrollbar-color: var(--active-elem-color) var(--background-color);
+  scrollbar-width: thin;
 }

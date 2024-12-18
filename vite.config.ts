@@ -1,5 +1,5 @@
-import { resolve } from 'path';
-import { defineConfig } from 'vite';
+import { resolve } from "path";
+import { defineConfig } from "vite";
 export default defineConfig({
   server: {
     port: 3000,
@@ -7,11 +7,11 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'index.html'),
+        main: resolve(__dirname, "index.html"),
       },
     },
   },
   css: {
-    postcss: './postcss.config.ts',
+    postcss: "./postcss.config.ts",
   },
 });

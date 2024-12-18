@@ -3,44 +3,44 @@ export type labelType = {
   className: string;
   text: string;
 };
-
+export type inputTypes =
+  | "button"
+  | "checkbox"
+  | "color"
+  | "date"
+  | "datetime-local"
+  | "email"
+  | "file"
+  | "hidden"
+  | "image"
+  | "month"
+  | "number"
+  | "password"
+  | "radio"
+  | "range"
+  | "reset"
+  | "search"
+  | "submit"
+  | "tel"
+  | "text"
+  | "time"
+  | "url"
+  | "week";
 export type inputType = {
   id: string;
   name: string;
-  type:
-    | 'button'
-    | 'checkbox'
-    | 'color'
-    | 'date'
-    | 'datetime-local'
-    | 'email'
-    | 'file'
-    | 'hidden'
-    | 'image'
-    | 'month'
-    | 'number'
-    | 'password'
-    | 'radio'
-    | 'range'
-    | 'reset'
-    | 'search'
-    | 'submit'
-    | 'tel'
-    | 'text'
-    | 'time'
-    | 'url'
-    | 'week';
+  type: inputTypes;
   placeholder: string;
   value: string;
   className: string;
-  disabled?: boolean;
+  disabled?: string;
 };
 
 export type buttonType = {
   id: string;
-  type: 'button' | 'submit' | 'reset';
+  type: "button" | "submit" | "reset";
   text: string;
-  disabled: boolean;
+  disabled: string;
   className: string;
 };
 export type linkType = {
@@ -81,7 +81,7 @@ export type menuItemType = {
 
 export type menuType = {
   optionGroupclassName: string;
-  modal?: modalType[];
+  modal: modalType[];
   optionButton: buttonType;
   items: menuItemType[];
 };
@@ -92,7 +92,7 @@ export type headerInfoType = {
 };
 
 export type messageType = {
-  contentType: 'text' | 'image';
+  contentType: "text" | "image";
   content: imageType | string;
   date: string;
 };
@@ -100,7 +100,7 @@ export type messageType = {
 export type footerType = {
   input: inputType;
   button: buttonType;
-  menu?: menuType;
+  menu: menuType;
 };
 
 export type modalType = {

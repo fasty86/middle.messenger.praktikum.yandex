@@ -1,55 +1,57 @@
-import LoginView from '../views/loginView';
-import RegistrationView from '../views/registarationView';
-import ChatView from '../views/chatView';
-import ProfileView from '../views/profileView';
-import NotFoundView from '../views/notFoundView';
-import ServerErrorview from '../views/serverErrorView';
-import ProfileEditData from '../views/profileEditDataView';
-import ProfileEditPassword from '../views/profileEditPasswordView';
+import LoginView from "../views/loginView";
+import RegistrationView from "../views/registarationView";
+import ChatView from "../views/chatView";
+import ProfileView from "../views/profileView";
+import NotFoundView from "../views/notFoundView";
+import ServerErrorView from "../views/serverErrorView";
+import ProfileEditData from "../views/profileEditDataView";
+import ProfileEditPassword from "../views/profileEditPasswordView";
+// import NotFoundViewBlock from "../views/notFoundView";
+// import ServerErrorViewBlock from "../views/serverErrorViewBlock";
 type route = { path: string; view: () => void };
 
 const navigateTo = (url: string) => {
-  history.pushState(null, '', url);
+  history.pushState(null, "", url);
   router();
 };
 const router = async () => {
-  const root = document.getElementById('app')!;
+  const root = document.getElementById("app")!;
   const routes: Array<route> = [
     {
-      path: '/',
+      path: "/",
       view: () => new LoginView(root).render(),
     },
     {
-      path: '/login',
+      path: "/login",
       view: () => new LoginView(root).render(),
     },
     {
-      path: '/registration',
+      path: "/registration",
       view: () => new RegistrationView(root).render(),
     },
     {
-      path: '/chat',
+      path: "/chat",
       view: () => new ChatView(root).render(),
     },
     {
-      path: '/profile',
+      path: "/profile",
       view: () => new ProfileView(root).render(),
     },
     {
-      path: '/profile/edit/data',
+      path: "/profile/edit/data",
       view: () => new ProfileEditData(root).render(),
     },
     {
-      path: '/profile/edit/password',
+      path: "/profile/edit/password",
       view: () => new ProfileEditPassword(root).render(),
     },
     {
-      path: '/notFound',
+      path: "/notFound",
       view: () => new NotFoundView(root).render(),
     },
     {
-      path: '/serverError',
-      view: () => new ServerErrorview(root).render(),
+      path: "/serverError",
+      view: () => new ServerErrorView(root).render(),
     },
   ];
   const matchedRoutes = routes.map((route) => {
