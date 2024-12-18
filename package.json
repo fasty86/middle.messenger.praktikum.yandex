@@ -12,7 +12,7 @@
     "start": "vite build && tsx server.ts",
     "preview": "vite preview",
     "lint": "eslint .",
-    "lint-fix": "eslint . --fix",
+    "lint:fix": "eslint . --fix",
     "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\"",
     "lint:style": "stylelint \"**/*.pcss\"",
     "lint:style:fix": "stylelint \"**/*.pcss\" --fix"
