@@ -1,11 +1,10 @@
 import "./chatAreaHeader.pcss";
 import Block from "../../framework/Block";
 import { PropsType } from "../../framework/types";
-export default class ChatAreaHeader extends Block {
-  constructor(props: PropsType) {
-    super(props);
-  }
-
+import Menu from "../menu/Menu";
+import Modal from "../modal/Modal";
+import Image from "../image/Image";
+export default class ChatAreaHeader extends Block<ChatAreaHeaderPropsType> {
   render() {
     return `<header class="chat-area__header">
             <nav class="chat-area_navigation">
@@ -20,3 +19,14 @@ export default class ChatAreaHeader extends Block {
 `;
   }
 }
+
+type ChatAreaHeaderPropsType = PropsType & {
+  childrens: {
+    Image: Image;
+    Menu: Menu;
+  };
+  lists: {
+    ModalList: Modal[];
+  };
+  rootData: { userData: string };
+};

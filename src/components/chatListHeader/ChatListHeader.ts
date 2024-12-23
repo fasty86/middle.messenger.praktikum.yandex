@@ -1,11 +1,9 @@
 import "./chatListHeader.pcss";
 import Block from "../../framework/Block";
 import { PropsType } from "../../framework/types";
-export default class ChatListHeader extends Block {
-  constructor(props: PropsType) {
-    super(props);
-  }
-
+import Link from "../link/Link";
+import Search from "../search/Search";
+export default class ChatListHeader extends Block<ChatListHeaderPropsType> {
   render() {
     return `<header class="header">
             <nav class="header__nav">
@@ -19,3 +17,10 @@ export default class ChatListHeader extends Block {
 `;
   }
 }
+
+type ChatListHeaderPropsType = PropsType & {
+  childrens: {
+    Link: Link;
+    Search: Search;
+  };
+};

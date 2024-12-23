@@ -1,10 +1,7 @@
 import "./tooltip.pcss";
 import Block from "../../framework/Block";
 import { PropsType } from "../../framework/types";
-export default class Tooltip extends Block<toolTipType> {
-  // constructor(props: PropsType) {
-  //   super(props);
-  // }
+export default class Tooltip extends Block<ToolTipType> {
   onShow = (sourceEl: Block) => {
     this.getContent().classList.add(`tooltip-active`);
     sourceEl.getContent().after(this.getContent());
@@ -17,7 +14,7 @@ export default class Tooltip extends Block<toolTipType> {
   }
 }
 
-type toolTipType = PropsType & {
+type ToolTipType = PropsType & {
   rootData: {
     text: string;
   };

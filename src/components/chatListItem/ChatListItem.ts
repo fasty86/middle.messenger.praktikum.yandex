@@ -1,11 +1,8 @@
 import "./chatListItem.pcss";
 import Block from "../../framework/Block";
 import { PropsType } from "../../framework/types";
-export default class ChatListItem extends Block {
-  constructor(props: PropsType) {
-    super(props);
-  }
-
+import Image from "../image/Image";
+export default class ChatListItem extends Block<ChatListItemPropsType> {
   render() {
     return `<li class="chat-list__item">
               {{{Image}}}
@@ -21,3 +18,15 @@ export default class ChatListItem extends Block {
                 </div>`;
   }
 }
+
+type ChatListItemPropsType = PropsType & {
+  rootData: {
+    username: string;
+    message: string;
+    time: string;
+    unreadMessages: number;
+  };
+  childrens: {
+    Image: Image;
+  };
+};
