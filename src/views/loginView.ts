@@ -11,7 +11,7 @@ import { NavigationComponent } from "../components/util/Navigation.ts";
 import { isInputElement } from "../types/typeguards.ts";
 import { Validator } from "../utils/Validator.ts";
 import Tooltip from "../components/tooltip/Tooltip.ts";
-import { router } from "../router/router2.ts";
+import { router } from "../router/router.ts";
 export default class LoginView extends AbstractView {
   constructor(protected root: HTMLElement) {
     super(root);
@@ -115,7 +115,7 @@ export default class LoginView extends AbstractView {
           events: {
             click: function (this: Link, e: Event) {
               e.preventDefault();
-              // router.go("/sign-up");
+              router.go("/sign-up");
             },
           },
         }),

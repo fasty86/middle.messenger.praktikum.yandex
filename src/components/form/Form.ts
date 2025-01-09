@@ -47,7 +47,7 @@ type FormPropsType = PropsType & {
   };
   childrens: {
     Link?: Link;
-    Button: Button;
+    Button?: Button;
   };
   lists: {
     Elements: FormGroup[];

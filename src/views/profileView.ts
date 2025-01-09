@@ -1,7 +1,7 @@
 import AbstractView from "./abstractView.ts";
 import * as Pages from "../pages/index.ts";
 import { formGroupType, buttonType, imageType, modalType } from "../types/components.ts";
-import { navigateTo } from "../router/router.ts";
+import { navigateTo } from "../router/router_OLD.ts";
 import FormGroup from "../components/formGroup/FormGroup.ts";
 import Button from "../components/button/Button.ts";
 import Input from "../components/input/Input.ts";
@@ -14,6 +14,7 @@ import Avatar from "../components/avatar/Avatar.ts";
 import Tooltip from "../components/tooltip/Tooltip.ts";
 import { isInputElement } from "../types/typeguards.ts";
 import { Validator } from "../utils/Validator.ts";
+import { router } from "../router/router.ts";
 export default class ProfileView extends AbstractView {
   constructor(protected root: HTMLElement) {
     super(root);
@@ -106,6 +107,7 @@ export default class ProfileView extends AbstractView {
       lists: {
         Elements: elements,
       },
+      childrens: {},
     });
     const avatarModal = new Modal({
       rootData: {
@@ -184,7 +186,7 @@ export default class ProfileView extends AbstractView {
           attributes: sendButton,
           events: {
             click: () => {
-              navigateTo("/chat");
+              router.go("/messenger");
             },
           },
         }),

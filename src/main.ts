@@ -1,10 +1,12 @@
 import "./styles/main.pcss";
 import { isAnchorElement } from "./types/typeguards.ts";
-import { router, navigateTo } from "./router/router.ts";
-import { router as newRouter } from "./router/router2.ts";
+// import { router, navigateTo } from "./router/router_OLD.ts";
+import { router as newRouter } from "./router/router.ts";
 
-window.addEventListener("popstate", router);
+// window.addEventListener("popstate", router);
 document.addEventListener("DOMContentLoaded", () => {
+  console.log("content loaded");
+
   document.body.addEventListener("click", (e) => {
     if (isAnchorElement(e.target)) {
       if (e.target.matches("[data-link]")) {
@@ -15,5 +17,5 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
   // router();
-  newRouter.go("/");
+  newRouter.go(window.location.pathname);
 });

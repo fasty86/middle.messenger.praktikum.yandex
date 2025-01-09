@@ -18,7 +18,7 @@ export default class RegistrationView extends AbstractView {
     this.setTitle("Registration");
   }
   async render() {
-    this.root.replaceChildren(this.buildComponents().getContent());
+    this.root.replaceChildren(this.block.getContent());
   }
   protected buildComponents() {
     const elements: FormGroup[] = [

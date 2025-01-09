@@ -24,7 +24,7 @@ export class Route {
 
   leave() {
     if (this._block) {
-      this._block.block.hide();
+      // this._block.block.hide();
     }
   }
 
@@ -38,18 +38,17 @@ export class Route {
     return null;
   }
   render() {
+    const root = this.getRootElement(this._props.rootQuery);
+    if (!root) return;
     if (!this._block) {
-      const root = this.getRootElement(this._props.rootQuery);
-      if (!root) return;
-      else {
-        this._block = new this._blockClass(root);
-        // render(this._props.rootQuery, this._block);
-        this._block.render();
-      }
+      this._block = new this._blockClass(root);
+      // render(this._props.rootQuery, this._block);
+      this._block.render();
 
       return;
     }
-
-    this._block.block.show();
+    // root.replaceChildren(this._block.block.getContent());
+    this._block.render();
+    // this._block.block.show();
   }
 }

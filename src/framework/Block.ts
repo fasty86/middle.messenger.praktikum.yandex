@@ -164,6 +164,9 @@ export default class Block<T extends PropsType = PropsType> {
     if (isHTMLElement(this._element)) this._element.style.display = "none";
   }
 
+  destroy() {
+    if (isHTMLElement(this._element)) this._element = null;
+  }
   setAtrributies(attributes: AttributeType) {
     this.attributes = { ...this.attributes, ...attributes };
     Object.entries(attributes).forEach(([key, value]) => {
