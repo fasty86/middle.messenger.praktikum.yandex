@@ -1,6 +1,10 @@
-export default class {
+import Block from "../framework/Block";
+
+export default abstract class {
+  block: Block;
   constructor(protected root: HTMLElement) {
     this.root = root;
+    this.block = this.buildComponents();
   }
 
   protected setTitle(title: string) {
@@ -20,6 +24,6 @@ export default class {
       }
     });
   }
-  protected buildComponents() {}
+  protected abstract buildComponents(): Block;
   protected addEvtListeners() {}
 }

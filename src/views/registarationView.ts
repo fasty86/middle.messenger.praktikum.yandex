@@ -47,7 +47,7 @@ export default class RegistrationView extends AbstractView {
                 rootData: {
                   text: "латиница, цифры ,- ,_ обязательно должна быть «собака»",
                 },
-                attributes: {},
+                attributes: { className: "" },
               }),
             },
           }),
@@ -81,7 +81,7 @@ export default class RegistrationView extends AbstractView {
                 rootData: {
                   text: "от 3 до 20 символов, латиница, может содержать цифры",
                 },
-                attributes: {},
+                attributes: { className: "" },
               }),
             },
           }),
@@ -115,7 +115,7 @@ export default class RegistrationView extends AbstractView {
                 rootData: {
                   text: "латиница или кириллица, первая буква должна быть заглавной",
                 },
-                attributes: {},
+                attributes: { className: "" },
               }),
             },
           }),
@@ -149,7 +149,7 @@ export default class RegistrationView extends AbstractView {
                 rootData: {
                   text: "латиница или кириллица, первая буква должна быть заглавной",
                 },
-                attributes: {},
+                attributes: { className: "" },
               }),
             },
           }),
@@ -183,7 +183,7 @@ export default class RegistrationView extends AbstractView {
                 rootData: {
                   text: "от 10 до 15 символов, состоит из цифр, может начинается с плюса",
                 },
-                attributes: {},
+                attributes: { className: "" },
               }),
             },
           }),
@@ -217,7 +217,7 @@ export default class RegistrationView extends AbstractView {
                 rootData: {
                   text: "от 8 до 40 символов,  одна заглавная буква и цифра",
                 },
-                attributes: {},
+                attributes: { className: "" },
               }),
             },
           }),
@@ -251,7 +251,7 @@ export default class RegistrationView extends AbstractView {
                 rootData: {
                   text: "от 8 до 40 символов,  одна заглавная буква и цифра",
                 },
-                attributes: {},
+                attributes: { className: "" },
               }),
             },
           }),

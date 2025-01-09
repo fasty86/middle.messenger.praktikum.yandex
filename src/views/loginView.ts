@@ -11,13 +11,14 @@ import { NavigationComponent } from "../components/util/Navigation.ts";
 import { isInputElement } from "../types/typeguards.ts";
 import { Validator } from "../utils/Validator.ts";
 import Tooltip from "../components/tooltip/Tooltip.ts";
+import { router } from "../router/router2.ts";
 export default class LoginView extends AbstractView {
   constructor(protected root: HTMLElement) {
     super(root);
     this.setTitle("Login");
   }
   async render() {
-    this.root.replaceChildren(this.buildComponents().getContent());
+    this.root.replaceChildren(this.block.getContent());
   }
 
   protected buildComponents() {
@@ -47,7 +48,7 @@ export default class LoginView extends AbstractView {
                 rootData: {
                   text: "от 3 до 20 символов, латиница/кириллица,",
                 },
-                attributes: {},
+                attributes: { className: "" },
               }),
             },
           }),
@@ -79,7 +80,9 @@ export default class LoginView extends AbstractView {
                 rootData: {
                   text: "от 8 до 40 символов, хотя бы одна заглавная буква и цифра",
                 },
-                attributes: {},
+                attributes: {
+                  className: "",
+                },
               }),
             },
           }),
@@ -109,6 +112,12 @@ export default class LoginView extends AbstractView {
         }),
         Link: new Link({
           attributes: linkData,
+          events: {
+            click: function (this: Link, e: Event) {
+              e.preventDefault();
+              // router.go("/sign-up");
+            },
+          },
         }),
       },
       lists: {
@@ -167,6 +176,6 @@ const buttonData: buttonType = {
 };
 const linkData: linkType = {
   className: "link form__link",
-  href: "/registration",
+  href: "/sign-up",
   text: "Нет аккаунта?",
 };
