@@ -80,6 +80,8 @@ export default class Block<T extends PropsType = PropsType> {
   private _componentDidUpdate() {
     const response = this.componentDidUpdate();
     if (response) {
+      console.log("call rerender");
+
       this.eventBus().emit(BusEvents.FLOW_RENDER);
     }
   }
@@ -88,12 +90,39 @@ export default class Block<T extends PropsType = PropsType> {
     return true;
   }
 
-  setProps = (nextProps: RootDataType) => {
+  setProps = (nextProps: PropsType) => {
+    console.log("props changed", nextProps);
+
     if (!nextProps) {
       return;
     }
+    const { rootData = {}, attributes = {}, childrens = {}, lists = {}, events = {} } = nextProps;
+    Object.assign(this.rootData, rootData);
+    Object.assign(this.attributes, attributes);
+    Object.assign(this.childrens, childrens);
+    Object.assign(this.lists, lists);
+    this.events = this.bindEvents(events);
+  };
+  setChildrens = (nextProps: PropsType) => {
+    console.log("children props changed", nextProps);
+    if (!nextProps) {
+      return;
+    }
+    const childrens = nextProps.childrens;
+    Object.assign(this.childrens, childrens);
+  };
+  setLists = (nextProps: PropsType) => {
+    console.log("list props changed", nextProps);
+    if (!nextProps) {
+      return;
+    }
+    Object.assign(this.lists, nextProps.lists);
+    console.log(this.lists);
 
-    Object.assign(this.rootData, nextProps.rootData);
+    // this.lists.ActionButtons = nextProps.lists.ActionButtons;
+    // const lists = nextProps.lists as ListType;
+    // this.lists = this._makePropsProxy(lists);
+    // this._render();
   };
   setHtmlAttribute(attrs: { [key: string]: string }) {
     this.attributes = { ...this.attributes, ...attrs };
@@ -116,6 +145,7 @@ export default class Block<T extends PropsType = PropsType> {
     if (this._element && newElement) {
       this.addEventListeners(this.events, newElement);
       this._element.replaceWith(newElement);
+      this._element = newElement;
     } else {
       this.removeEventListeners();
       this._element = newElement;
@@ -141,6 +171,8 @@ export default class Block<T extends PropsType = PropsType> {
         else return value;
       },
       set(target, prop: Exclude<keyof T, number>, value) {
+        console.log("props chnaged");
+
         const oldTarget = { ...target };
         target[prop] = value;
         that.eventBus().emit(BusEvents.FLOW_CDU, oldTarget, target);

@@ -15,6 +15,9 @@ import Tooltip from "../components/tooltip/Tooltip.ts";
 import { isInputElement } from "../types/typeguards.ts";
 import { Validator } from "../utils/Validator.ts";
 import { router } from "../router/router.ts";
+import { form as dataForm } from "./profileEditDataView.ts";
+import { form as passwordForm } from "./profileEditPasswordView.ts";
+import { closeModalOutside } from "../utils/modals.ts";
 export default class ProfileView extends AbstractView {
   constructor(protected root: HTMLElement) {
     super(root);
@@ -30,7 +33,8 @@ export default class ProfileView extends AbstractView {
         attributes: actionButtons[0],
         events: {
           click: () => {
-            navigateTo("/profile/edit/data");
+            // navigateTo("/profile/edit/data");
+            console.log("btn click");
           },
         },
       }),
@@ -201,9 +205,9 @@ export default class ProfileView extends AbstractView {
             }),
           },
           events: {
-            click: () => {
+            click: function (this: Avatar) {
               const dialog = document.querySelector("#modal_upload_avatar_id") as HTMLDialogElement;
-              super.closeModalOutside(dialog);
+              closeModalOutside(dialog);
               dialog.showModal();
             },
           },
@@ -214,6 +218,27 @@ export default class ProfileView extends AbstractView {
       },
       lists: {
         ActionButtons: actions,
+      },
+      events: {
+        click: function (this: Pages.ProfilePage, e: Event) {
+          if (e.target && "id" in e.target) {
+            if (e.target.id === "profile_edit_button_id") {
+              this.setLists({
+                lists: { ActionButtons: [] },
+              });
+              this.setChildrens({
+                childrens: { Form: dataForm },
+              });
+            } else if (e.target.id === "profile_change_password_button_id") {
+              this.setLists({
+                lists: { ActionButtons: [] },
+              });
+              this.setChildrens({
+                childrens: { Form: passwordForm },
+              });
+            }
+          }
+        },
       },
     });
     return page;

@@ -14,6 +14,7 @@ import Avatar from "../components/avatar/Avatar.ts";
 import Tooltip from "../components/tooltip/Tooltip.ts";
 import { isInputElement } from "../types/typeguards.ts";
 import { Validator } from "../utils/Validator.ts";
+import { closeModalOutside } from "../utils/modals.ts";
 export default class ProfileEditPassword extends AbstractView {
   constructor(protected root: HTMLElement) {
     super(root);
@@ -358,3 +359,234 @@ const uploadAvatarModel: modalType = {
     },
   },
 };
+const actions: Button[] = [
+  new Button({
+    attributes: actionButtons[0],
+    events: {
+      click: () => {},
+      submit: (e) => {
+        e.preventDefault();
+      },
+    },
+  }),
+];
+const elements: FormGroup[] = [
+  new FormGroup({
+    childrens: {
+      Input: new Input({
+        attributes: profileFormData[0].input,
+        events: {
+          blur: function (this: Input, e) {
+            e.preventDefault();
+            this.validate(Validator.validatePassword);
+          },
+          focus: function (this: Input) {
+            this.hideTooltip();
+          },
+          keyup: function (this: Input, e) {
+            if (isInputElement(e.target)) {
+              this.setAtrributies({
+                value: e.target.value ? "nonempty" : "",
+              });
+            }
+          },
+        },
+        childrens: {
+          Tooltip: new Tooltip({
+            rootData: {
+              text: "от 8 до 40 символов,  одна заглавная буква и цифра",
+            },
+            attributes: { className: "tooltip__profile" },
+          }),
+        },
+      }),
+      Label: new Label({ attributes: profileFormData[0].label }),
+    },
+  }),
+  new FormGroup({
+    childrens: {
+      Input: new Input({
+        attributes: profileFormData[1].input,
+        events: {
+          blur: function (this: Input, e) {
+            e.preventDefault();
+            this.validate(Validator.validatePassword);
+          },
+          focus: function (this: Input) {
+            this.hideTooltip();
+          },
+          keyup: function (this: Input, e) {
+            if (isInputElement(e.target)) {
+              this.setAtrributies({
+                value: e.target.value ? "nonempty" : "",
+              });
+            }
+          },
+        },
+        childrens: {
+          Tooltip: new Tooltip({
+            rootData: {
+              text: "от 8 до 40 символов,  одна заглавная буква и цифра",
+            },
+            attributes: { className: "tooltip__profile" },
+          }),
+        },
+      }),
+      Label: new Label({ attributes: profileFormData[1].label }),
+    },
+  }),
+  new FormGroup({
+    childrens: {
+      Input: new Input({
+        attributes: profileFormData[2].input,
+        events: {
+          blur: function (this: Input, e) {
+            e.preventDefault();
+            this.validate(Validator.validatePassword);
+          },
+          focus: function (this: Input) {
+            this.hideTooltip();
+          },
+          keyup: function (this: Input, e) {
+            if (isInputElement(e.target)) {
+              this.setAtrributies({
+                value: e.target.value ? "nonempty" : "",
+              });
+            }
+          },
+        },
+        childrens: {
+          Tooltip: new Tooltip({
+            rootData: {
+              text: "от 8 до 40 символов,  одна заглавная буква и цифра",
+            },
+            attributes: { className: "tooltip__profile" },
+          }),
+        },
+      }),
+      Label: new Label({ attributes: profileFormData[2].label }),
+    },
+  }),
+];
+const avatarModal = new Modal({
+  rootData: {
+    title: uploadAvatarModel.title,
+  },
+  attributes: {
+    id: uploadAvatarModel.id,
+  },
+  childrens: {
+    Form: new Form({
+      attributes: {
+        formClassName: "login__form modal__form",
+      },
+      events: {
+        submit: function (this: Form, e) {
+          e.preventDefault();
+          this.validateForm();
+        },
+      },
+      lists: {
+        Elements: [
+          new FormGroup({
+            childrens: {
+              Input: new Input({
+                attributes: uploadAvatarModel.formGroup.input,
+                events: {
+                  blur: function (this: Input, e) {
+                    e.preventDefault();
+                    this.validate(Validator.validateMessage);
+                  },
+                  focus: function (this: Input) {
+                    this.hideTooltip();
+                  },
+                  keyup: function (this: Input, e) {
+                    if (isInputElement(e.target)) {
+                      this.setAtrributies({
+                        value: e.target.value ? "nonempty" : "",
+                      });
+                    }
+                  },
+                },
+                childrens: {
+                  Tooltip: new Tooltip({
+                    rootData: {
+                      text: "пустой путь к файлу",
+                    },
+                    attributes: {
+                      className: "tooltip__modal",
+                    },
+                  }),
+                },
+              }),
+              Label: new Label({
+                attributes: uploadAvatarModel.formGroup.label,
+              }),
+            },
+          }),
+        ],
+      },
+      childrens: {
+        Button: new Button({
+          attributes: uploadAvatarModel.button,
+          events: {
+            submit: (e) => {
+              e.preventDefault();
+            },
+          },
+        }),
+      },
+    }),
+  },
+});
+export const form = new Form({
+  events: {
+    submit: function (this: Form, e: Event) {
+      e.preventDefault();
+      this.validateForm();
+    },
+  },
+  attributes: {
+    formClassName: "form profile_form",
+  },
+  lists: {
+    Elements: elements,
+  },
+  childrens: {
+    Button: actions[0],
+  },
+});
+export const page = new Pages.ProfilePage({
+  childrens: {
+    Button: new Button({
+      attributes: sendButton,
+      events: {
+        click: () => {
+          navigateTo("/chat");
+        },
+      },
+    }),
+    Avatar: new Avatar({
+      attributes: {
+        className: "profile__avatar-container",
+        id: "avatar_upload_image_id",
+      },
+      childrens: {
+        Image: new Image({
+          attributes: avatar,
+        }),
+      },
+      events: {
+        click: () => {
+          console.log("imds");
+          const dialog = document.querySelector("#modal_upload_avatar_id") as HTMLDialogElement;
+          closeModalOutside(dialog);
+          dialog.showModal();
+        },
+      },
+    }),
+    Form: form,
+    Navigation: NavigationComponent,
+    Modal: avatarModal,
+  },
+});

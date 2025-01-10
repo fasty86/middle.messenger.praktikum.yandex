@@ -14,6 +14,7 @@ import Avatar from "../components/avatar/Avatar.ts";
 import Tooltip from "../components/tooltip/Tooltip.ts";
 import { isInputElement } from "../types/typeguards.ts";
 import { Validator } from "../utils/Validator.ts";
+import { closeModalOutside } from "../utils/modals.ts";
 export default class ProfileEditData extends AbstractView {
   constructor(protected root: HTMLElement) {
     super(root);
@@ -505,3 +506,333 @@ const uploadAvatarModel: modalType = {
     },
   },
 };
+
+const avatarModal = new Modal({
+  rootData: {
+    title: uploadAvatarModel.title,
+  },
+  attributes: {
+    id: uploadAvatarModel.id,
+  },
+  childrens: {
+    Form: new Form({
+      attributes: {
+        formClassName: "login__form modal__form",
+      },
+      events: {
+        submit: function (this: Form, e) {
+          e.preventDefault();
+          this.validateForm();
+        },
+      },
+      lists: {
+        Elements: [
+          new FormGroup({
+            childrens: {
+              Input: new Input({
+                attributes: uploadAvatarModel.formGroup.input,
+                events: {
+                  blur: function (this: Input, e) {
+                    e.preventDefault();
+                    this.validate(Validator.validateMessage);
+                  },
+                  focus: function (this: Input) {
+                    this.hideTooltip();
+                  },
+                  keyup: function (this: Input, e) {
+                    if (isInputElement(e.target)) {
+                      this.setAtrributies({
+                        value: e.target.value ? "nonempty" : "",
+                      });
+                    }
+                  },
+                },
+                childrens: {
+                  Tooltip: new Tooltip({
+                    rootData: {
+                      text: "пустой путь к файлу",
+                    },
+                    attributes: {
+                      className: "tooltip__modal",
+                    },
+                  }),
+                },
+              }),
+              Label: new Label({
+                attributes: uploadAvatarModel.formGroup.label,
+              }),
+            },
+          }),
+        ],
+      },
+      childrens: {
+        Button: new Button({
+          attributes: uploadAvatarModel.button,
+          events: {
+            submit: (e) => {
+              e.preventDefault();
+            },
+          },
+        }),
+      },
+    }),
+  },
+});
+const actions: Button[] = [
+  new Button({
+    attributes: actionButtons[0],
+    events: {
+      click: () => {},
+      submit: (e) => {
+        e.preventDefault();
+      },
+    },
+  }),
+];
+const elements: FormGroup[] = [
+  new FormGroup({
+    childrens: {
+      Input: new Input({
+        attributes: profileFormData[0].input,
+        events: {
+          blur: function (this: Input, e) {
+            e.preventDefault();
+            this.validate(Validator.validateEmail);
+          },
+          focus: function (this: Input) {
+            this.hideTooltip();
+          },
+          keyup: function (this: Input, e) {
+            if (isInputElement(e.target)) {
+              this.setAtrributies({
+                value: e.target.value ? "nonempty" : "",
+              });
+            }
+          },
+        },
+        childrens: {
+          Tooltip: new Tooltip({
+            rootData: {
+              text: "латиница, цифры ,- ,_ обязательно должна быть «собака»",
+            },
+            attributes: { className: "tooltip__profile" },
+          }),
+        },
+      }),
+      Label: new Label({ attributes: profileFormData[0].label }),
+    },
+  }),
+  new FormGroup({
+    childrens: {
+      Input: new Input({
+        attributes: profileFormData[1].input,
+        events: {
+          blur: function (this: Input, e) {
+            e.preventDefault();
+            this.validate(Validator.validateLogin);
+          },
+          focus: function (this: Input) {
+            this.hideTooltip();
+          },
+          keyup: function (this: Input, e) {
+            if (isInputElement(e.target)) {
+              this.setAtrributies({
+                value: e.target.value ? "nonempty" : "",
+              });
+            }
+          },
+        },
+        childrens: {
+          Tooltip: new Tooltip({
+            rootData: {
+              text: "от 3 до 20 символов, латиница, может содержать цифры",
+            },
+            attributes: { className: "tooltip__profile" },
+          }),
+        },
+      }),
+      Label: new Label({ attributes: profileFormData[1].label }),
+    },
+  }),
+  new FormGroup({
+    childrens: {
+      Input: new Input({
+        attributes: profileFormData[2].input,
+        events: {
+          blur: function (this: Input, e) {
+            e.preventDefault();
+            this.validate(Validator.validateUsername);
+          },
+          focus: function (this: Input) {
+            this.hideTooltip();
+          },
+          keyup: function (this: Input, e) {
+            if (isInputElement(e.target)) {
+              this.setAtrributies({
+                value: e.target.value ? "nonempty" : "",
+              });
+            }
+          },
+        },
+        childrens: {
+          Tooltip: new Tooltip({
+            rootData: {
+              text: "латиница или кириллица, первая буква должна быть заглавной",
+            },
+            attributes: { className: "tooltip__profile" },
+          }),
+        },
+      }),
+      Label: new Label({ attributes: profileFormData[2].label }),
+    },
+  }),
+  new FormGroup({
+    childrens: {
+      Input: new Input({
+        attributes: profileFormData[3].input,
+        events: {
+          blur: function (this: Input, e) {
+            e.preventDefault();
+            this.validate(Validator.validateUsername);
+          },
+          focus: function (this: Input) {
+            this.hideTooltip();
+          },
+          keyup: function (this: Input, e) {
+            if (isInputElement(e.target)) {
+              this.setAtrributies({
+                value: e.target.value ? "nonempty" : "",
+              });
+            }
+          },
+        },
+        childrens: {
+          Tooltip: new Tooltip({
+            rootData: {
+              text: "латиница или кириллица, первая буква должна быть заглавной",
+            },
+            attributes: { className: "tooltip__profile" },
+          }),
+        },
+      }),
+      Label: new Label({ attributes: profileFormData[3].label }),
+    },
+  }),
+  new FormGroup({
+    childrens: {
+      Input: new Input({
+        attributes: profileFormData[4].input,
+        events: {
+          blur: function (this: Input, e) {
+            e.preventDefault();
+            this.validate(Validator.validateUsername);
+          },
+          focus: function (this: Input) {
+            this.hideTooltip();
+          },
+          keyup: function (this: Input, e) {
+            if (isInputElement(e.target)) {
+              this.setAtrributies({
+                value: e.target.value ? "nonempty" : "",
+              });
+            }
+          },
+        },
+        childrens: {
+          Tooltip: new Tooltip({
+            rootData: {
+              text: "латиница или кириллица, первая буква должна быть заглавной",
+            },
+            attributes: { className: "tooltip__profile" },
+          }),
+        },
+      }),
+      Label: new Label({ attributes: profileFormData[4].label }),
+    },
+  }),
+  new FormGroup({
+    childrens: {
+      Input: new Input({
+        attributes: profileFormData[5].input,
+        events: {
+          blur: function (this: Input, e) {
+            e.preventDefault();
+            this.validate(Validator.validatePhoneNumber);
+          },
+          focus: function (this: Input) {
+            this.hideTooltip();
+          },
+          keyup: function (this: Input, e) {
+            if (isInputElement(e.target)) {
+              this.setAtrributies({
+                value: e.target.value ? "nonempty" : "",
+              });
+            }
+          },
+        },
+        childrens: {
+          Tooltip: new Tooltip({
+            rootData: {
+              text: "от 10 до 15 символов, состоит из цифр, может начинается с плюса",
+            },
+            attributes: {
+              className: "tooltip__profile",
+            },
+          }),
+        },
+      }),
+      Label: new Label({ attributes: profileFormData[5].label }),
+    },
+  }),
+];
+export const form = new Form({
+  events: {
+    submit: function (this: Form, e: Event) {
+      e.preventDefault();
+      this.validateForm();
+    },
+  },
+  attributes: {
+    formClassName: "form profile_form",
+  },
+  lists: {
+    Elements: elements,
+  },
+  childrens: {
+    Button: actions[0],
+  },
+});
+export const page = new Pages.ProfilePage({
+  childrens: {
+    Button: new Button({
+      attributes: sendButton,
+      events: {
+        click: () => {
+          navigateTo("/chat");
+        },
+      },
+    }),
+    Avatar: new Avatar({
+      attributes: {
+        className: "profile__avatar-container",
+        id: "avatar_upload_image_id",
+      },
+      childrens: {
+        Image: new Image({
+          attributes: avatar,
+        }),
+      },
+      events: {
+        click: () => {
+          const dialog = document.querySelector("#modal_upload_avatar_id") as HTMLDialogElement;
+          closeModalOutside(dialog);
+          dialog.showModal();
+        },
+      },
+    }),
+    Form: form,
+    Navigation: NavigationComponent,
+    Modal: avatarModal,
+  },
+  lists: {},
+});

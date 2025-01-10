@@ -9,7 +9,7 @@ enum METHODS {
 export type Options = {
   ignoreCache?: boolean;
   headers?: { [key: string]: string };
-  tries: number;
+  tries?: number;
   timeout?: number;
   method: METHODS;
   data?: DefaultObject;
@@ -22,6 +22,8 @@ export type RequestResult = {
   json: <T>() => T;
   headers: string;
 };
+type XHRMethod = (url: string, options: Options) => Promise<RequestResult>;
+type XHRMethodInstance = (url: string, options?: Partial<Options>) => Promise<RequestResult>;
 
 function parseXHRResult(xhr: XMLHttpRequest): RequestResult {
   return {
@@ -64,8 +66,40 @@ function queryStringify<T extends DefaultObject>(data: T): string {
     return `${acc}${String(current)}=${value !== null && value !== undefined ? encodeURIComponent(value.toString()) : ""}`;
   }, "");
 }
-type XHRMethod = (url: string, options: Options) => Promise<RequestResult>;
-class HTTPTransport {
+
+export class HTTPTransport {
+  baseUrl: string;
+  constructor(baseUrl: string) {
+    this.baseUrl = baseUrl;
+  }
+  get: XHRMethodInstance = (url, options) => {
+    if (!options || !options.method) {
+      options = { ...options, method: METHODS.GET };
+    }
+    const fullUrl = this.baseUrl + url;
+    return HTTPTransport.GET(fullUrl, options as Options);
+  };
+  post: XHRMethodInstance = (url, options) => {
+    if (!options || !options.method) {
+      options = { ...options, method: METHODS.POST };
+    }
+    const fullUrl = this.baseUrl + url;
+    return HTTPTransport.POST(fullUrl, options as Options);
+  };
+  put: XHRMethodInstance = (url, options) => {
+    if (!options || !options.method) {
+      options = { ...options, method: METHODS.PUT };
+    }
+    const fullUrl = this.baseUrl + url;
+    return HTTPTransport.PUT(fullUrl, options as Options);
+  };
+  delete: XHRMethodInstance = (url, options) => {
+    if (!options || !options.method) {
+      options = { ...options, method: METHODS.DELETE };
+    }
+    const fullUrl = this.baseUrl + url;
+    return HTTPTransport.DELETE(fullUrl, options as Options);
+  };
   static GET: XHRMethod = (url, options) => {
     return this.request(url, { ...options, method: METHODS.GET });
   };

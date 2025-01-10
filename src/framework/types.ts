@@ -7,10 +7,13 @@ export enum BusEvents {
   FLOW_RENDER = "flow:render",
   STATE_CHANGE = "state:change",
 }
+export enum StoreEvents {
+  Updated = "updated",
+}
 
 export type Cb = (...args: unknown[]) => void;
 export type Listener = {
-  [key in BusEvents]?: Array<(...args: unknown[]) => void>;
+  [key in BusEvents | StoreEvents]?: Array<(...args: unknown[]) => void>;
 };
 
 export type PropsType = {

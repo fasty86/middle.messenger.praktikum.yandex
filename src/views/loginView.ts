@@ -96,6 +96,14 @@ export default class LoginView extends AbstractView {
           e.preventDefault();
           this.validateForm();
         },
+
+        click: function (this: Form) {
+          this.setLists({
+            lists: {
+              Elements: [elements[0]],
+            },
+          });
+        },
       },
       attributes: {
         formClassName: "login__form",
