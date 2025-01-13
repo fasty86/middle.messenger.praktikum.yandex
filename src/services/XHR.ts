@@ -6,6 +6,9 @@ enum METHODS {
   PUT = "PUT",
   DELETE = "DELETE",
 }
+export type BadRequest = {
+  reason: string;
+};
 export type Options = {
   ignoreCache?: boolean;
   headers?: { [key: string]: string };
@@ -13,6 +16,7 @@ export type Options = {
   timeout?: number;
   method: METHODS;
   data?: DefaultObject;
+  credentials?: boolean;
 };
 export type RequestResult = {
   ok: boolean;
@@ -42,7 +46,7 @@ function errorResponse(xhr: XMLHttpRequest, message: string | null = null): Requ
     statusText: xhr.statusText,
     headers: xhr.getAllResponseHeaders(),
     data: message || xhr.statusText,
-    json: <T>() => JSON.parse(message || xhr.statusText) as T,
+    json: <T = BadRequest>() => JSON.parse(message || xhr.statusText) as T,
   };
 }
 export function fetchWithRetry(url: string, options: Options): Promise<RequestResult> {
@@ -117,7 +121,7 @@ export class HTTPTransport {
   };
 
   static request: XHRMethod = (url, options) => {
-    const { headers = {}, method, data, ignoreCache } = options;
+    const { headers = {}, method, data, ignoreCache, credentials } = options;
 
     return new Promise<RequestResult>(function (resolve, reject) {
       if (!method) {
@@ -133,6 +137,9 @@ export class HTTPTransport {
       Object.keys(headers).forEach((key) => {
         xhr.setRequestHeader(key, headers[key]);
       });
+      // подставлять куки если нужно
+      if (credentials) xhr.withCredentials = true;
+
       if (ignoreCache) {
         xhr.setRequestHeader("Cache-Control", "no-cache");
       }

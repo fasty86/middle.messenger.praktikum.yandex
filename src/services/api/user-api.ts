@@ -1,3 +1,4 @@
+import { UserAuthType } from "../../framework/store/types";
 import { HTTPTransport } from "../XHR";
 import { BaseAPI } from "./base-api";
 
@@ -18,11 +19,19 @@ export type userData = {
 //   password: "12345",
 //   phone: "1234567890",
 // };
-export class AuthAPI extends BaseAPI {
-  signup(userData: userData) {
-    // Здесь уже не нужно писать полный путь /api/v1/chats/
+export class UserAPI extends BaseAPI {
+  static async signup(userData: UserAuthType) {
     return chatAPIInstance.post("/signup", {
       data: userData,
+      headers: {
+        "Content-Type": "application/json",
+        accept: "application/json",
+      },
+    });
+  }
+  static async getUser() {
+    return chatAPIInstance.get("/user", {
+      credentials: true,
       headers: {
         "Content-Type": "application/json",
         accept: "application/json",
