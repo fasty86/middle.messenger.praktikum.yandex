@@ -1,6 +1,6 @@
 import { UserAPI } from "../../../services/api/user-api";
 import store from "../Store";
-import { UserAuthType } from "../types";
+import { UserAuthType, UserLoginType } from "../types";
 
 export class UserController {
   public static async getUser() {
@@ -8,8 +8,12 @@ export class UserController {
     const response = await UserAPI.getUser();
     console.log(response.json(), `status:${response.status}`);
   }
-  public static async createUser(userData: UserAuthType) {
+  public static async register(userData: UserAuthType) {
     const response = await UserAPI.signup(userData);
+    console.log(response.json(), `status:${response.status}`);
+  }
+  public static async login(userData: UserLoginType) {
+    const response = await UserAPI.signin(userData);
     console.log(response.json(), `status:${response.status}`);
   }
 }

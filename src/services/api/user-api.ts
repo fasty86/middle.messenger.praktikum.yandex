@@ -1,4 +1,4 @@
-import { UserAuthType } from "../../framework/store/types";
+import { UserAuthType, UserLoginType } from "../../framework/store/types";
 import { HTTPTransport } from "../XHR";
 import { BaseAPI } from "./base-api";
 
@@ -23,6 +23,24 @@ export class UserAPI extends BaseAPI {
   static async signup(userData: UserAuthType) {
     return chatAPIInstance.post("/signup", {
       data: userData,
+      headers: {
+        "Content-Type": "application/json",
+        accept: "application/json",
+      },
+    });
+  }
+  static async signin(userData: UserLoginType) {
+    return chatAPIInstance.post("/signin", {
+      data: userData,
+      headers: {
+        "Content-Type": "application/json",
+        accept: "application/json",
+      },
+    });
+  }
+  static async logout() {
+    return chatAPIInstance.post("/logout", {
+      credentials: true,
       headers: {
         "Content-Type": "application/json",
         accept: "application/json",

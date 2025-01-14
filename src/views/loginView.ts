@@ -7,11 +7,13 @@ import Input from "../components/input/Input.ts";
 import Label from "../components/label/Label.ts";
 import Form from "../components/form/Form.ts";
 import Link from "../components/link/Link.ts";
-import { NavigationComponent } from "../components/util/Navigation.ts";
+// import { NavigationComponent } from "../components/util/Navigation.ts";
 import { isInputElement } from "../types/typeguards.ts";
 import { Validator } from "../utils/Validator.ts";
 import Tooltip from "../components/tooltip/Tooltip.ts";
 import { router } from "../router/router.ts";
+import { UserController } from "../framework/store/controllers/userController.ts";
+import { UserLoginType } from "../framework/store/types.ts";
 export default class LoginView extends AbstractView {
   constructor(protected root: HTMLElement) {
     super(root);
@@ -94,15 +96,12 @@ export default class LoginView extends AbstractView {
       events: {
         submit: function (this: Form, e) {
           e.preventDefault();
-          this.validateForm();
-        },
-
-        click: function (this: Form) {
-          this.setLists({
-            lists: {
-              Elements: [elements[0]],
-            },
-          });
+          const isValid = this.validateForm();
+          if (isValid) {
+            const formData = new FormData(e.target as HTMLFormElement);
+            const payload = Object.fromEntries(formData.entries());
+            UserController.login(payload as UserLoginType);
+          }
         },
       },
       attributes: {
@@ -135,7 +134,7 @@ export default class LoginView extends AbstractView {
     const page = new Pages.LoginPage({
       childrens: {
         Form: form,
-        Navigation: NavigationComponent,
+        // Navigation: NavigationComponent,
       },
     });
     return page;

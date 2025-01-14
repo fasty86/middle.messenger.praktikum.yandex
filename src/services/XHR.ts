@@ -28,7 +28,14 @@ export type RequestResult = {
 };
 type XHRMethod = (url: string, options: Options) => Promise<RequestResult>;
 type XHRMethodInstance = (url: string, options?: Partial<Options>) => Promise<RequestResult>;
-
+function JsonString(str: string) {
+  try {
+    return JSON.parse(str);
+  } catch (e) {
+    console.log("в ответе не Json", e);
+    return str;
+  }
+}
 function parseXHRResult(xhr: XMLHttpRequest): RequestResult {
   return {
     ok: xhr.status >= 200 && xhr.status < 300,
@@ -36,7 +43,7 @@ function parseXHRResult(xhr: XMLHttpRequest): RequestResult {
     statusText: xhr.statusText,
     headers: xhr.getAllResponseHeaders(),
     data: xhr.responseText,
-    json: <T>() => JSON.parse(xhr.responseText) as T,
+    json: <T>() => JsonString(xhr.responseText) as T,
   };
 }
 function errorResponse(xhr: XMLHttpRequest, message: string | null = null): RequestResult {
