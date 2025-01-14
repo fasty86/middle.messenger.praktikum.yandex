@@ -23,7 +23,7 @@ import { DefaultObject, PropsType, StoreEvents } from "../framework/types";
 //   new (props: T): K;
 // }
 export function connect<T extends PropsType = PropsType>(mapStateToProps: (state: StateType) => DefaultObject) {
-  return function (Component: typeof Block) {
+  return function (Component: blockClassTypes) {
     return class extends Component {
       constructor(props: T) {
         super({ ...props, ...mapStateToProps(store.getState()) });
@@ -43,24 +43,6 @@ export const withUserFisrtName = connect<InputPropsType>((state) => ({
   first_name: state.user?.first_name ?? "Guest",
 }));
 
-export type blockClassTypes =
-  | Input
-  | Button
-  | ChatAreaBody
-  | ChatFooter
-  | ChatAreaHeader
-  | ChatList
-  | ChatListHeader
-  | ChatListItem
-  | Form
-  | FormGroup
-  | Input
-  | Label
-  | Link
-  | Menu
-  | Message
-  | Modal
-  | Search
-  | Tooltip;
+export type blockClassTypes = typeof Input | typeof Button;
 
 export type ConstructableBlock<T extends Block = Block, P extends PropsType = PropsType> = new (props: P) => T;
