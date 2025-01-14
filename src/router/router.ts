@@ -1,3 +1,4 @@
+import { UserController } from "../framework/store/controllers/userController";
 import { isWindow } from "../types/typeguards";
 import ChatView from "../views/chatView";
 import LoginView from "../views/loginView";
@@ -5,6 +6,7 @@ import ProfileView from "../views/profileView";
 import RegistrationView from "../views/registarationView";
 import { Route } from "./route";
 import { Constructable, viewClassTypes } from "./types";
+import store from "../framework/store/Store";
 
 export class Router {
   static __instance: Router | null = null;
@@ -18,6 +20,7 @@ export class Router {
     }
     this._rootQuery = rootQuery;
     Router.__instance = this;
+    // UserController.getUser();
   }
 
   use(pathname: string, block: Constructable<viewClassTypes>) {
@@ -34,8 +37,11 @@ export class Router {
 
       if (isWindow(event.currentTarget)) this._onRoute(event.currentTarget.location.pathname);
     }).bind(this);
-
-    this._onRoute(window.location.pathname);
+    // если пользователь уже успешно авторизован , напрявляем сразу на страницу чата
+    UserController.getUser().then(() => {
+      if (store.getState().user) this.go("/messenger");
+      else this._onRoute(window.location.pathname);
+    });
   }
 
   _onRoute(pathname: string) {

@@ -32,6 +32,7 @@ import Tooltip from "../components/tooltip/Tooltip.ts";
 import { isInputElement } from "../types/typeguards.ts";
 import { Validator } from "../utils/Validator.ts";
 import Text from "../components/Text/Text.ts";
+import { router } from "../router/router.ts";
 
 export default class ChatView extends AbstractView {
   constructor(protected root: HTMLElement) {
@@ -46,9 +47,15 @@ export default class ChatView extends AbstractView {
       childrens: {
         Link: new Link({
           attributes: {
-            href: "/profile",
+            href: "/settings",
             text: "Профиль",
             className: "link header__profile-link",
+          },
+          events: {
+            click: function (this: Link, e: Event) {
+              e.preventDefault();
+              router.go("/settings");
+            },
           },
         }),
         Search: new Search({

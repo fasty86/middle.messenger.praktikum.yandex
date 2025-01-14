@@ -3,7 +3,12 @@ import Block from "../../framework/Block";
 import { PropsType } from "../../framework/types";
 import Tooltip from "../tooltip/Tooltip";
 import { isInputElement } from "../../types/typeguards";
+import { withUserFisrtName } from "../../utils/connect";
+
 export default class Input extends Block<InputPropsType> {
+  constructor(props: InputPropsType) {
+    super(props);
+  }
   showTooltip() {
     if ("Tooltip" in this.childrens) {
       const tooltip = this.childrens.Tooltip as Tooltip;
@@ -31,7 +36,7 @@ export default class Input extends Block<InputPropsType> {
   }
 }
 
-type InputPropsType = PropsType & {
+export type InputPropsType = PropsType & {
   attributes: {
     className: string;
     disabled?: string;
@@ -42,3 +47,5 @@ type InputPropsType = PropsType & {
     value: string;
   };
 };
+
+export const userFirstName = withUserFisrtName(Input);

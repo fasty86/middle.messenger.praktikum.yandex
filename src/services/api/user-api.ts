@@ -23,6 +23,7 @@ export class UserAPI extends BaseAPI {
   static async signup(userData: UserAuthType) {
     return chatAPIInstance.post("/signup", {
       data: userData,
+      credentials: true,
       headers: {
         "Content-Type": "application/json",
         accept: "application/json",
@@ -32,6 +33,7 @@ export class UserAPI extends BaseAPI {
   static async signin(userData: UserLoginType) {
     return chatAPIInstance.post("/signin", {
       data: userData,
+      credentials: true,
       headers: {
         "Content-Type": "application/json",
         accept: "application/json",

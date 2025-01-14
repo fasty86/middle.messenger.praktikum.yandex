@@ -266,13 +266,14 @@ export default class RegistrationView extends AbstractView {
     ];
     const form = new Form({
       events: {
-        submit: function (this: Form, e: Event) {
+        submit: async function (this: Form, e: Event) {
           e.preventDefault();
           const isValid = this.validateForm();
           if (isValid) {
             const formData = new FormData(e.target as HTMLFormElement);
             const payload = Object.fromEntries(formData.entries());
-            UserController.register(payload as UserAuthType);
+            await UserController.register(payload as UserAuthType);
+            await UserController.getUser();
           }
         },
       },

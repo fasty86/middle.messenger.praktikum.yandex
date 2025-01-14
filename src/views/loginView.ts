@@ -94,14 +94,17 @@ export default class LoginView extends AbstractView {
     ];
     const form = new Form({
       events: {
-        submit: function (this: Form, e) {
+        submit: async function (this: Form, e) {
+          console.log("sbsf");
+
           e.preventDefault();
           const isValid = this.validateForm();
           if (isValid) {
             const formData = new FormData(e.target as HTMLFormElement);
             const payload = Object.fromEntries(formData.entries());
-            UserController.login(payload as UserLoginType);
+            await UserController.login(payload as UserLoginType);
           }
+          UserController.getUser();
         },
       },
       attributes: {

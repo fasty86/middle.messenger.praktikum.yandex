@@ -1,14 +1,14 @@
 import AbstractView from "./abstractView.ts";
 import * as Pages from "../pages/index.ts";
 import { formGroupType, buttonType, imageType, modalType } from "../types/components.ts";
-import { navigateTo } from "../router/router_OLD.ts";
+// import { navigateTo } from "../router/router_OLD.ts";
 import FormGroup from "../components/formGroup/FormGroup.ts";
 import Button from "../components/button/Button.ts";
-import Input from "../components/input/Input.ts";
+import Input, { userFirstName } from "../components/input/Input.ts";
 import Label from "../components/label/Label.ts";
 import Form from "../components/form/Form.ts";
 import Image from "../components/image/Image.ts";
-import { NavigationComponent } from "../components/util/Navigation.ts";
+// import { NavigationComponent } from "../components/util/Navigation.ts";
 import Modal from "../components/modal/Modal.ts";
 import Avatar from "../components/avatar/Avatar.ts";
 import Tooltip from "../components/tooltip/Tooltip.ts";
@@ -18,6 +18,7 @@ import { router } from "../router/router.ts";
 import { form as dataForm } from "./profileEditDataView.ts";
 import { form as passwordForm } from "./profileEditPasswordView.ts";
 import { closeModalOutside } from "../utils/modals.ts";
+import store from "../framework/store/Store.ts";
 export default class ProfileView extends AbstractView {
   constructor(protected root: HTMLElement) {
     super(root);
@@ -34,7 +35,7 @@ export default class ProfileView extends AbstractView {
         events: {
           click: () => {
             // navigateTo("/profile/edit/data");
-            console.log("btn click");
+            // console.log("btn click");
           },
         },
       }),
@@ -42,7 +43,7 @@ export default class ProfileView extends AbstractView {
         attributes: actionButtons[1],
         events: {
           click: () => {
-            navigateTo("/profile/edit/password");
+            // navigateTo("/profile/edit/password");
           },
         },
       }),
@@ -75,7 +76,10 @@ export default class ProfileView extends AbstractView {
       }),
       new FormGroup({
         childrens: {
-          Input: new Input({ attributes: profileFormData[2].input }),
+          // Input: new Input({ attributes: profileFormData[2].input }),
+          Input: new userFirstName({
+            attributes: { ...profileFormData[2].input, value: store.getState().user?.first_name ?? "" },
+          }) as Input,
           Label: new Label({ attributes: profileFormData[2].label }),
         },
       }),
@@ -213,7 +217,7 @@ export default class ProfileView extends AbstractView {
           },
         }),
         Form: form,
-        Navigation: NavigationComponent,
+        // Navigation: NavigationComponent,
         Modal: avatarModal,
       },
       lists: {

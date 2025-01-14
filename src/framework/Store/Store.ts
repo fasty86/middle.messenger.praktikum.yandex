@@ -2,6 +2,7 @@ import EventBus from "../EventBus";
 import { StoreEvents } from "../types";
 import { UserInfoType } from "./types";
 import { set as setProp } from "../../utils/setProp";
+// import { Indexed } from "../../utils/types";
 // import { merge } from "../../utils/merge";
 
 export type StateType = {
@@ -23,7 +24,8 @@ class Store extends EventBus {
   }
   public set(path: string, value: unknown) {
     setProp(this.state, path, value);
-    // метод EventBus
+    console.log("state :", this.state);
+
     this.emit(StoreEvents.Updated);
   }
 }

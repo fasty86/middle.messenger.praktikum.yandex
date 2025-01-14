@@ -7,14 +7,12 @@ export function merge(lhs: Indexed, rhs: Indexed): Indexed {
     }
 
     try {
-      if ((rhs[p] as object).constructor === Object) {
+      if (typeof rhs[p] === "object" && rhs[p] !== null && rhs[p].constructor === Object) {
         rhs[p] = merge(lhs[p] as Indexed, rhs[p] as Indexed);
       } else {
         lhs[p] = rhs[p];
       }
-    } catch (e) {
-      console.log(e);
-
+    } catch (_e) {
       lhs[p] = rhs[p];
     }
   }

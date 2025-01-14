@@ -10,8 +10,8 @@ export type UserAuthType = {
 export type UserLoginType = Pick<UserAuthType, "login" | "password">;
 export type UserInfoType = UserAuthType & {
   id: number;
-  avatar: string;
-  display_name: string;
+  avatar: string | null;
+  display_name: string | null;
 };
 
 export type UserProfile = {

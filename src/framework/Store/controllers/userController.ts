@@ -1,5 +1,6 @@
 import { UserAPI } from "../../../services/api/user-api";
 import store from "../Store";
+
 import { UserAuthType, UserLoginType } from "../types";
 
 export class UserController {
@@ -7,6 +8,10 @@ export class UserController {
     // UserAPI.getUser().then((data) => console.log("userdata:", data));
     const response = await UserAPI.getUser();
     console.log(response.json(), `status:${response.status}`);
+    if (response.ok) {
+      store.set("user", response.json());
+    }
+    return response.ok;
   }
   public static async register(userData: UserAuthType) {
     const response = await UserAPI.signup(userData);

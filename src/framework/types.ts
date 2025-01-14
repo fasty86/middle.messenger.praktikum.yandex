@@ -8,7 +8,7 @@ export enum BusEvents {
   STATE_CHANGE = "state:change",
 }
 export enum StoreEvents {
-  Updated = "updated",
+  Updated = "store:updated",
 }
 
 export type Cb = (...args: unknown[]) => void;

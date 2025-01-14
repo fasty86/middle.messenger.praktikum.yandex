@@ -42,12 +42,10 @@ export class Route {
     if (!root) return;
     if (!this._block) {
       this._block = new this._blockClass(root);
-      // render(this._props.rootQuery, this._block);
       this._block.render();
 
       return;
     }
-    // root.replaceChildren(this._block.block.getContent());
     this._block.render();
     // this._block.block.show();
   }
