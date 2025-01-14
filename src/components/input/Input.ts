@@ -5,10 +5,7 @@ import Tooltip from "../tooltip/Tooltip";
 import { isInputElement } from "../../types/typeguards";
 import { withUserFisrtName } from "../../utils/connect";
 
-export default class Input extends Block<InputPropsType> {
-  constructor(props: InputPropsType) {
-    super(props);
-  }
+export default class Input extends Block {
   showTooltip() {
     if ("Tooltip" in this.childrens) {
       const tooltip = this.childrens.Tooltip as Tooltip;
