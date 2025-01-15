@@ -1,24 +1,48 @@
 import { UserAPI } from "../../../services/api/user-api";
+import { UserAuthAPI } from "../../../services/api/user-auth-api";
 import store from "../Store";
 
-import { UserAuthType, UserLoginType } from "../types";
+import { UserAuthType, UserAvatar, UserLoginType, UserProfile, UserProfilePassword } from "../types";
 
 export class UserController {
   public static async getUser() {
-    // UserAPI.getUser().then((data) => console.log("userdata:", data));
-    const response = await UserAPI.getUser();
-    console.log(response.json(), `status:${response.status}`);
+    const response = await UserAuthAPI.getUser();
     if (response.ok) {
       store.set("user", response.json());
     }
     return response.ok;
   }
   public static async register(userData: UserAuthType) {
-    const response = await UserAPI.signup(userData);
+    const response = await UserAuthAPI.signup(userData);
     console.log(response.json(), `status:${response.status}`);
   }
+
   public static async login(userData: UserLoginType) {
-    const response = await UserAPI.signin(userData);
+    const response = await UserAuthAPI.signin(userData);
     console.log(response.json(), `status:${response.status}`);
+  }
+  public static async profile(userData: UserProfile) {
+    const response = await UserAPI.profile(userData);
+    console.log(response.json(), `status:${response.status}`);
+    if (response.ok) {
+      store.set("user", response.json());
+    }
+    return response.ok;
+  }
+  public static async password(userData: UserProfilePassword) {
+    const response = await UserAPI.password(userData);
+    console.log(response.json(), `status:${response.status}`);
+    if (response.ok) {
+      store.set("user", response.json());
+    }
+    return response.ok;
+  }
+  public static async avatar(userData: UserAvatar) {
+    const response = await UserAPI.avatar(userData);
+    console.log(response.json(), `status:${response.status}`);
+    if (response.ok) {
+      store.set("user", response.json());
+    }
+    return response.ok;
   }
 }

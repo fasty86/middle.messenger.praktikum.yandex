@@ -25,6 +25,7 @@ export class Route {
   leave() {
     if (this._block) {
       // this._block.block.hide();
+      // this._block = null;
     }
   }
 
@@ -42,8 +43,8 @@ export class Route {
     if (!root) return;
     if (!this._block) {
       this._block = new this._blockClass(root);
+      console.log("нет рендера страницы", this._block.constructor.name);
       this._block.render();
-
       return;
     }
     this._block.render();

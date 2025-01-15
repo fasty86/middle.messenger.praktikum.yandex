@@ -4,7 +4,15 @@ import { formGroupType, buttonType, imageType, modalType } from "../types/compon
 // import { navigateTo } from "../router/router_OLD.ts";
 import FormGroup from "../components/formGroup/FormGroup.ts";
 import Button from "../components/button/Button.ts";
-import Input, { userFirstName } from "../components/input/Input.ts";
+import Input, {
+  userDisplayName,
+  userEmail,
+  userFirstName,
+  userLogin,
+  userPassword,
+  userPhone,
+  userSecondName,
+} from "../components/input/Input.ts";
 import Label from "../components/label/Label.ts";
 import Form from "../components/form/Form.ts";
 import Image from "../components/image/Image.ts";
@@ -19,16 +27,20 @@ import { form as dataForm } from "./profileEditDataView.ts";
 import { form as passwordForm } from "./profileEditPasswordView.ts";
 import { closeModalOutside } from "../utils/modals.ts";
 import store from "../framework/store/Store.ts";
+import { UserAvatar } from "../framework/store/types.ts";
+import { UserController } from "../framework/store/controllers/userController.ts";
 export default class ProfileView extends AbstractView {
   constructor(protected root: HTMLElement) {
     super(root);
     this.setTitle("profile");
   }
   async render() {
-    this.root.replaceChildren(this.buildComponents().getContent());
+    if (!this.block) this.block = this.buildComponents();
+    this.root.replaceChildren(this.block.getContent());
   }
 
   protected buildComponents() {
+    console.log("build");
     const actions: Button[] = [
       new Button({
         attributes: actionButtons[0],
@@ -62,15 +74,17 @@ export default class ProfileView extends AbstractView {
     const elements: FormGroup[] = [
       new FormGroup({
         childrens: {
-          Input: new Input({
-            attributes: profileFormData[0].input,
-          }),
+          Input: new userEmail({
+            attributes: { ...profileFormData[0].input, value: store.getState().user?.email ?? "" },
+          }) as Input,
           Label: new Label({ attributes: profileFormData[0].label }),
         },
       }),
       new FormGroup({
         childrens: {
-          Input: new Input({ attributes: profileFormData[1].input }),
+          Input: new userLogin({
+            attributes: { ...profileFormData[1].input, value: store.getState().user?.login ?? "" },
+          }) as Input,
           Label: new Label({ attributes: profileFormData[1].label }),
         },
       }),
@@ -85,25 +99,33 @@ export default class ProfileView extends AbstractView {
       }),
       new FormGroup({
         childrens: {
-          Input: new Input({ attributes: profileFormData[3].input }),
+          Input: new userSecondName({
+            attributes: { ...profileFormData[3].input, value: store.getState().user?.second_name ?? "" },
+          }) as Input,
           Label: new Label({ attributes: profileFormData[3].label }),
         },
       }),
       new FormGroup({
         childrens: {
-          Input: new Input({ attributes: profileFormData[4].input }),
+          Input: new userDisplayName({
+            attributes: { ...profileFormData[4].input, value: store.getState().user?.display_name ?? "" },
+          }) as Input,
           Label: new Label({ attributes: profileFormData[4].label }),
         },
       }),
       new FormGroup({
         childrens: {
-          Input: new Input({ attributes: profileFormData[5].input }),
+          Input: new userPhone({
+            attributes: { ...profileFormData[5].input, value: store.getState().user?.phone ?? "" },
+          }) as Input,
           Label: new Label({ attributes: profileFormData[5].label }),
         },
       }),
       new FormGroup({
         childrens: {
-          Input: new Input({ attributes: profileFormData[6].input }),
+          Input: new userPassword({
+            attributes: { ...profileFormData[6].input, value: store.getState().user?.password ?? "" },
+          }) as Input,
           Label: new Label({ attributes: profileFormData[6].label }),
         },
       }),
@@ -130,9 +152,16 @@ export default class ProfileView extends AbstractView {
             formClassName: "login__form modal__form",
           },
           events: {
-            submit: function (this: Form, e) {
+            submit: async function (this: Form, e) {
               e.preventDefault();
-              this.validateForm();
+              const isValid = this.validateForm();
+              if (isValid) {
+                const file: File = new FormData(e.target as HTMLFormElement).get("file") as File;
+                const formData = new FormData();
+                formData.append("avatar", file);
+                const result = await UserController.avatar(formData as UserAvatar);
+                console.log("avatar loading:", result);
+              }
             },
           },
           lists: {
@@ -142,6 +171,9 @@ export default class ProfileView extends AbstractView {
                   Input: new Input({
                     attributes: uploadAvatarModel.formGroup.input,
                     events: {
+                      change: function (this: Input, e) {
+                        e.preventDefault();
+                      },
                       blur: function (this: Input, e) {
                         e.preventDefault();
                         this.validate(Validator.validateMessage);
@@ -171,6 +203,15 @@ export default class ProfileView extends AbstractView {
                   Label: new Label({
                     attributes: uploadAvatarModel.formGroup.label,
                   }),
+                },
+                events: {
+                  change: function (this: FormGroup, e) {
+                    if (isInputElement(e.target)) {
+                      const path = e.target.value.split("\\").pop();
+                      const label = this.childrens.Label;
+                      label.setAtrributies({ text: String(path) });
+                    }
+                  },
                 },
               }),
             ],
@@ -423,7 +464,7 @@ const uploadAvatarModel: modalType = {
     label: {
       className: "upload-avatar__label",
       forAttr: "upload_avatar_input_id",
-      text: "Выбрать файл  на компьютере",
+      text: "Выбрать файл  ",
     },
   },
 };

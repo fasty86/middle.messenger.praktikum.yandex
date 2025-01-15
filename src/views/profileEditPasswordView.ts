@@ -15,6 +15,8 @@ import Tooltip from "../components/tooltip/Tooltip.ts";
 import { isInputElement } from "../types/typeguards.ts";
 import { Validator } from "../utils/Validator.ts";
 import { closeModalOutside } from "../utils/modals.ts";
+import { UserController } from "../framework/store/controllers/userController.ts";
+import { UserProfilePassword } from "../framework/store/types.ts";
 export default class ProfileEditPassword extends AbstractView {
   constructor(protected root: HTMLElement) {
     super(root);
@@ -541,9 +543,17 @@ const avatarModal = new Modal({
 });
 export const form = new Form({
   events: {
-    submit: function (this: Form, e: Event) {
+    submit: async function (this: Form, e: Event) {
       e.preventDefault();
-      this.validateForm();
+      const isValid = this.validateForm();
+      if (isValid) {
+        const formData = new FormData(e.target as HTMLFormElement);
+        const payload: UserProfilePassword = {
+          oldPassword: formData.get("oldPassword") as string,
+          newPassword: formData.get("newPassword") as string,
+        };
+        await UserController.password(payload as UserProfilePassword);
+      }
     },
   },
   attributes: {

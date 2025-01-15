@@ -40,6 +40,7 @@ export default class ChatView extends AbstractView {
     this.setTitle("Chat");
   }
   async render() {
+    if (!this.block) this.block = this.buildComponents();
     this.root.replaceChildren(this.block.getContent());
   }
   protected buildComponents() {

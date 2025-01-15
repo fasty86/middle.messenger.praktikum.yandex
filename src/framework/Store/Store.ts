@@ -24,10 +24,10 @@ class Store extends EventBus {
   }
   public set(path: string, value: unknown) {
     setProp(this.state, path, value);
-    console.log("state :", this.state);
-
+    console.log("update state :", this.state);
     this.emit(StoreEvents.Updated);
   }
 }
-
-export default new Store();
+const store = new Store();
+// setTimeout(() => store.set("user", { email: "12424@gmail.com", login: "fsdfsdf" }), 5000);
+export default store;

@@ -3,10 +3,10 @@ import Block from "../../framework/Block";
 import { PropsType } from "../../framework/types";
 import Tooltip from "../tooltip/Tooltip";
 import { isInputElement } from "../../types/typeguards";
-import { withUserFisrtName } from "../../utils/connect";
+import { connect } from "../../utils/connect";
 
-export default class Input extends Block<InputPropsType> {
-  constructor(props: InputPropsType) {
+export default class Input extends Block {
+  constructor(props: PropsType) {
     super(props);
   }
   showTooltip() {
@@ -47,5 +47,31 @@ export type InputPropsType = PropsType & {
     value: string;
   };
 };
-
+export const withUserFisrtName = connect<InputPropsType>((state) => {
+  return { attributes: { value: state.user?.first_name ?? "Guest" } };
+});
+export const withUserSecondName = connect<InputPropsType>((state) => {
+  return { attributes: { value: state.user?.second_name ?? "" } };
+});
+export const withUserEmail = connect<InputPropsType>((state) => {
+  return { attributes: { value: state.user?.email ?? "" } };
+});
+export const withUserLogin = connect<InputPropsType>((state) => {
+  return { attributes: { value: state.user?.login ?? "" } };
+});
+export const withUserPhone = connect<InputPropsType>((state) => {
+  return { attributes: { value: state.user?.phone ?? "" } };
+});
+export const withUserDispayName = connect<InputPropsType>((state) => {
+  return { attributes: { value: state.user?.display_name ?? "" } };
+});
+export const withUserPassword = connect<InputPropsType>((state) => {
+  return { attributes: { value: state.user?.password ?? "" } };
+});
 export const userFirstName = withUserFisrtName(Input);
+export const userSecondName = withUserSecondName(Input);
+export const userEmail = withUserEmail(Input);
+export const userLogin = withUserLogin(Input);
+export const userPhone = withUserPhone(Input);
+export const userDisplayName = withUserDispayName(Input);
+export const userPassword = withUserPassword(Input);

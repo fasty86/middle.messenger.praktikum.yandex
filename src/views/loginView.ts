@@ -3,7 +3,7 @@ import * as Pages from "../pages/index.ts";
 import { formGroupType, buttonType, linkType } from "../types/components.ts";
 import FormGroup from "../components/formGroup/FormGroup.ts";
 import Button from "../components/button/Button.ts";
-import Input from "../components/input/Input.ts";
+import Input, { userLogin } from "../components/input/Input.ts";
 import Label from "../components/label/Label.ts";
 import Form from "../components/form/Form.ts";
 import Link from "../components/link/Link.ts";
@@ -14,12 +14,14 @@ import Tooltip from "../components/tooltip/Tooltip.ts";
 import { router } from "../router/router.ts";
 import { UserController } from "../framework/store/controllers/userController.ts";
 import { UserLoginType } from "../framework/store/types.ts";
+import store from "../framework/store/Store.ts";
 export default class LoginView extends AbstractView {
   constructor(protected root: HTMLElement) {
     super(root);
     this.setTitle("Login");
   }
   async render() {
+    if (!this.block) this.block = this.buildComponents();
     this.root.replaceChildren(this.block.getContent());
   }
 
@@ -27,8 +29,9 @@ export default class LoginView extends AbstractView {
     const elements: FormGroup[] = [
       new FormGroup({
         childrens: {
-          Input: new Input({
-            attributes: loginFormData[0].input,
+          Input: new userLogin({
+            attributes: { ...loginFormData[0].input, value: store.getState().user?.email ?? "" },
+            // attributes: loginFormData[0].input,
             events: {
               blur: function (this: Input, e) {
                 e.preventDefault();
@@ -53,7 +56,7 @@ export default class LoginView extends AbstractView {
                 attributes: { className: "" },
               }),
             },
-          }),
+          }) as Input,
           Label: new Label({ attributes: loginFormData[0].label }),
         },
       }),

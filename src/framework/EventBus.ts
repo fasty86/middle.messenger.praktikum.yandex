@@ -10,7 +10,9 @@ export default class EventBus {
     if (!this.listeners[event]) {
       this.listeners[event] = [];
     }
-
+    if (event === StoreEvents.Updated) {
+      console.log("подписка добавлена");
+    }
     this.listeners[event].push(callback);
   }
 
@@ -26,6 +28,9 @@ export default class EventBus {
     if (!this.listeners[event]) {
       console.error(`Нет обработчиков на событие: ${event}`);
     } else {
+      if (event === StoreEvents.Updated) {
+        console.log("store update");
+      }
       this.listeners[event].forEach(function (listener) {
         listener(...args);
       });

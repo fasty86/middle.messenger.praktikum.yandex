@@ -33,7 +33,7 @@ export default class Block<T extends PropsType = PropsType> {
     const { rootData = {}, attributes = {}, childrens = {}, lists = {}, events = {} } = props;
     this.rootData = this._makePropsProxy(rootData);
     this.lists = this._makePropsProxy(lists);
-    this.attributes = attributes;
+    this.attributes = this._makePropsProxy(attributes);
     this.childrens = this._makePropsProxy(childrens);
     this.events = this.bindEvents(events);
     this._id = this.generateId();
@@ -80,7 +80,7 @@ export default class Block<T extends PropsType = PropsType> {
   private _componentDidUpdate() {
     const response = this.componentDidUpdate();
     if (response) {
-      console.log("call rerender");
+      // console.log("call rerender");
 
       this.eventBus().emit(BusEvents.FLOW_RENDER);
     }
@@ -91,7 +91,7 @@ export default class Block<T extends PropsType = PropsType> {
   }
 
   setProps = (nextProps: PropsType) => {
-    console.log("props changed", nextProps);
+    // console.log("props changed", nextProps);
 
     if (!nextProps) {
       return;
@@ -171,8 +171,6 @@ export default class Block<T extends PropsType = PropsType> {
         else return value;
       },
       set(target, prop: Exclude<keyof T, number>, value) {
-        console.log("props chnaged");
-
         const oldTarget = { ...target };
         target[prop] = value;
         that.eventBus().emit(BusEvents.FLOW_CDU, oldTarget, target);
@@ -200,10 +198,11 @@ export default class Block<T extends PropsType = PropsType> {
     if (isHTMLElement(this._element)) this._element = null;
   }
   setAtrributies(attributes: AttributeType) {
-    this.attributes = { ...this.attributes, ...attributes };
-    Object.entries(attributes).forEach(([key, value]) => {
-      if (isHTMLElement(this._element)) this._element.setAttribute(key, String(value));
-    });
+    // this.attributes = { ...this.attributes, ...attributes };
+    Object.assign(this.attributes, attributes);
+    // Object.entries(attributes).forEach(([key, value]) => {
+    //   if (isHTMLElement(this._element)) this._element.setAttribute(key, String(value));
+    // });
   }
   protected generateId() {
     const id = Math.floor(Math.random() * Date.now());

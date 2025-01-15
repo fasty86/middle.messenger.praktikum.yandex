@@ -15,7 +15,7 @@ export type Options = {
   tries?: number;
   timeout?: number;
   method: METHODS;
-  data?: DefaultObject;
+  data?: DefaultObject | FormData;
   credentials?: boolean;
 };
 export type RequestResult = {
@@ -139,7 +139,7 @@ export class HTTPTransport {
       const xhr = new XMLHttpRequest();
       const isGet = method === METHODS.GET;
 
-      xhr.open(method, isGet && !!data ? `${url}${queryStringify(data)}` : url);
+      xhr.open(method, isGet && !!data && !(data instanceof FormData) ? `${url}${queryStringify(data)}` : url);
 
       Object.keys(headers).forEach((key) => {
         xhr.setRequestHeader(key, headers[key]);
@@ -163,6 +163,8 @@ export class HTTPTransport {
 
       if (isGet || !data) {
         xhr.send();
+      } else if (data instanceof FormData) {
+        xhr.send(data);
       } else {
         xhr.send(JSON.stringify(data));
       }

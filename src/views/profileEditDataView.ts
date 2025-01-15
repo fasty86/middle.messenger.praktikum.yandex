@@ -4,7 +4,14 @@ import { formGroupType, buttonType, imageType, modalType } from "../types/compon
 import { navigateTo } from "../router/router_OLD.ts";
 import FormGroup from "../components/formGroup/FormGroup.ts";
 import Button from "../components/button/Button.ts";
-import Input from "../components/input/Input.ts";
+import Input, {
+  userDisplayName,
+  userEmail,
+  userFirstName,
+  userLogin,
+  userPhone,
+  userSecondName,
+} from "../components/input/Input.ts";
 import Label from "../components/label/Label.ts";
 import Form from "../components/form/Form.ts";
 import Image from "../components/image/Image.ts";
@@ -15,6 +22,10 @@ import Tooltip from "../components/tooltip/Tooltip.ts";
 import { isInputElement } from "../types/typeguards.ts";
 import { Validator } from "../utils/Validator.ts";
 import { closeModalOutside } from "../utils/modals.ts";
+import store from "../framework/store/Store.ts";
+import { UserController } from "../framework/store/controllers/userController.ts";
+import { UserProfile } from "../framework/store/types.ts";
+// import { router } from "../router/router.ts";
 export default class ProfileEditData extends AbstractView {
   constructor(protected root: HTMLElement) {
     super(root);
@@ -592,8 +603,8 @@ const actions: Button[] = [
 const elements: FormGroup[] = [
   new FormGroup({
     childrens: {
-      Input: new Input({
-        attributes: profileFormData[0].input,
+      Input: new userEmail({
+        attributes: { ...profileFormData[0].input, value: store.getState().user?.email ?? "" },
         events: {
           blur: function (this: Input, e) {
             e.preventDefault();
@@ -618,14 +629,14 @@ const elements: FormGroup[] = [
             attributes: { className: "tooltip__profile" },
           }),
         },
-      }),
+      }) as Input,
       Label: new Label({ attributes: profileFormData[0].label }),
     },
   }),
   new FormGroup({
     childrens: {
-      Input: new Input({
-        attributes: profileFormData[1].input,
+      Input: new userLogin({
+        attributes: { ...profileFormData[1].input, value: store.getState().user?.login ?? "" },
         events: {
           blur: function (this: Input, e) {
             e.preventDefault();
@@ -650,14 +661,14 @@ const elements: FormGroup[] = [
             attributes: { className: "tooltip__profile" },
           }),
         },
-      }),
+      }) as Input,
       Label: new Label({ attributes: profileFormData[1].label }),
     },
   }),
   new FormGroup({
     childrens: {
-      Input: new Input({
-        attributes: profileFormData[2].input,
+      Input: new userFirstName({
+        attributes: { ...profileFormData[2].input, value: store.getState().user?.first_name ?? "" },
         events: {
           blur: function (this: Input, e) {
             e.preventDefault();
@@ -682,14 +693,14 @@ const elements: FormGroup[] = [
             attributes: { className: "tooltip__profile" },
           }),
         },
-      }),
+      }) as Input,
       Label: new Label({ attributes: profileFormData[2].label }),
     },
   }),
   new FormGroup({
     childrens: {
-      Input: new Input({
-        attributes: profileFormData[3].input,
+      Input: new userSecondName({
+        attributes: { ...profileFormData[3].input, value: store.getState().user?.second_name ?? "" },
         events: {
           blur: function (this: Input, e) {
             e.preventDefault();
@@ -714,14 +725,14 @@ const elements: FormGroup[] = [
             attributes: { className: "tooltip__profile" },
           }),
         },
-      }),
+      }) as Input,
       Label: new Label({ attributes: profileFormData[3].label }),
     },
   }),
   new FormGroup({
     childrens: {
-      Input: new Input({
-        attributes: profileFormData[4].input,
+      Input: new userDisplayName({
+        attributes: { ...profileFormData[4].input, value: store.getState().user?.display_name ?? "" },
         events: {
           blur: function (this: Input, e) {
             e.preventDefault();
@@ -746,14 +757,14 @@ const elements: FormGroup[] = [
             attributes: { className: "tooltip__profile" },
           }),
         },
-      }),
+      }) as Input,
       Label: new Label({ attributes: profileFormData[4].label }),
     },
   }),
   new FormGroup({
     childrens: {
-      Input: new Input({
-        attributes: profileFormData[5].input,
+      Input: new userPhone({
+        attributes: { ...profileFormData[5].input, value: store.getState().user?.phone ?? "" },
         events: {
           blur: function (this: Input, e) {
             e.preventDefault();
@@ -780,16 +791,21 @@ const elements: FormGroup[] = [
             },
           }),
         },
-      }),
+      }) as Input,
       Label: new Label({ attributes: profileFormData[5].label }),
     },
   }),
 ];
 export const form = new Form({
   events: {
-    submit: function (this: Form, e: Event) {
+    submit: async function (this: Form, e: Event) {
       e.preventDefault();
-      this.validateForm();
+      const isValid = this.validateForm();
+      if (isValid) {
+        const formData = new FormData(e.target as HTMLFormElement);
+        const payload = Object.fromEntries(formData.entries());
+        await UserController.profile(payload as UserProfile);
+      }
     },
   },
   attributes: {

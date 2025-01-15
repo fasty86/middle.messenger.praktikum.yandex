@@ -22,3 +22,9 @@ export type UserProfile = {
   password: string;
   phone: string;
 };
+export type UserProfilePassword = {
+  oldPassword: string;
+  newPassword: string;
+};
+
+export type UserAvatar = FormData;

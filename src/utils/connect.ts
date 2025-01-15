@@ -1,47 +1,50 @@
 import Button from "../components/button/Button";
-import ChatAreaBody from "../components/chatAreaBody/ChatAreaBody";
-import ChatFooter from "../components/chatFooter/ChatFooter";
-import ChatAreaHeader from "../components/chatLAreaHeader/ChatAreaHeader";
-import ChatList from "../components/chatList/ChatList";
-import ChatListHeader from "../components/chatListHeader/ChatListHeader";
-import ChatListItem from "../components/chatListItem/ChatListItem";
-import Form from "../components/form/Form";
-import FormGroup from "../components/formGroup/FormGroup";
-import Input, { InputPropsType } from "../components/input/Input";
-import Label from "../components/label/Label";
-import Link from "../components/link/Link";
-import Menu from "../components/menu/Menu";
-import Message from "../components/message/Message";
-import Modal from "../components/modal/Modal";
-import Search from "../components/search/Search";
-import Tooltip from "../components/tooltip/Tooltip";
+// import ChatAreaBody from "../components/chatAreaBody/ChatAreaBody";
+// import ChatFooter from "../components/chatFooter/ChatFooter";
+// import ChatAreaHeader from "../components/chatLAreaHeader/ChatAreaHeader";
+// import ChatList from "../components/chatList/ChatList";
+// import ChatListHeader from "../components/chatListHeader/ChatListHeader";
+// import ChatListItem from "../components/chatListItem/ChatListItem";
+// import Form from "../components/form/Form";
+// import FormGroup from "../components/formGroup/FormGroup";
+import Input from "../components/input/Input";
+// import Label from "../components/label/Label";
+// import Link from "../components/link/Link";
+// import Menu from "../components/menu/Menu";
+// import Message from "../components/message/Message";
+// import Modal from "../components/modal/Modal";
+// import Search from "../components/search/Search";
+// import Tooltip from "../components/tooltip/Tooltip";
 import Block from "../framework/Block";
 import store, { StateType } from "../framework/store/Store";
 import { DefaultObject, PropsType, StoreEvents } from "../framework/types";
+import { isEqual } from "./isEqual";
+import { merge } from "./merge";
 
 // interface Constructor<T, K> {
 //   new (props: T): K;
 // }
 export function connect<T extends PropsType = PropsType>(mapStateToProps: (state: StateType) => DefaultObject) {
-  return function (Component: blockClassTypes) {
+  return function (Component: typeof Block) {
     return class extends Component {
       constructor(props: T) {
-        super({ ...props, ...mapStateToProps(store.getState()) });
+        let state = { ...mapStateToProps(store.getState()) };
+        super({ ...merge(props, mapStateToProps(store.getState())) });
 
         // подписываемся на событие
         store.on(StoreEvents.Updated, () => {
+          const newState = mapStateToProps(store.getState());
           // вызываем обновление компонента, передав данные из хранилища
-          // this.setProps({ ...mapStateToProps(store.getState()) });
-          console.log({ ...mapStateToProps(store.getState()) });
+          if (!isEqual(state, newState)) {
+            console.log("Not equal", state, newState);
+            state = newState;
+            this.setProps({ ...newState });
+          }
         });
       }
     };
   };
 }
-
-export const withUserFisrtName = connect<InputPropsType>((state) => ({
-  first_name: state.user?.first_name ?? "Guest",
-}));
 
 export type blockClassTypes = typeof Input | typeof Button;
 

@@ -1,10 +1,10 @@
 import Block from "../framework/Block";
 
 export default abstract class {
-  block: Block;
+  block: Block | null = null;
+
   constructor(protected root: HTMLElement) {
     this.root = root;
-    this.block = this.buildComponents();
   }
 
   protected setTitle(title: string) {

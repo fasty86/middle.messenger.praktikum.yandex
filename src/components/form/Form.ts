@@ -7,6 +7,7 @@ import Input from "../input/Input";
 import { isValidatorExist } from "../../types/typeguards";
 import Link from "../link/Link";
 import Button from "../button/Button";
+// import { connect } from "../../utils/connect";
 
 export default class Form extends Block<FormPropsType> {
   constructor(props: FormPropsType) {
@@ -59,3 +60,9 @@ type FormPropsType = PropsType & {
     Elements: FormGroup[];
   };
 };
+
+// export const withUserForm = connect<FormPropsType>((state) => {
+//   const user = state.user ?
+
+//   // return { attributes: { value: state.user?.first_name ?? "Guest" } };
+// });
