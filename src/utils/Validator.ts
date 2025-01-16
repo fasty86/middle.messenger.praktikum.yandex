@@ -2,6 +2,7 @@ class Validator {
   public static mapping: {
     [key in ValidatorMapping]: (value: string) => boolean;
   } = {
+    chat_name: Validator.validateMessage,
     login: Validator.validateLogin,
     first_name: Validator.validateUsername,
     second_name: Validator.validateUsername,
@@ -56,6 +57,7 @@ export type ValidatorMapping =
   | "oldPassword"
   | "newPassword"
   | "confirmNewPassword"
-  | "file";
+  | "file"
+  | "chat_name";
 
 export { Validator };

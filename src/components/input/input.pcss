@@ -1,36 +1,42 @@
 input {
-    border: none;
+  border: none;
+  outline: none;
+
+  &:focus {
     outline: none;
+  }
 
-    &:focus {
-        outline: none;
-    }
-
-    &:disabled {
-        background: none;
-    }
+  &:disabled {
+    background: none;
+  }
 }
 
 .form__input {
-    border-bottom: 1px solid #3369f3;
-    display: block;
-    font-size: 13px;
-    padding: 10px 10px 0 5px;
-    width: 280px;
+  border-bottom: 1px solid #3369f3;
+  display: block;
+  font-size: 13px;
+  padding: 10px 10px 0 5px;
+  width: 280px;
 
-    &:focus ~ label {
-        font-size: 9px;
-        line-height: 9px;
-        top: -8px;
-    }
+  &:focus ~ label {
+    font-size: 9px;
+    line-height: 9px;
+    top: -8px;
+  }
 
-    &:not([value=""]) ~ label {
-        font-size: 9px;
-        line-height: 9px;
-        top: -8px;
-    }
+  &:not([value=""]) ~ label {
+    font-size: 9px;
+    line-height: 9px;
+    top: -8px;
+  }
+
+  /* &:not(:invalid) ~ label {
+    font-size: 9px;
+    line-height: 9px;
+    top: -8px;
+  } */
 }
 
 .upload-avatar__input {
-    display: none;
+  display: none;
 }

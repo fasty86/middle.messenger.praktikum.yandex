@@ -1,15 +1,20 @@
 import EventBus from "../EventBus";
 import { StoreEvents } from "../types";
-import { UserInfoType } from "./types";
+import { ApiStatus, OPaths, STATUS, UserInfoType } from "./types";
 import { set as setProp } from "../../utils/setProp";
-// import { Indexed } from "../../utils/types";
-// import { merge } from "../../utils/merge";
 
 export type StateType = {
   user: UserInfoType | null;
+  statuses: {
+    [key in ApiStatus]: STATUS;
+  };
 };
+export type StorePath = OPaths<StateType>;
 const initialState: StateType = {
   user: null,
+  statuses: {
+    [ApiStatus.AVATAR]: STATUS.PENDING,
+  },
 };
 // наследуем Store от EventBus, чтобы его методы были сразу доступны у экземпляра Store
 class Store extends EventBus {
@@ -22,7 +27,7 @@ class Store extends EventBus {
   public getState() {
     return this.state;
   }
-  public set(path: string, value: unknown) {
+  public set(path: StorePath, value: unknown) {
     setProp(this.state, path, value);
     console.log("update state :", this.state);
     this.emit(StoreEvents.Updated);

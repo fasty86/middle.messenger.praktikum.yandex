@@ -31,7 +31,6 @@ export default class LoginView extends AbstractView {
         childrens: {
           Input: new userLogin({
             attributes: { ...loginFormData[0].input, value: store.getState().user?.email ?? "" },
-            // attributes: loginFormData[0].input,
             events: {
               blur: function (this: Input, e) {
                 e.preventDefault();
@@ -42,9 +41,7 @@ export default class LoginView extends AbstractView {
               },
               keyup: function (this: Input, e) {
                 if (isInputElement(e.target)) {
-                  this.setAtrributies({
-                    value: e.target.value ? "nonempty" : "",
-                  });
+                  e.target.setAttribute("value", e.target.value);
                 }
               },
             },
@@ -74,9 +71,7 @@ export default class LoginView extends AbstractView {
               },
               keyup: function (this: Input, e) {
                 if (isInputElement(e.target)) {
-                  this.setAtrributies({
-                    value: e.target.value ? "nonempty" : "",
-                  });
+                  e.target.setAttribute("value", e.target.value);
                 }
               },
             },

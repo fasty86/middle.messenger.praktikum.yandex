@@ -8,6 +8,8 @@ import {
   messageType,
   footerType,
   imageType,
+  buttonType,
+  modalType,
 } from "../types/components.ts";
 import ChatListHeader from "../components/chatListHeader/ChatListHeader.ts";
 import Link from "../components/link/Link.ts";
@@ -15,7 +17,7 @@ import Search from "../components/search/Search.ts";
 import Input from "../components/input/Input.ts";
 import ChatList from "../components/chatList/ChatList.ts";
 import ChatListItem from "../components/chatListItem/ChatListItem.ts";
-import Image from "../components/image/Image.ts";
+import Image, { userAvatar } from "../components/image/Image.ts";
 import ChatAreaHeader from "../components/chatLAreaHeader/ChatAreaHeader.ts";
 import Menu from "../components/menu/Menu.ts";
 import Option from "../components/option/Option.ts";
@@ -31,8 +33,12 @@ import Form from "../components/form/Form.ts";
 import Tooltip from "../components/tooltip/Tooltip.ts";
 import { isInputElement } from "../types/typeguards.ts";
 import { Validator } from "../utils/Validator.ts";
-import Text from "../components/Text/Text.ts";
+import Text, { userName } from "../components/Text/Text.ts";
 import { router } from "../router/router.ts";
+import store from "../framework/store/Store.ts";
+// import { UserController } from "../framework/store/controllers/userController.ts";
+import { closeModalOutside } from "../utils/modals.ts";
+import { ChatController } from "../framework/store/controllers/chatController.ts";
 
 export default class ChatView extends AbstractView {
   constructor(protected root: HTMLElement) {
@@ -44,6 +50,98 @@ export default class ChatView extends AbstractView {
     this.root.replaceChildren(this.block.getContent());
   }
   protected buildComponents() {
+    const addChatModal = new Modal({
+      attributes: {
+        id: addChatConfig.modal.id,
+      },
+      childrens: {
+        Form: new Form({
+          attributes: {
+            formClassName: "login__form modal__form",
+          },
+          events: {
+            submit: async function (this: Form, e) {
+              e.preventDefault();
+              const isValid = this.validateForm();
+              if (isValid) {
+                const chat_name: string = new FormData(e.target as HTMLFormElement).get("chat_name") as string;
+                await ChatController.create_chat(chat_name);
+                await ChatController.get_chat_list();
+              }
+            },
+          },
+          lists: {
+            Elements: [
+              new FormGroup({
+                childrens: {
+                  Input: new Input({
+                    attributes: addChatConfig.modal.formGroup.input,
+                    events: {
+                      change: function (this: Input, e) {
+                        e.preventDefault();
+                      },
+                      blur: function (this: Input, e) {
+                        e.preventDefault();
+                        this.validate(Validator.validateMessage);
+                      },
+                      focus: function (this: Input) {
+                        this.hideTooltip();
+                      },
+                      keyup: function (this: Input, e) {
+                        if (isInputElement(e.target)) {
+                          e.target.setAttribute("value", e.target.value);
+                        }
+                      },
+                    },
+                    childrens: {
+                      Tooltip: new Tooltip({
+                        rootData: {
+                          text: "введите название чата",
+                        },
+                        attributes: {
+                          className: "tooltip__modal",
+                        },
+                      }),
+                    },
+                  }),
+                  Label: new Label({
+                    attributes: addChatConfig.modal.formGroup.label,
+                  }),
+                },
+                events: {
+                  change: function (this: FormGroup, _e) {
+                    // if (isInputElement(e.target)) {
+                    //   const path = e.target.value.split("\\").pop();
+                    //   const label = this.childrens.Label;
+                    //   label.setAtrributies({ text: String(path) });
+                    // }
+                  },
+                },
+              }),
+            ],
+          },
+          childrens: {
+            Button: new Button({
+              attributes: addChatConfig.modal.button,
+              events: {
+                submit: (e) => {
+                  e.preventDefault();
+                },
+              },
+            }),
+          },
+        }),
+        Title: new Text({
+          rootData: {
+            text: "Добавить чат",
+          },
+          attributes: {
+            Tag: "p",
+            className: "modal__title",
+          },
+        }),
+      },
+    });
     const chatListHeader = new ChatListHeader({
       childrens: {
         Link: new Link({
@@ -66,6 +164,17 @@ export default class ChatView extends AbstractView {
             }),
           },
         }),
+        CreateChat: new Button({
+          attributes: addChatConfig.button,
+          events: {
+            click: function (this: Button) {
+              const dialog = document.querySelector("#model_add_chat_id") as HTMLDialogElement;
+              closeModalOutside(dialog);
+              dialog.showModal();
+            },
+          },
+        }),
+        CreateChatModal: addChatModal,
       },
     });
     const chatList = new ChatList({
@@ -189,9 +298,6 @@ export default class ChatView extends AbstractView {
     });
     const modals = [
       new Modal({
-        rootData: {
-          title: headerOptions.modal[0].title,
-        },
         attributes: {
           id: headerOptions.modal[0].id,
         },
@@ -257,12 +363,18 @@ export default class ChatView extends AbstractView {
               }),
             },
           }),
+          Title: new Text({
+            rootData: {
+              text: headerOptions.modal[0].title,
+            },
+            attributes: {
+              Tag: "p",
+              className: "modal__title",
+            },
+          }),
         },
       }),
       new Modal({
-        rootData: {
-          title: headerOptions.modal[1].title,
-        },
         attributes: {
           id: headerOptions.modal[1].id,
         },
@@ -328,21 +440,36 @@ export default class ChatView extends AbstractView {
               }),
             },
           }),
+          Title: new Text({
+            rootData: {
+              text: headerOptions.modal[1].title,
+            },
+            attributes: {
+              Tag: "p",
+              className: "modal__title",
+            },
+          }),
         },
       }),
     ];
     const chatAreaHeader = new ChatAreaHeader({
       childrens: {
-        Image: new Image({
-          attributes: headerInfo.imageData,
-        }),
+        Image: new userAvatar({
+          attributes: { ...headerInfo.imageData, src: store.getState().user?.avatar ?? "/avatar_default.png" },
+        }) as Image,
         Menu: headerMenu,
+        UserName: new userName({
+          rootData: {
+            text: store.getState().user?.display_name ?? "Guest",
+          },
+          attributes: {
+            Tag: "p",
+            className: "user-info__name",
+          },
+        }) as Text,
       },
       lists: {
         ModalList: modals,
-      },
-      rootData: {
-        userData: headerInfo.userData,
       },
     });
     const chatAreaBody = new ChatAreaBody({
@@ -737,5 +864,45 @@ const footerData: footerType = {
         textClassName: "menu-item__text",
       },
     ],
+  },
+};
+
+const addChatConfig: {
+  button: buttonType;
+  modal: modalType;
+} = {
+  button: {
+    className: "button chat-create__button",
+    disabled: "",
+    id: "add_channel_button_id",
+    text: "Добавить чат",
+    type: "button",
+  },
+  modal: {
+    id: "model_add_chat_id",
+    button: {
+      className: "button form__login-button modal__button",
+      disabled: "",
+      id: "add_chat_button_id",
+      text: "Добавить",
+      type: "submit",
+    },
+    title: "Добавить чат",
+    formGroup: {
+      input: {
+        className: "input form__input",
+        id: "add_chat_input_id",
+        name: "chat_name",
+        placeholder: "",
+        type: "text",
+        value: "",
+        disabled: "",
+      },
+      label: {
+        className: "label form__label",
+        forAttr: "add_chat_input_id",
+        text: "Имя чата",
+      },
+    },
   },
 };

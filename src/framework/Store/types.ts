@@ -1,3 +1,5 @@
+import { StateType } from "./Store";
+
 export type UserAuthType = {
   first_name: string;
   second_name: string;
@@ -28,3 +30,30 @@ export type UserProfilePassword = {
 };
 
 export type UserAvatar = FormData;
+export enum STATUS {
+  LOADING = "loading",
+  SUCCESS = "success",
+  ERROR = "error",
+  PENDING = "pending",
+}
+export enum ApiStatus {
+  AVATAR = "avatarLoading",
+}
+export type OPaths<T, D extends number = 10> = [D] extends [never]
+  ? never
+  : T extends Record<string, any>
+    ? {
+        [K in keyof T]-?: K extends string ? `${K}` | Join<K, OPaths<T[K], Prev[D]>> : never;
+      }[keyof T]
+    : "";
+type Join<K, P> = K extends string
+  ? P extends string
+    ? IsStringLiteral<P> extends true
+      ? `${K}.${P}`
+      : K
+    : P extends number
+      ? K
+      : never
+  : never;
+type IsStringLiteral<T> = T extends string ? ("" extends T ? false : true) : false;
+type Prev = [never, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...0[]];

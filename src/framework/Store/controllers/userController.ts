@@ -2,13 +2,20 @@ import { UserAPI } from "../../../services/api/user-api";
 import { UserAuthAPI } from "../../../services/api/user-auth-api";
 import store from "../Store";
 
-import { UserAuthType, UserAvatar, UserLoginType, UserProfile, UserProfilePassword } from "../types";
+import { STATUS, UserAuthType, UserAvatar, UserLoginType, UserProfile, UserProfilePassword } from "../types";
 
 export class UserController {
   public static async getUser() {
     const response = await UserAuthAPI.getUser();
     if (response.ok) {
       store.set("user", response.json());
+    }
+    return response.ok;
+  }
+  public static async logout() {
+    const response = await UserAuthAPI.logout();
+    if (response.ok) {
+      store.set("user", null);
     }
     return response.ok;
   }
@@ -42,7 +49,8 @@ export class UserController {
     console.log(response.json(), `status:${response.status}`);
     if (response.ok) {
       store.set("user", response.json());
-    }
+      store.set("statuses.avatarLoading", STATUS.SUCCESS);
+    } else store.set("statuses.avatarLoading", STATUS.ERROR);
     return response.ok;
   }
 }

@@ -1,16 +1,31 @@
 import { HTTPTransport } from "../XHR";
 import { BaseAPI } from "./base-api";
 
-const chatAPIInstance = new HTTPTransport("api/v1/chats");
+const chatAPIInstance = new HTTPTransport("https://ya-praktikum.tech/api/v2/chats");
 
 export class ChatAPI extends BaseAPI {
-  create() {
-    // Здесь уже не нужно писать полный путь /api/v1/chats/
-    return chatAPIInstance.post("/", { data: { title: "string" } });
+  static async add_chat(data: ChatCreateData) {
+    return chatAPIInstance.post("", {
+      data,
+      credentials: true,
+      headers: {
+        "Content-Type": "application/json",
+        accept: "application/json",
+      },
+    });
   }
 
-  request() {
-    // Здесь уже не нужно писать полный путь /api/v1/chats/
-    return chatAPIInstance.get("/full");
+  static async get_chat_list() {
+    return chatAPIInstance.get("", {
+      credentials: true,
+      headers: {
+        "Content-Type": "application/json",
+        accept: "application/json",
+      },
+    });
   }
 }
+
+export type ChatCreateData = {
+  title: string;
+};

@@ -15,7 +15,7 @@ import Input, {
 } from "../components/input/Input.ts";
 import Label from "../components/label/Label.ts";
 import Form from "../components/form/Form.ts";
-import Image from "../components/image/Image.ts";
+import Image, { userAvatar } from "../components/image/Image.ts";
 // import { NavigationComponent } from "../components/util/Navigation.ts";
 import Modal from "../components/modal/Modal.ts";
 import Avatar from "../components/avatar/Avatar.ts";
@@ -29,6 +29,7 @@ import { closeModalOutside } from "../utils/modals.ts";
 import store from "../framework/store/Store.ts";
 import { UserAvatar } from "../framework/store/types.ts";
 import { UserController } from "../framework/store/controllers/userController.ts";
+import Text, { modalAvatarTitle } from "../components/Text/Text.ts";
 export default class ProfileView extends AbstractView {
   constructor(protected root: HTMLElement) {
     super(root);
@@ -45,18 +46,13 @@ export default class ProfileView extends AbstractView {
       new Button({
         attributes: actionButtons[0],
         events: {
-          click: () => {
-            // navigateTo("/profile/edit/data");
-            // console.log("btn click");
-          },
+          click: () => {},
         },
       }),
       new Button({
         attributes: actionButtons[1],
         events: {
-          click: () => {
-            // navigateTo("/profile/edit/password");
-          },
+          click: () => {},
         },
       }),
       new Button({
@@ -90,7 +86,6 @@ export default class ProfileView extends AbstractView {
       }),
       new FormGroup({
         childrens: {
-          // Input: new Input({ attributes: profileFormData[2].input }),
           Input: new userFirstName({
             attributes: { ...profileFormData[2].input, value: store.getState().user?.first_name ?? "" },
           }) as Input,
@@ -140,9 +135,6 @@ export default class ProfileView extends AbstractView {
       childrens: {},
     });
     const avatarModal = new Modal({
-      rootData: {
-        title: uploadAvatarModel.title,
-      },
       attributes: {
         id: uploadAvatarModel.id,
       },
@@ -159,8 +151,7 @@ export default class ProfileView extends AbstractView {
                 const file: File = new FormData(e.target as HTMLFormElement).get("file") as File;
                 const formData = new FormData();
                 formData.append("avatar", file);
-                const result = await UserController.avatar(formData as UserAvatar);
-                console.log("avatar loading:", result);
+                await UserController.avatar(formData as UserAvatar);
               }
             },
           },
@@ -227,6 +218,7 @@ export default class ProfileView extends AbstractView {
             }),
           },
         }),
+        Title: new modalAvatarTitle({}) as Text,
       },
     });
     const page = new Pages.ProfilePage({
@@ -245,9 +237,9 @@ export default class ProfileView extends AbstractView {
             id: "avatar_upload_image_id",
           },
           childrens: {
-            Image: new Image({
-              attributes: avatar,
-            }),
+            Image: new userAvatar({
+              attributes: { ...avatar, src: store.getState().user?.avatar ?? "/avatar_default.png" },
+            }) as Image,
           },
           events: {
             click: function (this: Avatar) {
@@ -265,7 +257,7 @@ export default class ProfileView extends AbstractView {
         ActionButtons: actions,
       },
       events: {
-        click: function (this: Pages.ProfilePage, e: Event) {
+        click: async function (this: Pages.ProfilePage, e: Event) {
           if (e.target && "id" in e.target) {
             if (e.target.id === "profile_edit_button_id") {
               this.setLists({
@@ -281,6 +273,9 @@ export default class ProfileView extends AbstractView {
               this.setChildrens({
                 childrens: { Form: passwordForm },
               });
+            } else if (e.target.id === "profile_exit_button_id") {
+              const result = await UserController.logout();
+              if (result) router.go("/");
             }
           }
         },

@@ -8,6 +8,7 @@ import Button from "../components/button/Button";
 // import Form from "../components/form/Form";
 // import FormGroup from "../components/formGroup/FormGroup";
 import Input from "../components/input/Input";
+import Text from "../components/Text/Text";
 // import Label from "../components/label/Label";
 // import Link from "../components/link/Link";
 // import Menu from "../components/menu/Menu";
@@ -46,6 +47,6 @@ export function connect<T extends PropsType = PropsType>(mapStateToProps: (state
   };
 }
 
-export type blockClassTypes = typeof Input | typeof Button;
+export type blockClassTypes = typeof Input | typeof Button | typeof Text;
 
 export type ConstructableBlock<T extends Block = Block, P extends PropsType = PropsType> = new (props: P) => T;

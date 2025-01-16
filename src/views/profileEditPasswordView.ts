@@ -54,7 +54,7 @@ export default class ProfileEditPassword extends AbstractView {
               keyup: function (this: Input, e) {
                 if (isInputElement(e.target)) {
                   this.setAtrributies({
-                    value: e.target.value ? "nonempty" : "",
+                    value: e.target.value ? e.target.value : "",
                   });
                 }
               },
@@ -86,7 +86,7 @@ export default class ProfileEditPassword extends AbstractView {
               keyup: function (this: Input, e) {
                 if (isInputElement(e.target)) {
                   this.setAtrributies({
-                    value: e.target.value ? "nonempty" : "",
+                    value: e.target.value ? e.target.value : "",
                   });
                 }
               },
@@ -118,7 +118,7 @@ export default class ProfileEditPassword extends AbstractView {
               keyup: function (this: Input, e) {
                 if (isInputElement(e.target)) {
                   this.setAtrributies({
-                    value: e.target.value ? "nonempty" : "",
+                    value: e.target.value ? e.target.value : "",
                   });
                 }
               },
@@ -171,7 +171,7 @@ export default class ProfileEditPassword extends AbstractView {
                       keyup: function (this: Input, e) {
                         if (isInputElement(e.target)) {
                           this.setAtrributies({
-                            value: e.target.value ? "nonempty" : "",
+                            value: e.target.value ? e.target.value : "",
                           });
                         }
                       },
@@ -387,9 +387,7 @@ const elements: FormGroup[] = [
           },
           keyup: function (this: Input, e) {
             if (isInputElement(e.target)) {
-              this.setAtrributies({
-                value: e.target.value ? "nonempty" : "",
-              });
+              e.target.setAttribute("value", e.target.value);
             }
           },
         },
@@ -419,9 +417,7 @@ const elements: FormGroup[] = [
           },
           keyup: function (this: Input, e) {
             if (isInputElement(e.target)) {
-              this.setAtrributies({
-                value: e.target.value ? "nonempty" : "",
-              });
+              e.target.setAttribute("value", e.target.value);
             }
           },
         },
@@ -451,9 +447,7 @@ const elements: FormGroup[] = [
           },
           keyup: function (this: Input, e) {
             if (isInputElement(e.target)) {
-              this.setAtrributies({
-                value: e.target.value ? "nonempty" : "",
-              });
+              e.target.setAttribute("value", e.target.value);
             }
           },
         },
@@ -505,7 +499,7 @@ const avatarModal = new Modal({
                   keyup: function (this: Input, e) {
                     if (isInputElement(e.target)) {
                       this.setAtrributies({
-                        value: e.target.value ? "nonempty" : "",
+                        value: e.target.value ? e.target.value : "",
                       });
                     }
                   },
