@@ -1,20 +1,29 @@
 import EventBus from "../EventBus";
 import { StoreEvents } from "../types";
-import { ApiStatus, OPaths, STATUS, UserInfoType } from "./types";
+import { ApiStatus, ChatListType, OPaths, STATUS, UserInfoType } from "./types";
 import { set as setProp } from "../../utils/setProp";
+import WSSTransport, { responseMessageType } from "../../services/WSS";
 
 export type StateType = {
   user: UserInfoType | null;
   statuses: {
     [key in ApiStatus]: STATUS;
   };
+  chatList: ChatListType;
+  activeChat: {
+    token: string;
+    socket: WSSTransport;
+    messages: responseMessageType[];
+  } | null;
 };
 export type StorePath = OPaths<StateType>;
 const initialState: StateType = {
   user: null,
+  chatList: [],
   statuses: {
     [ApiStatus.AVATAR]: STATUS.PENDING,
   },
+  activeChat: null,
 };
 // наследуем Store от EventBus, чтобы его методы были сразу доступны у экземпляра Store
 class Store extends EventBus {

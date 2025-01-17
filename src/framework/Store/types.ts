@@ -1,4 +1,4 @@
-import { StateType } from "./Store";
+// import { StateType } from "./Store";
 
 export type UserAuthType = {
   first_name: string;
@@ -39,9 +39,29 @@ export enum STATUS {
 export enum ApiStatus {
   AVATAR = "avatarLoading",
 }
+
+export type ChatInfoType = {
+  id: number;
+  title: string;
+  avatar: string;
+  unread_count: number;
+  created_by: number;
+  last_message: LastMessage | null;
+};
+
+export type LastMessage = {
+  user: UserProfile;
+  time: string;
+  content: string;
+};
+
+export type ChatListType = ChatInfoType[];
+export type ID = {
+  id: number;
+};
 export type OPaths<T, D extends number = 10> = [D] extends [never]
   ? never
-  : T extends Record<string, any>
+  : T extends Record<string, unknown>
     ? {
         [K in keyof T]-?: K extends string ? `${K}` | Join<K, OPaths<T[K], Prev[D]>> : never;
       }[keyof T]

@@ -15,8 +15,8 @@ import ChatListHeader from "../components/chatListHeader/ChatListHeader.ts";
 import Link from "../components/link/Link.ts";
 import Search from "../components/search/Search.ts";
 import Input from "../components/input/Input.ts";
-import ChatList from "../components/chatList/ChatList.ts";
-import ChatListItem from "../components/chatListItem/ChatListItem.ts";
+// import ChatList, { chats } from "../components/chatList/ChatList.ts";
+// import ChatListItem from "../components/chatListItem/ChatListItem.ts";
 import Image, { userAvatar } from "../components/image/Image.ts";
 import ChatAreaHeader from "../components/chatLAreaHeader/ChatAreaHeader.ts";
 import Menu from "../components/menu/Menu.ts";
@@ -39,6 +39,7 @@ import store from "../framework/store/Store.ts";
 // import { UserController } from "../framework/store/controllers/userController.ts";
 import { closeModalOutside } from "../utils/modals.ts";
 import { ChatController } from "../framework/store/controllers/chatController.ts";
+import { chats } from "../components/chatList/ChatList.ts";
 
 export default class ChatView extends AbstractView {
   constructor(protected root: HTMLElement) {
@@ -177,62 +178,63 @@ export default class ChatView extends AbstractView {
         CreateChatModal: addChatModal,
       },
     });
-    const chatList = new ChatList({
-      lists: {
-        List: [
-          new ChatListItem({
-            rootData: {
-              ...chatListData[0],
-            },
-            childrens: {
-              Image: new Image({
-                attributes: chatListData[0].imageData,
-              }),
-            },
-          }),
-          new ChatListItem({
-            rootData: {
-              ...chatListData[0],
-            },
-            childrens: {
-              Image: new Image({
-                attributes: chatListData[0].imageData,
-              }),
-            },
-          }),
-          new ChatListItem({
-            rootData: {
-              ...chatListData[0],
-            },
-            childrens: {
-              Image: new Image({
-                attributes: chatListData[0].imageData,
-              }),
-            },
-          }),
-          new ChatListItem({
-            rootData: {
-              ...chatListData[0],
-            },
-            childrens: {
-              Image: new Image({
-                attributes: chatListData[0].imageData,
-              }),
-            },
-          }),
-          new ChatListItem({
-            rootData: {
-              ...chatListData[0],
-            },
-            childrens: {
-              Image: new Image({
-                attributes: chatListData[0].imageData,
-              }),
-            },
-          }),
-        ],
-      },
-    });
+    // const chatList = new ChatList({
+    //   lists: {
+    //     List: [
+    //       new ChatListItem({
+    //         rootData: {
+    //           ...chatListData[0],
+    //         },
+    //         childrens: {
+    //           Image: new Image({
+    //             attributes: chatListData[0].imageData,
+    //           }),
+    //         },
+    //       }),
+    //       new ChatListItem({
+    //         rootData: {
+    //           ...chatListData[0],
+    //         },
+    //         childrens: {
+    //           Image: new Image({
+    //             attributes: chatListData[0].imageData,
+    //           }),
+    //         },
+    //       }),
+    //       new ChatListItem({
+    //         rootData: {
+    //           ...chatListData[0],
+    //         },
+    //         childrens: {
+    //           Image: new Image({
+    //             attributes: chatListData[0].imageData,
+    //           }),
+    //         },
+    //       }),
+    //       new ChatListItem({
+    //         rootData: {
+    //           ...chatListData[0],
+    //         },
+    //         childrens: {
+    //           Image: new Image({
+    //             attributes: chatListData[0].imageData,
+    //           }),
+    //         },
+    //       }),
+    //       new ChatListItem({
+    //         rootData: {
+    //           ...chatListData[0],
+    //         },
+    //         childrens: {
+    //           Image: new Image({
+    //             attributes: chatListData[0].imageData,
+    //           }),
+    //         },
+    //       }),
+    //     ],
+    //   },
+    // });
+    const chatList = new chats({});
     const headerMenu = new Menu({
       attributes: {
         optionGroupclassName: headerOptions.optionGroupclassName,
@@ -675,17 +677,17 @@ const chatListHeaderData: chatListHeaderType = {
   },
 };
 
-const chatListData: Array<chatListItemType> = new Array(15).fill({
-  imageData: {
-    alt: "аватар",
-    className: "chat_list__image",
-    src: "/avatar.jpeg",
-  },
-  message: "Привет, мир!",
-  time: "12:00",
-  unreadMessages: 5,
-  username: "Федор",
-});
+// const chatListData: Array<chatListItemType> = new Array(15).fill({
+//   imageData: {
+//     alt: "аватар",
+//     className: "chat_list__image",
+//     src: "/avatar.jpeg",
+//   },
+//   message: "Привет, мир!",
+//   time: "12:00",
+//   unreadMessages: 5,
+//   username: "Федор",
+// });
 
 const headerOptions: menuType = {
   modal: [

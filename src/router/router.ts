@@ -1,3 +1,4 @@
+import { ChatController } from "../framework/store/controllers/chatController";
 import { UserController } from "../framework/store/controllers/userController";
 import { isWindow } from "../types/typeguards";
 import ChatView from "../views/chatView";
@@ -38,6 +39,7 @@ export class Router {
     }).bind(this);
     // если пользователь уже успешно авторизован , напрявляем сразу на страницу чата
     UserController.getUser().then(() => {
+      ChatController.get_chat_list();
       // if (store.getState().user) this.go("/messenger");
       // else this._onRoute(window.location.pathname);
       this._onRoute(window.location.pathname);

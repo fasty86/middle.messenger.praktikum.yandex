@@ -25,7 +25,12 @@
 }
 
 .chat-list__name {
+  display: inline-block;
   font-weight: bold;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 180px;
 }
 
 .chat-list__message {

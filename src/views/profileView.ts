@@ -41,7 +41,6 @@ export default class ProfileView extends AbstractView {
   }
 
   protected buildComponents() {
-    console.log("build");
     const actions: Button[] = [
       new Button({
         attributes: actionButtons[0],
