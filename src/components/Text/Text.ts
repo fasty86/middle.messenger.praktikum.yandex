@@ -1,9 +1,10 @@
+import "./text.pcss";
 import Block from "../../framework/Block";
 import { STATUS } from "../../framework/store/types";
 import { PropsType } from "../../framework/types";
 import { connect } from "../../utils/connect";
 
-export default class Text extends Block {
+export default class Text extends Block<textPropsType> {
   render() {
     return `<{{Tag}} class="{{className}}">{{{text}}}</{{Tag}}>`;
   }
@@ -57,5 +58,36 @@ export const withAvatarStatus = connect<textPropsType>((state) => {
     },
   };
 });
+export const withFileUploadStatus = connect<textPropsType>((state) => {
+  const status = state.statuses.fileLoading;
+  let text = "Загрузите файл";
+  let className = "modal__title";
+  switch (status) {
+    case STATUS.LOADING:
+      text = "Загрузка...";
+      className = "modal__title loading";
+      break;
+    case STATUS.SUCCESS:
+      text = "Файл загружен";
+      className = "modal__title success";
+      break;
+    case STATUS.ERROR:
+      text = "Ошибка, попробуйте еще раз";
+      className = "modal__title error";
+      break;
+    default:
+      break;
+  }
+  return {
+    rootData: {
+      text,
+    },
+    attributes: {
+      className,
+      Tag: "h3",
+    },
+  };
+});
 export const userName = withUserName(Text);
 export const modalAvatarTitle = withAvatarStatus(Text);
+export const modalFileUploadTitle = withFileUploadStatus(Text);

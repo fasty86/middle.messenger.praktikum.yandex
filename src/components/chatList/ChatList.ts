@@ -7,7 +7,7 @@ import ChatListItem from "../chatListItem/ChatListItem";
 import Image from "../image/Image";
 import { ChatController } from "../../framework/store/controllers/chatController";
 import { getDateInfo } from "../../utils/date";
-export default class ChatList extends Block {
+export default class ChatList extends Block<ChatListPropsType> {
   render() {
     return `<main class="chat-list">
             <ul class="chat-list__container">
@@ -39,7 +39,7 @@ export const withChatList = connect<ChatListPropsType>((state) => {
         events: {
           click: async function (this: ChatListItem, _e) {
             console.log("chat clicked", this.rootData.chatId);
-            ChatController.get_active_chat_token(this.rootData.chatId as string);
+            ChatController.select_chat(this.rootData.chatId as string);
           },
         },
         childrens: {
@@ -62,13 +62,3 @@ export const withChatList = connect<ChatListPropsType>((state) => {
   return chatListItems;
 });
 export const chats = withChatList(ChatList);
-// imageData: {
-//   alt: "аватар",
-//   className: "chat_list__image",
-//   src: "/avatar.jpeg",
-// },
-// message: "Привет, мир!",
-// time: "12:00",
-// unreadMessages: 5,
-// username: "Федор",
-// });

@@ -1,61 +1,66 @@
 .footer {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
 }
 
 .footer__attach-button {
-    background-color: #fff;
-    background-image: url("/attach.svg");
-    background-repeat: no-repeat;
-    background-size: contain;
-    border: none;
-    height: 32px;
-    text-indent: -9999px;
-    width: 32px;
+  background-color: #fff;
+  background-image: url("/attach.svg");
+  background-repeat: no-repeat;
+  background-size: contain;
+  border: none;
+  height: 32px;
+  text-indent: -9999px;
+  width: 32px;
 }
 
 .footer__text-input {
-    background-color: #efefef;
-    border: none;
-    border-radius: 30px;
-    color: #999;
-    flex-grow: 1;
-    font-size: 12px;
-    height: 32px;
-    line-height: 12px;
-    outline: none;
-    padding-left: 20px;
-    text-align: start;
+  background-color: #efefef;
+  border: none;
+  border-radius: 30px;
+  color: #999;
+  flex-grow: 1;
+  font-size: 12px;
+  height: 32px;
+  line-height: 12px;
+  outline: none;
+  padding-left: 20px;
+  text-align: start;
 }
 
 .footer__send-button {
-    background-color: #3369f3;
-    background-image: url("/arrow.png");
-    background-repeat: no-repeat;
-    background-size: contain;
-    border: none;
-    border-radius: 50%;
-    height: 28px;
-    margin-left: 10px;
-    padding: 0;
-    width: 28px;
+  background-color: #3369f3;
+  background-image: url("/arrow.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  border: none;
+  border-radius: 50%;
+  height: 28px;
+  margin-left: 10px;
+  padding: 0;
+  width: 28px;
 }
 
 .footer__attach-group {
-    position: relative;
+  position: relative;
 }
 
 .footer__menu-item {
-    display: flex;
-    gap: 15px;
-    height:;
-    margin-inline: 2px;
-    padding-inline: 15px;
+  align-items: center;
+  display: flex;
+  gap: 15px;
+  height:;
+  padding-inline: 15px;
+
+  & > img {
+    height: 23px;
+    width: 23px;
+  }
 }
 
 .footer__menu-item:hover {
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgb(0 0 0 / 10%);
-    cursor: pointer;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgb(0 0 0 / 10%);
+  cursor: pointer;
 }

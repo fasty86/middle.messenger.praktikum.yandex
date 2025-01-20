@@ -22,6 +22,7 @@ const initialState: StateType = {
   chatList: [],
   statuses: {
     [ApiStatus.AVATAR]: STATUS.PENDING,
+    [ApiStatus.FILE]: STATUS.PENDING,
   },
   activeChat: null,
 };

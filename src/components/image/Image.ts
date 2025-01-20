@@ -1,10 +1,9 @@
 import "./image.pcss";
 import Block from "../../framework/Block";
-import { PropsType } from "../../framework/types";
 import { connect } from "../../utils/connect";
 import { ApiDestinations } from "../../services/api/base-api";
-export default class Image extends Block {
-  constructor(props: PropsType) {
+export default class Image extends Block<ImagePropsType> {
+  constructor(props: ImagePropsType) {
     super(props);
   }
 

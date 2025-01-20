@@ -1,7 +1,9 @@
 import { ChatAPI, ChatCreateData } from "../../../services/api/chat-api";
-import WSSTransport, { MessageTypes } from "../../../services/WSS";
+import { ResourceAPI } from "../../../services/api/resources-api";
+import WSSTransport, { Message, MessageTypes, responseMessageType } from "../../../services/WSS";
+import { DefaultObject } from "../../types";
 import store from "../Store";
-import { ChatListType } from "../types";
+import { ChatListType, STATUS } from "../types";
 
 export class ChatController {
   public static async create_chat(chat_name: string) {
@@ -11,7 +13,7 @@ export class ChatController {
     const response = await ChatAPI.add_chat(data);
     console.log(response.json(), `status:${response.status}`);
   }
-  public static async get_active_chat_token(chatId: string) {
+  public static async select_chat(chatId: string) {
     const response = await ChatAPI.get_active_chat_token(chatId);
     console.log(response.json(), `status:${response.status}`);
     if (response.ok) {
@@ -19,12 +21,13 @@ export class ChatController {
       const token = response.json<{ token: string }>();
       if (user && activeChat) {
         activeChat.socket.close();
+        activeChat.messages = [];
+        activeChat.token = "";
       }
       if (user) {
         const socket = new WSSTransport(WSSTransport.buildUrl(String(user.id), chatId, token.token));
         store.set("activeChat", { token, socket });
         ChatController.get_chat_messages(0);
-        // setTimeout(() => store.getState().activeChat.socket.close(), 5000);
       }
     }
   }
@@ -37,6 +40,12 @@ export class ChatController {
       });
     }
   }
+  public static store_chat_message(data: responseMessageType | responseMessageType[]) {
+    let messages = store.getState().activeChat?.messages || [];
+    data = Array.isArray(data) ? data.reverse() : [data];
+    messages = [...messages, ...data];
+    store.set("activeChat.messages", messages);
+  }
   public static async get_chat_list() {
     const response = await ChatAPI.get_chat_list();
     if (response.ok) {
@@ -47,4 +56,43 @@ export class ChatController {
     return response.ok;
   }
   public static close_active_chat() {}
+
+  public static async send_text_message(data: DefaultObject) {
+    const socket = store.getState()?.activeChat?.socket;
+
+    const message: Message = {
+      type: MessageTypes.MESSAGE,
+      content: data.message as string,
+    };
+    if (socket) {
+      socket.sendMessage(message);
+    }
+  }
+  public static async send_file_message(data: FormData) {
+    const socket = store.getState()?.activeChat?.socket;
+    // загружаем файл на сервер ресурсов
+    const response = await ResourceAPI.file_upload(data);
+    if (response.ok) {
+      store.set("statuses.fileLoading", STATUS.SUCCESS);
+      const responseData = response.json<FileUploadResponse>();
+      const message: Message = {
+        type: MessageTypes.FILE,
+        content: String(responseData.id),
+      };
+      if (socket) {
+        socket.sendMessage(message);
+      }
+    } else store.set("statuses.fileLoading", STATUS.ERROR);
+    return response.ok;
+  }
 }
+
+type FileUploadResponse = {
+  id: number;
+  user_id: number;
+  path: string;
+  filename: string;
+  content_type: string;
+  content_size: number;
+  upload_date: string;
+};

@@ -1,3 +1,5 @@
+import { ChatController } from "../framework/store/controllers/chatController";
+
 class WSSTransport {
   private socket: WebSocket | null = null;
   private url: string;
@@ -23,17 +25,20 @@ class WSSTransport {
 
     this.socket.onopen = () => {
       console.log("соединение установлено");
-      this.sendMessage({ type: MessageTypes.MESSAGE, content: "Мое первое сообщение" });
+      // this.sendMessage({ type: MessageTypes.MESSAGE, content: "Мое первое сообщение" });
       this.startPing();
     };
 
     this.socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      if (data.type === "pong") {
+      if (data.type === MessageTypes.PONG) {
         console.log("пинг от сервера", event);
         this.resetPing();
-      } else {
-        // console.log("Получено сообщение:", event.data);
+      } else if (data.type === MessageTypes.MESSAGE || data.type === MessageTypes.FILE) {
+        ChatController.store_chat_message(data);
+      } else if (Array.isArray(data)) {
+        console.log("Получены непрочитанные сообщения");
+        ChatController.store_chat_message(data);
       }
     };
 

@@ -1,26 +1,38 @@
 .chat-area__body {
-    display: flex;
-    flex-basis: 610px;
-    flex-direction: column;
-    justify-content: space-between;
+  display: flex;
+  flex-basis: 610px;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .chat-area__message-date {
-    color: var(--chat-data-elements-color);
-    font-size: 12px;
-    font-weight: bold;
-    line-height: 12px;
-    margin-top: 10px;
+  color: var(--chat-data-elements-color);
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 12px;
+  margin-top: 10px;
 }
 
 .chat-area__message-container {
-    align-items: start;
-    border-bottom: 1px solid #eaeaea;
-    display: flex;
-    flex-direction: column;
-    height: 550px;
-    justify-content: space-around;
-    overflow-y: auto;
-    scrollbar-color: var(--active-elem-color) var(--background-color);
-    scrollbar-width: thin;
+  align-items: start;
+  border-bottom: 1px solid #eaeaea;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  height: 550px;
+  justify-content: space-around;
+  overflow-y: auto;
+  padding-right: 1rem;
+  scroll-behavior: smooth;
+  scrollbar-color: var(--active-elem-color) var(--background-color);
+  scrollbar-width: thin;
+}
+
+.chat-area__message-container > div:last-child {
+  margin-bottom: 1rem;
+}
+
+.chat-area__message-container > div {
+  max-height: 200px;
+  max-width: 200px;
 }

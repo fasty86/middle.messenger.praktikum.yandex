@@ -5,8 +5,8 @@ import Tooltip from "../tooltip/Tooltip";
 import { isInputElement } from "../../types/typeguards";
 import { connect } from "../../utils/connect";
 
-export default class Input extends Block {
-  constructor(props: PropsType) {
+export default class Input extends Block<InputPropsType> {
+  constructor(props: InputPropsType) {
     super(props);
   }
   showTooltip() {

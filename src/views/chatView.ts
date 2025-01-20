@@ -2,12 +2,12 @@ import AbstractView from "./abstractView";
 import * as Pages from "../pages/index.ts";
 import {
   chatListHeaderType,
-  chatListItemType,
+  // chatListItemType,
   menuType,
   headerInfoType,
-  messageType,
+  // messageType,
   footerType,
-  imageType,
+  // imageType,
   buttonType,
   modalType,
 } from "../types/components.ts";
@@ -25,21 +25,22 @@ import Button from "../components/button/Button.ts";
 import Modal from "../components/modal/Modal.ts";
 import FormGroup from "../components/formGroup/FormGroup.ts";
 import Label from "../components/label/Label.ts";
-import ChatAreaBody from "../components/chatAreaBody/ChatAreaBody.ts";
-import Message from "../components/message/Message.ts";
+// import ChatAreaBody, { MessageListWithData } from "../components/chatAreaBody/ChatAreaBody.ts";
+// import Message from "../components/message/Message.ts";
 import ChatFooter from "../components/chatFooter/ChatFooter.ts";
 import { NavigationComponent } from "../components/util/Navigation.ts";
 import Form from "../components/form/Form.ts";
 import Tooltip from "../components/tooltip/Tooltip.ts";
 import { isInputElement } from "../types/typeguards.ts";
 import { Validator } from "../utils/Validator.ts";
-import Text, { userName } from "../components/Text/Text.ts";
+import Text, { modalFileUploadTitle, userName } from "../components/Text/Text.ts";
 import { router } from "../router/router.ts";
 import store from "../framework/store/Store.ts";
 // import { UserController } from "../framework/store/controllers/userController.ts";
 import { closeModalOutside } from "../utils/modals.ts";
 import { ChatController } from "../framework/store/controllers/chatController.ts";
 import { chats } from "../components/chatList/ChatList.ts";
+import { MessageListWithData } from "../components/chatAreaBody/ChatAreaBody.ts";
 
 export default class ChatView extends AbstractView {
   constructor(protected root: HTMLElement) {
@@ -51,6 +52,93 @@ export default class ChatView extends AbstractView {
     this.root.replaceChildren(this.block.getContent());
   }
   protected buildComponents() {
+    const uploadFileModal = new Modal({
+      attributes: {
+        id: uploadFileModel.id,
+      },
+      childrens: {
+        Form: new Form({
+          attributes: {
+            formClassName: "login__form modal__form",
+          },
+          events: {
+            submit: async function (this: Form, e) {
+              e.preventDefault();
+              const isValid = this.validateForm();
+              if (isValid) {
+                const file: File = new FormData(e.target as HTMLFormElement).get("file") as File;
+                const formData = new FormData();
+                formData.append("resource", file);
+                await ChatController.send_file_message(formData);
+              }
+            },
+          },
+          lists: {
+            Elements: [
+              new FormGroup({
+                childrens: {
+                  Input: new Input({
+                    attributes: uploadFileModel.formGroup.input,
+                    events: {
+                      change: function (this: Input, e) {
+                        e.preventDefault();
+                      },
+                      blur: function (this: Input, e) {
+                        e.preventDefault();
+                        this.validate(Validator.validateMessage);
+                      },
+                      focus: function (this: Input) {
+                        this.hideTooltip();
+                      },
+                      keyup: function (this: Input, e) {
+                        if (isInputElement(e.target)) {
+                          this.setAtrributies({
+                            value: e.target.value ? "nonempty" : "",
+                          });
+                        }
+                      },
+                    },
+                    childrens: {
+                      Tooltip: new Tooltip({
+                        rootData: {
+                          text: "пустой путь к файлу",
+                        },
+                        attributes: {
+                          className: "tooltip__modal",
+                        },
+                      }),
+                    },
+                  }),
+                  Label: new Label({
+                    attributes: uploadFileModel.formGroup.label,
+                  }),
+                },
+                events: {
+                  change: function (this: FormGroup, e) {
+                    if (isInputElement(e.target)) {
+                      const path = e.target.value.split("\\").pop();
+                      const label = this.childrens.Label;
+                      label.setAtrributies({ text: String(path) });
+                    }
+                  },
+                },
+              }),
+            ],
+          },
+          childrens: {
+            Button: new Button({
+              attributes: uploadFileModel.button,
+              events: {
+                submit: (e) => {
+                  e.preventDefault();
+                },
+              },
+            }),
+          },
+        }),
+        Title: new modalFileUploadTitle({}) as Text,
+      },
+    });
     const addChatModal = new Modal({
       attributes: {
         id: addChatConfig.modal.id,
@@ -108,15 +196,6 @@ export default class ChatView extends AbstractView {
                   Label: new Label({
                     attributes: addChatConfig.modal.formGroup.label,
                   }),
-                },
-                events: {
-                  change: function (this: FormGroup, _e) {
-                    // if (isInputElement(e.target)) {
-                    //   const path = e.target.value.split("\\").pop();
-                    //   const label = this.childrens.Label;
-                    //   label.setAtrributies({ text: String(path) });
-                    // }
-                  },
                 },
               }),
             ],
@@ -178,62 +257,7 @@ export default class ChatView extends AbstractView {
         CreateChatModal: addChatModal,
       },
     });
-    // const chatList = new ChatList({
-    //   lists: {
-    //     List: [
-    //       new ChatListItem({
-    //         rootData: {
-    //           ...chatListData[0],
-    //         },
-    //         childrens: {
-    //           Image: new Image({
-    //             attributes: chatListData[0].imageData,
-    //           }),
-    //         },
-    //       }),
-    //       new ChatListItem({
-    //         rootData: {
-    //           ...chatListData[0],
-    //         },
-    //         childrens: {
-    //           Image: new Image({
-    //             attributes: chatListData[0].imageData,
-    //           }),
-    //         },
-    //       }),
-    //       new ChatListItem({
-    //         rootData: {
-    //           ...chatListData[0],
-    //         },
-    //         childrens: {
-    //           Image: new Image({
-    //             attributes: chatListData[0].imageData,
-    //           }),
-    //         },
-    //       }),
-    //       new ChatListItem({
-    //         rootData: {
-    //           ...chatListData[0],
-    //         },
-    //         childrens: {
-    //           Image: new Image({
-    //             attributes: chatListData[0].imageData,
-    //           }),
-    //         },
-    //       }),
-    //       new ChatListItem({
-    //         rootData: {
-    //           ...chatListData[0],
-    //         },
-    //         childrens: {
-    //           Image: new Image({
-    //             attributes: chatListData[0].imageData,
-    //           }),
-    //         },
-    //       }),
-    //     ],
-    //   },
-    // });
+
     const chatList = new chats({});
     const headerMenu = new Menu({
       attributes: {
@@ -474,38 +498,8 @@ export default class ChatView extends AbstractView {
         ModalList: modals,
       },
     });
-    const chatAreaBody = new ChatAreaBody({
-      rootData: {
-        currentDate: " 14 января",
-      },
-      lists: {
-        MessageList: [
-          new Message({
-            rootData: {
-              date: messages[0].date,
-            },
-            childrens: {
-              Content: new Text({
-                rootData: {
-                  text: messages[0].content as string,
-                },
-              }),
-            },
-          }),
-          new Message({
-            rootData: {
-              date: messages[1].date,
-              contentType: messages[1].contentType,
-            },
-            childrens: {
-              Content: new Image({
-                attributes: messages[1].content as imageType,
-              }),
-            },
-          }),
-        ],
-      },
-    });
+
+    const chatAreaBody = new MessageListWithData({});
     const footerMenu = new Menu({
       attributes: {
         optionGroupclassName: footerData.menu.optionGroupclassName,
@@ -525,6 +519,13 @@ export default class ChatView extends AbstractView {
               Image: new Image({
                 attributes: footerData.menu.items[0].imageData,
               }),
+            },
+            events: {
+              click: () => {
+                const dialog = document.querySelector("#modal_upload_file_id") as HTMLDialogElement;
+                super.closeModalOutside(dialog);
+                dialog.showModal();
+              },
             },
           }),
           new Option({
@@ -575,9 +576,18 @@ export default class ChatView extends AbstractView {
         Menu: footerMenu,
         Form: new Form({
           events: {
-            submit: function (this: Form, e) {
+            submit: async function (this: Form, e) {
               e.preventDefault();
-              this.validateForm();
+              const isValid = this.validateForm();
+              if (isValid) {
+                const form = e.target as HTMLFormElement;
+                const formData = new FormData(form);
+                const payload = Object.fromEntries(formData.entries());
+                await ChatController.send_text_message(payload);
+                const formGroup = this.lists.Elements[0] as FormGroup;
+                form.reset();
+                if (formGroup.childrens.Input._element) formGroup.childrens.Input._element.setAttribute("value", "");
+              }
             },
           },
 
@@ -603,9 +613,7 @@ export default class ChatView extends AbstractView {
                       },
                       keyup: function (this: Input, e) {
                         if (isInputElement(e.target)) {
-                          this.setAtrributies({
-                            value: e.target.value ? "nonempty" : "",
-                          });
+                          e.target.setAttribute("value", e.target.value);
                         }
                       },
                     },
@@ -630,6 +638,9 @@ export default class ChatView extends AbstractView {
             }),
           },
         }),
+      },
+      lists: {
+        ModalList: [uploadFileModal],
       },
     });
     const page = new Pages.ChatPage({
@@ -676,18 +687,6 @@ const chatListHeaderData: chatListHeaderType = {
     value: "",
   },
 };
-
-// const chatListData: Array<chatListItemType> = new Array(15).fill({
-//   imageData: {
-//     alt: "аватар",
-//     className: "chat_list__image",
-//     src: "/avatar.jpeg",
-//   },
-//   message: "Привет, мир!",
-//   time: "12:00",
-//   unreadMessages: 5,
-//   username: "Федор",
-// });
 
 const headerOptions: menuType = {
   modal: [
@@ -788,22 +787,21 @@ const headerInfo: headerInfoType = {
   userData: "Федор",
 };
 
-const messages: messageType[] = [
-  {
-    contentType: "text",
-    content: "Lorem ipsum dolor sit amet, consectetur adipisic,Lorem ipsum dolor sit amet, consectetur adipisic",
-    date: "11:56",
-  },
-  {
-    contentType: "image",
-    content: {
-      alt: "изображение",
-      src: "/photo.png",
-      className: "chat-area__message-image",
-    },
-    date: "13:55",
-  },
-];
+//   {
+//     contentType: "text",
+//     content: "Lorem ipsum dolor sit amet, consectetur adipisic,Lorem ipsum dolor sit amet, consectetur adipisic",
+//     date: "11:56",
+//   },
+//   {
+//     contentType: "image",
+//     content: {
+//       alt: "изображение",
+//       src: "/photo.png",
+//       className: "chat-area__message-image",
+//     },
+//     date: "13:55",
+//   },
+// ];
 
 const footerData: footerType = {
   button: {
@@ -905,6 +903,33 @@ const addChatConfig: {
         forAttr: "add_chat_input_id",
         text: "Имя чата",
       },
+    },
+  },
+};
+const uploadFileModel: modalType = {
+  id: "modal_upload_file_id",
+  button: {
+    className: "button form__login-button modal__button",
+    disabled: "",
+    id: "upload_file_button_id",
+    text: "Загрузить",
+    type: "submit",
+  },
+  title: "Загрузите файл",
+  formGroup: {
+    input: {
+      className: "upload-file__input",
+      id: "upload_file_input_id",
+      name: "file",
+      placeholder: "",
+      type: "file",
+      value: "",
+      disabled: "",
+    },
+    label: {
+      className: "upload-avatar__label",
+      forAttr: "upload_file_input_id",
+      text: "Выбрать файл  ",
     },
   },
 };
