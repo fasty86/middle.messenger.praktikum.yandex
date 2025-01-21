@@ -4,6 +4,7 @@ import WSSTransport, { Message, MessageTypes, responseMessageType } from "../../
 import { DefaultObject } from "../../types";
 import store from "../Store";
 import { ChatListType, STATUS } from "../types";
+import { UserController } from "./userController";
 
 export class ChatController {
   public static async create_chat(chat_name: string) {
@@ -23,10 +24,11 @@ export class ChatController {
         activeChat.socket.close();
         activeChat.messages = [];
         activeChat.token = "";
+        activeChat.chatId = null;
       }
       if (user) {
         const socket = new WSSTransport(WSSTransport.buildUrl(String(user.id), chatId, token.token));
-        store.set("activeChat", { token, socket });
+        store.set("activeChat", { token, socket, chatId });
         ChatController.get_chat_messages(0);
       }
     }
@@ -85,6 +87,36 @@ export class ChatController {
     } else store.set("statuses.fileLoading", STATUS.ERROR);
     return response.ok;
   }
+  public static async add_user_to_chat(login: string) {
+    const activeChat = store.getState().activeChat;
+    const userId = await UserController.search_user(login);
+    if (userId) {
+      const data: AddUserToChat = {
+        users: [userId],
+        chatId: activeChat?.chatId || 0,
+      };
+      const response = await ChatAPI.add_user_to_chat(data);
+      if (response.ok) store.set("statuses.userAdding", STATUS.SUCCESS);
+      else store.set("statuses.userAdding", STATUS.ERROR);
+      return response.ok;
+    }
+    return false;
+  }
+  public static async delete_user_from_chat(login: string) {
+    const activeChat = store.getState().activeChat;
+    const userId = await UserController.search_user(login);
+    if (userId) {
+      const data: AddUserToChat = {
+        users: [userId],
+        chatId: activeChat?.chatId || 0,
+      };
+      const response = await ChatAPI.delete_user_from_chat(data);
+      if (response.ok) store.set("statuses.userDeleting", STATUS.SUCCESS);
+      else store.set("statuses.userDeleting", STATUS.ERROR);
+      return response.ok;
+    }
+    return false;
+  }
 }
 
 type FileUploadResponse = {
@@ -95,4 +127,9 @@ type FileUploadResponse = {
   content_type: string;
   content_size: number;
   upload_date: string;
+};
+
+export type AddUserToChat = {
+  users: number[];
+  chatId?: number;
 };

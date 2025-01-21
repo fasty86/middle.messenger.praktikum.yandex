@@ -40,9 +40,7 @@ export default class RegistrationView extends AbstractView {
               },
               keyup: function (this: Input, e) {
                 if (isInputElement(e.target)) {
-                  this.setAtrributies({
-                    value: e.target.value ? "nonempty" : "",
-                  });
+                  e.target.setAttribute("value", e.target.value);
                 }
               },
             },
@@ -74,9 +72,7 @@ export default class RegistrationView extends AbstractView {
               },
               keyup: function (this: Input, e) {
                 if (isInputElement(e.target)) {
-                  this.setAtrributies({
-                    value: e.target.value ? "nonempty" : "",
-                  });
+                  e.target.setAttribute("value", e.target.value);
                 }
               },
             },
@@ -108,9 +104,7 @@ export default class RegistrationView extends AbstractView {
               },
               keyup: function (this: Input, e) {
                 if (isInputElement(e.target)) {
-                  this.setAtrributies({
-                    value: e.target.value ? "nonempty" : "",
-                  });
+                  e.target.setAttribute("value", e.target.value);
                 }
               },
             },
@@ -142,9 +136,7 @@ export default class RegistrationView extends AbstractView {
               },
               keyup: function (this: Input, e) {
                 if (isInputElement(e.target)) {
-                  this.setAtrributies({
-                    value: e.target.value ? "nonempty" : "",
-                  });
+                  e.target.setAttribute("value", e.target.value);
                 }
               },
             },
@@ -176,9 +168,7 @@ export default class RegistrationView extends AbstractView {
               },
               keyup: function (this: Input, e) {
                 if (isInputElement(e.target)) {
-                  this.setAtrributies({
-                    value: e.target.value ? "nonempty" : "",
-                  });
+                  e.target.setAttribute("value", e.target.value);
                 }
               },
             },
@@ -210,9 +200,7 @@ export default class RegistrationView extends AbstractView {
               },
               keyup: function (this: Input, e) {
                 if (isInputElement(e.target)) {
-                  this.setAtrributies({
-                    value: e.target.value ? "nonempty" : "",
-                  });
+                  e.target.setAttribute("value", e.target.value);
                 }
               },
             },
@@ -244,9 +232,7 @@ export default class RegistrationView extends AbstractView {
               },
               keyup: function (this: Input, e) {
                 if (isInputElement(e.target)) {
-                  this.setAtrributies({
-                    value: e.target.value ? "nonempty" : "",
-                  });
+                  e.target.setAttribute("value", e.target.value);
                 }
               },
             },

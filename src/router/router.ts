@@ -38,8 +38,14 @@ export class Router {
       if (isWindow(event.currentTarget)) this._onRoute(event.currentTarget.location.pathname);
     }).bind(this);
     // если пользователь уже успешно авторизован , напрявляем сразу на страницу чата
-    UserController.getUser().then(() => {
-      ChatController.get_chat_list();
+    UserController.getUser().then((status) => {
+      if (status) {
+        ChatController.get_chat_list();
+        // setInterval(() => {
+        //   ChatController.get_chat_list();
+        // }, 5000);
+      }
+
       // if (store.getState().user) this.go("/messenger");
       // else this._onRoute(window.location.pathname);
       this._onRoute(window.location.pathname);

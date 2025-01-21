@@ -1,18 +1,20 @@
 .chat-list__item {
   border-top: 1px solid var(--underline-color);
   display: flex;
-
-  /* width: 290px; */
   height: 67px;
   justify-content: space-between;
   padding-top: 12px;
 
-  /* padding-right: 10px; */
   &:hover {
     background-color: var(--active-elem-color);
     box-shadow: 0 0 10px rgb(0 0 0 / 10%);
     cursor: pointer;
   }
+}
+
+.chat-list__item-active {
+  background-color: var(--active-elem-color);
+  box-shadow: 0 0 10px rgb(0 0 0 / 10%);
 }
 
 .chat-list__info {

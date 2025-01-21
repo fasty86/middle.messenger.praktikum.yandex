@@ -31,4 +31,14 @@ export class UserAPI extends BaseAPI {
       credentials: true,
     });
   }
+  static async search_user(login: { login: string }) {
+    return userApiInstance.post("/search", {
+      data: login,
+      credentials: true,
+      headers: {
+        "Content-Type": "application/json",
+        accept: "application/json",
+      },
+    });
+  }
 }

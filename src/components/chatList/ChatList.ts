@@ -25,6 +25,7 @@ type ChatListPropsType = PropsType & {
 
 export const withChatList = connect<ChatListPropsType>((state) => {
   const chatList = state.chatList;
+  const activeChatID = state.activeChat?.chatId || 0;
   let items: ChatListItem[] = [];
   if (chatList.length) {
     items = chatList.map((chat) => {
@@ -35,11 +36,11 @@ export const withChatList = connect<ChatListPropsType>((state) => {
           unreadMessages: chat.unread_count || 0,
           username: chat.title,
           chatId: chat.id,
+          className: chat.id === activeChatID ? "chat-list__item-active" : "",
         },
         events: {
           click: async function (this: ChatListItem, _e) {
-            console.log("chat clicked", this.rootData.chatId);
-            ChatController.select_chat(this.rootData.chatId as string);
+            await ChatController.select_chat(this.rootData.chatId as string);
           },
         },
         childrens: {

@@ -39,6 +39,8 @@ export enum STATUS {
 export enum ApiStatus {
   AVATAR = "avatarLoading",
   FILE = "fileLoading",
+  USER_ADD = "userAdding",
+  USER_DELETE = "userDeleting",
 }
 
 export type ChatInfoType = {

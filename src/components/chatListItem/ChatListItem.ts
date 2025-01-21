@@ -4,7 +4,7 @@ import { PropsType } from "../../framework/types";
 import Image from "../image/Image";
 export default class ChatListItem extends Block<ChatListItemPropsType> {
   render() {
-    return `<li class="chat-list__item">
+    return `<li class="chat-list__item {{className}}">
               {{{Image}}}
                 <div class="chat-list__info">
                   <span class="chat-list__name">{{username}}</span>
@@ -25,6 +25,7 @@ type ChatListItemPropsType = PropsType & {
     message: string;
     time: string;
     unreadMessages: number;
+    className?: string;
   };
   childrens: {
     Image: Image;

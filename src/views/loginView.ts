@@ -93,8 +93,6 @@ export default class LoginView extends AbstractView {
     const form = new Form({
       events: {
         submit: async function (this: Form, e) {
-          console.log("sbsf");
-
           e.preventDefault();
           const isValid = this.validateForm();
           if (isValid) {

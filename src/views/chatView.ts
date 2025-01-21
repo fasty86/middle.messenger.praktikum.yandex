@@ -33,7 +33,12 @@ import Form from "../components/form/Form.ts";
 import Tooltip from "../components/tooltip/Tooltip.ts";
 import { isInputElement } from "../types/typeguards.ts";
 import { Validator } from "../utils/Validator.ts";
-import Text, { modalFileUploadTitle, userName } from "../components/Text/Text.ts";
+import Text, {
+  modalFileUploadTitle,
+  modalUserAddTitle,
+  modalUserDeleteTitle,
+  userName,
+} from "../components/Text/Text.ts";
 import { router } from "../router/router.ts";
 import store from "../framework/store/Store.ts";
 // import { UserController } from "../framework/store/controllers/userController.ts";
@@ -330,9 +335,18 @@ export default class ChatView extends AbstractView {
         childrens: {
           Form: new Form({
             events: {
-              submit: function (this: Form, e) {
+              submit: async function (this: Form, e) {
                 e.preventDefault();
-                this.validateForm();
+                const isValid = this.validateForm();
+                if (isValid) {
+                  const form = e.target as HTMLFormElement;
+                  const formData = new FormData(form);
+                  const login = formData.get("login") as string;
+                  await ChatController.add_user_to_chat(login || "");
+                  const formGroup = this.lists.Elements[0] as FormGroup;
+                  form.reset();
+                  if (formGroup.childrens.Input._element) formGroup.childrens.Input._element.setAttribute("value", "");
+                }
               },
             },
             attributes: {
@@ -354,9 +368,7 @@ export default class ChatView extends AbstractView {
                         },
                         keyup: function (this: Input, e) {
                           if (isInputElement(e.target)) {
-                            this.setAtrributies({
-                              value: e.target.value ? "nonempty" : "",
-                            });
+                            e.target.setAttribute("value", e.target.value);
                           }
                         },
                       },
@@ -389,15 +401,7 @@ export default class ChatView extends AbstractView {
               }),
             },
           }),
-          Title: new Text({
-            rootData: {
-              text: headerOptions.modal[0].title,
-            },
-            attributes: {
-              Tag: "p",
-              className: "modal__title",
-            },
-          }),
+          Title: new modalUserAddTitle({}),
         },
       }),
       new Modal({
@@ -407,9 +411,18 @@ export default class ChatView extends AbstractView {
         childrens: {
           Form: new Form({
             events: {
-              submit: function (this: Form, e) {
+              submit: async function (this: Form, e) {
                 e.preventDefault();
-                this.validateForm();
+                const isValid = this.validateForm();
+                if (isValid) {
+                  const form = e.target as HTMLFormElement;
+                  const formData = new FormData(form);
+                  const login = formData.get("login") as string;
+                  await ChatController.delete_user_from_chat(login || "");
+                  const formGroup = this.lists.Elements[0] as FormGroup;
+                  form.reset();
+                  if (formGroup.childrens.Input._element) formGroup.childrens.Input._element.setAttribute("value", "");
+                }
               },
             },
             attributes: {
@@ -431,9 +444,7 @@ export default class ChatView extends AbstractView {
                         },
                         keyup: function (this: Input, e) {
                           if (isInputElement(e.target)) {
-                            this.setAtrributies({
-                              value: e.target.value ? "nonempty" : "",
-                            });
+                            e.target.setAttribute("value", e.target.value);
                           }
                         },
                       },
@@ -466,15 +477,7 @@ export default class ChatView extends AbstractView {
               }),
             },
           }),
-          Title: new Text({
-            rootData: {
-              text: headerOptions.modal[1].title,
-            },
-            attributes: {
-              Tag: "p",
-              className: "modal__title",
-            },
-          }),
+          Title: new modalUserDeleteTitle({}),
         },
       }),
     ];
@@ -525,6 +528,7 @@ export default class ChatView extends AbstractView {
                 const dialog = document.querySelector("#modal_upload_file_id") as HTMLDialogElement;
                 super.closeModalOutside(dialog);
                 dialog.showModal();
+                document.querySelector(".footer__attach-menu")?.classList.toggle("hidden");
               },
             },
           }),

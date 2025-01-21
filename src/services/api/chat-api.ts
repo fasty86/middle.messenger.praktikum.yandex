@@ -1,3 +1,4 @@
+import { AddUserToChat } from "../../framework/store/controllers/chatController";
 import { HTTPTransport } from "../XHR";
 import { BaseAPI } from "./base-api";
 
@@ -26,6 +27,26 @@ export class ChatAPI extends BaseAPI {
   }
   static async get_active_chat_token(chatId: string) {
     return chatAPIInstance.post(`/token/${chatId}`, {
+      credentials: true,
+      headers: {
+        "Content-Type": "application/json",
+        accept: "application/json",
+      },
+    });
+  }
+  static async add_user_to_chat(data: AddUserToChat) {
+    return chatAPIInstance.put(`/users`, {
+      data,
+      credentials: true,
+      headers: {
+        "Content-Type": "application/json",
+        accept: "application/json",
+      },
+    });
+  }
+  static async delete_user_from_chat(data: AddUserToChat) {
+    return chatAPIInstance.delete(`/users`, {
+      data,
       credentials: true,
       headers: {
         "Content-Type": "application/json",

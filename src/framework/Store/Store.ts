@@ -11,6 +11,7 @@ export type StateType = {
   };
   chatList: ChatListType;
   activeChat: {
+    chatId: number | null;
     token: string;
     socket: WSSTransport;
     messages: responseMessageType[];
@@ -23,6 +24,8 @@ const initialState: StateType = {
   statuses: {
     [ApiStatus.AVATAR]: STATUS.PENDING,
     [ApiStatus.FILE]: STATUS.PENDING,
+    [ApiStatus.USER_ADD]: STATUS.PENDING,
+    [ApiStatus.USER_DELETE]: STATUS.PENDING,
   },
   activeChat: null,
 };

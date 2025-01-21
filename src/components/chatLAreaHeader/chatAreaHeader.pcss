@@ -38,7 +38,7 @@
 }
 
 .chat-area__header-options::after {
-  content: '\2807';
+  content: "\2807";
   font-size: 20px;
 }
 
@@ -62,11 +62,16 @@
 }
 
 .header__menu-item {
+  align-items: center;
   display: flex;
   gap: 15px;
-  height: ;
-  margin-inline: 2px;
+  height:;
   padding-inline: 15px;
+
+  & > img {
+    height: 23px;
+    width: 23px;
+  }
 }
 
 .header__menu-item:hover {

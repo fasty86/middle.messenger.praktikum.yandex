@@ -58,6 +58,66 @@ export const withAvatarStatus = connect<textPropsType>((state) => {
     },
   };
 });
+export const withUserDeleteloadStatus = connect<textPropsType>((state) => {
+  const status = state.statuses.userAdding;
+  let text = "Введите логин пользователя";
+  let className = "modal__title";
+  switch (status) {
+    case STATUS.LOADING:
+      text = "Обработка...";
+      className = "modal__title loading";
+      break;
+    case STATUS.SUCCESS:
+      text = "Пользователь удален из чата";
+      className = "modal__title success";
+      break;
+    case STATUS.ERROR:
+      text = "Ошибка, попробуйте еще раз";
+      className = "modal__title error";
+      break;
+    default:
+      break;
+  }
+  return {
+    rootData: {
+      text,
+    },
+    attributes: {
+      className,
+      Tag: "h3",
+    },
+  };
+});
+export const withUserAddloadStatus = connect<textPropsType>((state) => {
+  const status = state.statuses.userAdding;
+  let text = "Введите логин пользователя";
+  let className = "modal__title";
+  switch (status) {
+    case STATUS.LOADING:
+      text = "Обработка...";
+      className = "modal__title loading";
+      break;
+    case STATUS.SUCCESS:
+      text = "Пользователь добавлен в чат";
+      className = "modal__title success";
+      break;
+    case STATUS.ERROR:
+      text = "Ошибка, попробуйте еще раз";
+      className = "modal__title error";
+      break;
+    default:
+      break;
+  }
+  return {
+    rootData: {
+      text,
+    },
+    attributes: {
+      className,
+      Tag: "h3",
+    },
+  };
+});
 export const withFileUploadStatus = connect<textPropsType>((state) => {
   const status = state.statuses.fileLoading;
   let text = "Загрузите файл";
@@ -91,3 +151,5 @@ export const withFileUploadStatus = connect<textPropsType>((state) => {
 export const userName = withUserName(Text);
 export const modalAvatarTitle = withAvatarStatus(Text);
 export const modalFileUploadTitle = withFileUploadStatus(Text);
+export const modalUserAddTitle = withUserAddloadStatus(Text);
+export const modalUserDeleteTitle = withUserDeleteloadStatus(Text);
