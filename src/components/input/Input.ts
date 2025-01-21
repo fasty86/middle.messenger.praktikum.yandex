@@ -48,25 +48,39 @@ export type InputPropsType = PropsType & {
   };
 };
 export const withUserFisrtName = connect<InputPropsType>((state) => {
-  return { attributes: { value: state.user?.first_name ?? "Guest" } };
+  const storedState = state.user || {};
+  const component = { attributes: { value: state.user?.first_name ?? "Guest" } };
+  return { storedState, component };
 });
 export const withUserSecondName = connect<InputPropsType>((state) => {
-  return { attributes: { value: state.user?.second_name ?? "" } };
+  const storedState = state.user || {};
+  const component = { attributes: { value: state.user?.second_name ?? "" } };
+  return { storedState, component };
 });
 export const withUserEmail = connect<InputPropsType>((state) => {
-  return { attributes: { value: state.user?.email ?? "" } };
+  const storedState = state.user || {};
+  const component = { attributes: { value: state.user?.email ?? "" } };
+  return { storedState, component };
 });
 export const withUserLogin = connect<InputPropsType>((state) => {
-  return { attributes: { value: state.user?.login ?? "" } };
+  const storedState = state.user || {};
+  const component = { attributes: { value: state.user?.login ?? "" } };
+  return { storedState, component };
 });
 export const withUserPhone = connect<InputPropsType>((state) => {
-  return { attributes: { value: state.user?.phone ?? "" } };
+  const storedState = state.user || {};
+  const component = { attributes: { value: state.user?.phone ?? "" } };
+  return { storedState, component };
 });
 export const withUserDispayName = connect<InputPropsType>((state) => {
-  return { attributes: { value: state.user?.display_name ?? "" } };
+  const storedState = state.user || {};
+  const component = { attributes: { value: state.user?.display_name ?? "" } };
+  return { storedState, component };
 });
 export const withUserPassword = connect<InputPropsType>((state) => {
-  return { attributes: { value: state.user?.password ?? "" } };
+  const storedState = state.user || {};
+  const component = { attributes: { value: state.user?.password ?? "" } };
+  return { storedState, component };
 });
 export const userFirstName = withUserFisrtName(Input);
 export const userSecondName = withUserSecondName(Input);

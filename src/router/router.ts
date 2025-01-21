@@ -41,9 +41,9 @@ export class Router {
     UserController.getUser().then((status) => {
       if (status) {
         ChatController.get_chat_list();
-        // setInterval(() => {
-        //   ChatController.get_chat_list();
-        // }, 5000);
+        setInterval(() => {
+          ChatController.get_chat_list();
+        }, 5000);
       }
 
       // if (store.getState().user) this.go("/messenger");

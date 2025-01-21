@@ -1,6 +1,6 @@
 import "./image.pcss";
 import Block from "../../framework/Block";
-import { connect } from "../../utils/connect";
+import { connect, MapStateReturnType } from "../../utils/connect";
 import { ApiDestinations } from "../../services/api/base-api";
 export default class Image extends Block<ImagePropsType> {
   constructor(props: ImagePropsType) {
@@ -24,10 +24,12 @@ export type ImagePropsType = {
 };
 
 export const withUserAvatar = connect<ImagePropsType>((state) => {
-  return {
+  const storedState = state.user;
+  const component = {
     attributes: {
       src: state.user?.avatar ? `${ApiDestinations.RESOURCES}${state.user?.avatar}` : "/avatar_default.png",
     },
   };
+  return { storedState, component } as unknown as MapStateReturnType;
 });
 export const userAvatar = withUserAvatar(Image);

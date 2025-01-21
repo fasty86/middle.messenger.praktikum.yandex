@@ -25,21 +25,29 @@ import { merge } from "./merge";
 interface Constructor<T, K> {
   new (props: T): K;
 }
-export function connect<T extends PropsType = PropsType>(mapStateToProps: (state: StateType) => DefaultObject) {
+export type MapStateReturnType = {
+  storedState: DefaultObject;
+  component: DefaultObject;
+};
+export type MapStateFn = (state: StateType) => MapStateReturnType;
+// export type MapStateFn = (state: StateType) => DefaultObject;
+export function connect<T extends PropsType = PropsType>(mapStateToProps: MapStateFn) {
   return function <K extends Block<T>>(Component: Constructor<T, K>) {
     return class extends (Component as Constructor<T, Block<T>>) {
       constructor(props: T) {
-        let state = { ...mapStateToProps(store.getState()) };
-        super({ ...(merge(props, mapStateToProps(store.getState())) as T) });
+        let state = { ...mapStateToProps(store.getState()).storedState };
+        // let state = { ...mapStateToProps(store.getState()) };
+        super({ ...(merge(props, mapStateToProps(store.getState()).component) as T) });
 
         // подписываемся на событие
         store.on(StoreEvents.Updated, () => {
-          const newState = mapStateToProps(store.getState());
+          const { component, storedState } = mapStateToProps(store.getState());
+          const newState = storedState;
           // вызываем обновление компонента, передав данные из хранилища
           if (!isEqual(state, newState)) {
             console.log("Not equal", state, newState);
             state = newState;
-            this.setProps({ ...newState });
+            this.setProps({ ...component });
           }
         });
       }

@@ -22,13 +22,16 @@ type textPropsType = PropsType & {
 };
 
 export const withUserName = connect<textPropsType>((state) => {
-  return {
+  const storedState = state.user || {};
+  const component = {
     rootData: {
       text: state.user?.display_name ?? state.user?.first_name ?? "Guest",
     },
   };
+  return { storedState, component };
 });
 export const withAvatarStatus = connect<textPropsType>((state) => {
+  const storedState = state.statuses;
   const status = state.statuses.avatarLoading;
   let text = "Загрузите файл";
   let className = "modal__title";
@@ -48,7 +51,7 @@ export const withAvatarStatus = connect<textPropsType>((state) => {
     default:
       break;
   }
-  return {
+  const component = {
     rootData: {
       text,
     },
@@ -57,8 +60,10 @@ export const withAvatarStatus = connect<textPropsType>((state) => {
       Tag: "h3",
     },
   };
+  return { storedState, component };
 });
 export const withUserDeleteloadStatus = connect<textPropsType>((state) => {
+  const storedState = state.statuses;
   const status = state.statuses.userAdding;
   let text = "Введите логин пользователя";
   let className = "modal__title";
@@ -78,7 +83,7 @@ export const withUserDeleteloadStatus = connect<textPropsType>((state) => {
     default:
       break;
   }
-  return {
+  const component = {
     rootData: {
       text,
     },
@@ -87,8 +92,10 @@ export const withUserDeleteloadStatus = connect<textPropsType>((state) => {
       Tag: "h3",
     },
   };
+  return { storedState, component };
 });
 export const withUserAddloadStatus = connect<textPropsType>((state) => {
+  const storedState = state.statuses;
   const status = state.statuses.userAdding;
   let text = "Введите логин пользователя";
   let className = "modal__title";
@@ -108,7 +115,7 @@ export const withUserAddloadStatus = connect<textPropsType>((state) => {
     default:
       break;
   }
-  return {
+  const component = {
     rootData: {
       text,
     },
@@ -117,8 +124,10 @@ export const withUserAddloadStatus = connect<textPropsType>((state) => {
       Tag: "h3",
     },
   };
+  return { storedState, component };
 });
 export const withFileUploadStatus = connect<textPropsType>((state) => {
+  const storedState = state.statuses;
   const status = state.statuses.fileLoading;
   let text = "Загрузите файл";
   let className = "modal__title";
@@ -138,7 +147,7 @@ export const withFileUploadStatus = connect<textPropsType>((state) => {
     default:
       break;
   }
-  return {
+  const component = {
     rootData: {
       text,
     },
@@ -147,6 +156,7 @@ export const withFileUploadStatus = connect<textPropsType>((state) => {
       Tag: "h3",
     },
   };
+  return { storedState, component };
 });
 export const userName = withUserName(Text);
 export const modalAvatarTitle = withAvatarStatus(Text);

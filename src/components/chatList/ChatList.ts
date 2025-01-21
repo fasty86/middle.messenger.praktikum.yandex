@@ -2,7 +2,7 @@ import "./chatList.pcss";
 import Block from "../../framework/Block";
 import { PropsType } from "../../framework/types";
 import ListElement from "../list/ListElement";
-import { connect } from "../../utils/connect";
+import { connect, MapStateReturnType } from "../../utils/connect";
 import ChatListItem from "../chatListItem/ChatListItem";
 import Image from "../image/Image";
 import { ChatController } from "../../framework/store/controllers/chatController";
@@ -24,11 +24,11 @@ type ChatListPropsType = PropsType & {
 };
 
 export const withChatList = connect<ChatListPropsType>((state) => {
-  const chatList = state.chatList;
+  const storedState = state.chatList;
   const activeChatID = state.activeChat?.chatId || 0;
   let items: ChatListItem[] = [];
-  if (chatList.length) {
-    items = chatList.map((chat) => {
+  if (storedState.length) {
+    items = storedState.map((chat) => {
       return new ChatListItem({
         rootData: {
           message: chat.last_message?.content || "",
@@ -41,6 +41,8 @@ export const withChatList = connect<ChatListPropsType>((state) => {
         events: {
           click: async function (this: ChatListItem, _e) {
             await ChatController.select_chat(this.rootData.chatId as string);
+            clearChatListSelection();
+            this.getContent().classList.add("chat-list__item-active");
           },
         },
         childrens: {
@@ -60,6 +62,14 @@ export const withChatList = connect<ChatListPropsType>((state) => {
       List: items,
     },
   };
-  return chatListItems;
+
+  return { storedState, component: chatListItems } as unknown as MapStateReturnType;
 });
 export const chats = withChatList(ChatList);
+
+function clearChatListSelection() {
+  const chatListItems = document.querySelectorAll(".chat-list__item-active");
+  chatListItems.forEach((item) => {
+    item.classList.remove("chat-list__item-active");
+  });
+}

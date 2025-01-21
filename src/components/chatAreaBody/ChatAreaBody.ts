@@ -46,6 +46,7 @@ type ChatAreaBodyPropsType = PropsType & {
 };
 
 export const withMessages = connect<ChatAreaBodyPropsType>((state) => {
+  const storedState = state.activeChat?.messages || {};
   const messages = state.activeChat?.messages;
   const userId = state.user?.id;
   const messageList: Message[] = [];
@@ -92,7 +93,7 @@ export const withMessages = connect<ChatAreaBodyPropsType>((state) => {
     });
     messageList.push(newMessage);
   });
-  const result: ChatAreaBodyPropsType = {
+  const component: ChatAreaBodyPropsType = {
     lists: {
       MessageList: messageList,
     },
@@ -100,7 +101,7 @@ export const withMessages = connect<ChatAreaBodyPropsType>((state) => {
       currentDate: getDateInfo(new Date().toISOString()),
     },
   };
-  return result;
+  return { storedState, component };
 });
 
 export const MessageListWithData = withMessages(ChatAreaBody);
