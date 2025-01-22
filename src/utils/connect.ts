@@ -44,9 +44,15 @@ export function connect<T extends PropsType = PropsType>(mapStateToProps: MapSta
           const { component, storedState } = mapStateToProps(store.getState());
           const newState = storedState;
           // вызываем обновление компонента, передав данные из хранилища
-          if (!isEqual(state, newState)) {
+          if (this instanceof Text) {
             console.log("Not equal", state, newState);
-            state = newState;
+          }
+          if (!isEqual(state, newState)) {
+            // if (this instanceof Text) {
+            //   console.log("Not equal", state, newState);
+            // }
+
+            state = { ...newState };
             this.setProps({ ...component });
           }
         });

@@ -9,6 +9,7 @@ export enum BusEvents {
 }
 export enum StoreEvents {
   Updated = "store:updated",
+  NEW_MESSAGE = "new:message",
 }
 
 export type Cb = (...args: unknown[]) => void;

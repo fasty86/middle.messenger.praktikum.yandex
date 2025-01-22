@@ -1,6 +1,7 @@
 import { ChatAPI, ChatCreateData } from "../../../services/api/chat-api";
 import { ResourceAPI } from "../../../services/api/resources-api";
 import WSSTransport, { Message, MessageTypes, responseMessageType } from "../../../services/WSS";
+import { sanitizeInput } from "../../../utils/sanitize";
 import { DefaultObject } from "../../types";
 import store from "../Store";
 import { ChatListType, STATUS } from "../types";
@@ -44,9 +45,12 @@ export class ChatController {
   }
   public static store_chat_message(data: responseMessageType | responseMessageType[]) {
     let messages = store.getState().activeChat?.messages || [];
-    data = Array.isArray(data) ? data.reverse() : [data];
-    messages = [...messages, ...data];
-    store.set("activeChat.messages", messages);
+    if (Array.isArray(data)) {
+      messages = [...messages, ...data.reverse()];
+      store.set("activeChat.messages", messages);
+    } else {
+      store.set_new_message(data);
+    }
   }
   public static async get_chat_list() {
     const response = await ChatAPI.get_chat_list();
@@ -54,7 +58,7 @@ export class ChatController {
       const data = response.json<ChatListType>();
       store.set("chatList", data);
     }
-    console.log(response.json(), `status:${response.status}`);
+    // console.log(response.json(), `status:${response.status}`);
     return response.ok;
   }
   public static close_active_chat() {}
@@ -64,7 +68,7 @@ export class ChatController {
 
     const message: Message = {
       type: MessageTypes.MESSAGE,
-      content: data.message as string,
+      content: sanitizeInput(data.message as string),
     };
     if (socket) {
       socket.sendMessage(message);
@@ -100,6 +104,7 @@ export class ChatController {
       else store.set("statuses.userAdding", STATUS.ERROR);
       return response.ok;
     }
+    store.set("statuses.userAdding", STATUS.ERROR);
     return false;
   }
   public static async delete_user_from_chat(login: string) {

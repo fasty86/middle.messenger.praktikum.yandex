@@ -48,12 +48,12 @@ export class UserController {
     const loginData = { login };
 
     const response = await UserAPI.search_user(loginData);
+    const users = response.json<UserInfoType[]>();
     console.log(response.json(), `status:${response.status}`);
-    if (response.ok) {
-      const userId = response.json<UserInfoType[]>()[0].id;
+    if (response.ok && users.length !== 0) {
+      const userId = users[0].id;
       return userId;
-    }
-    return response.ok;
+    } else return false;
   }
   public static async password(userData: UserProfilePassword) {
     const response = await UserAPI.password(userData);

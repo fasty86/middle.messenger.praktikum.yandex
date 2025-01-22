@@ -45,7 +45,12 @@ class Store extends EventBus {
     console.log("update state :", this.state);
     this.emit(StoreEvents.Updated);
   }
+  public set_new_message(message: responseMessageType) {
+    if (this.state.activeChat) {
+      // this.state.activeChat.messages.push(message);
+      this.emit(StoreEvents.NEW_MESSAGE, message);
+    }
+  }
 }
 const store = new Store();
-// setTimeout(() => store.set("user", { email: "12424@gmail.com", login: "fsdfsdf" }), 5000);
 export default store;

@@ -71,10 +71,19 @@ export default class ChatView extends AbstractView {
               e.preventDefault();
               const isValid = this.validateForm();
               if (isValid) {
-                const file: File = new FormData(e.target as HTMLFormElement).get("file") as File;
+                const form = e.target as HTMLFormElement;
+                const file: File = new FormData(form).get("file") as File;
                 const formData = new FormData();
                 formData.append("resource", file);
-                await ChatController.send_file_message(formData);
+                const response = await ChatController.send_file_message(formData);
+                if (response) {
+                  form.reset();
+                  const formGroup = this.lists.Elements[0] as FormGroup;
+                  if (formGroup.childrens.Input.getContent())
+                    formGroup.childrens.Input.getContent().setAttribute("value", "");
+                  const label = formGroup.childrens.Label;
+                  label.setAtrributies({ text: "Выбрать файл" });
+                }
               }
             },
           },
@@ -97,9 +106,7 @@ export default class ChatView extends AbstractView {
                       },
                       keyup: function (this: Input, e) {
                         if (isInputElement(e.target)) {
-                          this.setAtrributies({
-                            value: e.target.value ? "nonempty" : "",
-                          });
+                          e.target.setAttribute("value", e.target.value);
                         }
                       },
                     },
@@ -345,7 +352,8 @@ export default class ChatView extends AbstractView {
                   await ChatController.add_user_to_chat(login || "");
                   const formGroup = this.lists.Elements[0] as FormGroup;
                   form.reset();
-                  if (formGroup.childrens.Input._element) formGroup.childrens.Input._element.setAttribute("value", "");
+                  if (formGroup.childrens.Input.getContent())
+                    formGroup.childrens.Input.getContent().setAttribute("value", "");
                 }
               },
             },
@@ -421,7 +429,8 @@ export default class ChatView extends AbstractView {
                   await ChatController.delete_user_from_chat(login || "");
                   const formGroup = this.lists.Elements[0] as FormGroup;
                   form.reset();
-                  if (formGroup.childrens.Input._element) formGroup.childrens.Input._element.setAttribute("value", "");
+                  if (formGroup.childrens.Input.getContent())
+                    formGroup.childrens.Input.getContent().setAttribute("value", "");
                 }
               },
             },
@@ -590,7 +599,8 @@ export default class ChatView extends AbstractView {
                 await ChatController.send_text_message(payload);
                 const formGroup = this.lists.Elements[0] as FormGroup;
                 form.reset();
-                if (formGroup.childrens.Input._element) formGroup.childrens.Input._element.setAttribute("value", "");
+                if (formGroup.childrens.Input.getContent())
+                  formGroup.childrens.Input.getContent().setAttribute("value", "");
               }
             },
           },

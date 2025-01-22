@@ -1,4 +1,5 @@
 import Block from "../framework/Block";
+import { refreshStatus } from "../utils/refreshStatuses";
 
 export default abstract class {
   block: Block | null = null;
@@ -21,6 +22,7 @@ export default abstract class {
         event.clientX <= rect.left + rect.width;
       if (!isInDialog) {
         dialog.close();
+        refreshStatus();
       }
     });
   }

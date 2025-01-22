@@ -155,8 +155,14 @@ export class HTTPTransport {
         resolve(parseXHRResult(xhr));
       };
 
-      xhr.onabort = reject;
-      xhr.onerror = reject;
+      // xhr.onabort = reject;
+      // xhr.onerror = reject;
+      xhr.onabort = () => {
+        resolve(errorResponse(xhr));
+      };
+      xhr.onerror = () => {
+        resolve(errorResponse(xhr));
+      };
 
       xhr.timeout = options.timeout || 5000;
       xhr.ontimeout = reject;

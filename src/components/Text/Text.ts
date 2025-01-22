@@ -6,7 +6,7 @@ import { connect } from "../../utils/connect";
 
 export default class Text extends Block<textPropsType> {
   render() {
-    return `<{{Tag}} class="{{className}}">{{{text}}}</{{Tag}}>`;
+    return `<div><{{{Tag}}} class="{{className}}">{{{text}}}</{{{Tag}}}></div>`;
   }
 }
 
@@ -31,7 +31,7 @@ export const withUserName = connect<textPropsType>((state) => {
   return { storedState, component };
 });
 export const withAvatarStatus = connect<textPropsType>((state) => {
-  const storedState = state.statuses;
+  const storedState = { ...state.statuses };
   const status = state.statuses.avatarLoading;
   let text = "Загрузите файл";
   let className = "modal__title";
@@ -129,6 +129,8 @@ export const withUserAddloadStatus = connect<textPropsType>((state) => {
 export const withFileUploadStatus = connect<textPropsType>((state) => {
   const storedState = state.statuses;
   const status = state.statuses.fileLoading;
+  console.log("Обновление статуса загрузки файла:", state.statuses.fileLoading);
+
   let text = "Загрузите файл";
   let className = "modal__title";
   switch (status) {
@@ -144,7 +146,13 @@ export const withFileUploadStatus = connect<textPropsType>((state) => {
       text = "Ошибка, попробуйте еще раз";
       className = "modal__title error";
       break;
+    case STATUS.PENDING:
+      text = "Загрузите файл";
+      className = "modal__title";
+      break;
     default:
+      text = "Загрузите файл";
+      className = "modal__title";
       break;
   }
   const component = {

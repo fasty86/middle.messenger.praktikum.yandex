@@ -32,7 +32,7 @@ class WSSTransport {
     this.socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
       if (data.type === MessageTypes.PONG) {
-        console.log("пинг от сервера", event);
+        // console.log("пинг от сервера", event);
         this.resetPing();
       } else if (data.type === MessageTypes.MESSAGE || data.type === MessageTypes.FILE) {
         ChatController.store_chat_message(data);
@@ -63,7 +63,7 @@ class WSSTransport {
   private startPing() {
     this.pingTimer = setInterval(() => {
       if (this.socket?.readyState === WebSocket.OPEN) {
-        console.log("Ответный пинг серверу...");
+        // console.log("Ответный пинг серверу...");
         this.sendMessage({ type: MessageTypes.PING });
         // this.pingTimeoutHandler();
       }
