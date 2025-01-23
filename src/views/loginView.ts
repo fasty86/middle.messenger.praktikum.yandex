@@ -7,7 +7,6 @@ import Input, { userLogin } from "../components/input/Input.ts";
 import Label from "../components/label/Label.ts";
 import Form from "../components/form/Form.ts";
 import Link from "../components/link/Link.ts";
-// import { NavigationComponent } from "../components/util/Navigation.ts";
 import { isInputElement } from "../types/typeguards.ts";
 import { Validator } from "../utils/Validator.ts";
 import Tooltip from "../components/tooltip/Tooltip.ts";
@@ -30,7 +29,7 @@ export default class LoginView extends AbstractView {
       new FormGroup({
         childrens: {
           Input: new userLogin({
-            attributes: { ...loginFormData[0].input, value: store.getState().user?.email ?? "" },
+            attributes: { ...loginFormData[0].input, value: store.getState().user?.login ?? "" },
             events: {
               blur: function (this: Input, e) {
                 e.preventDefault();
@@ -96,11 +95,16 @@ export default class LoginView extends AbstractView {
           e.preventDefault();
           const isValid = this.validateForm();
           if (isValid) {
-            const formData = new FormData(e.target as HTMLFormElement);
+            const form = e.target as HTMLFormElement;
+            const formData = new FormData(form);
             const payload = Object.fromEntries(formData.entries());
-            await UserController.login(payload as UserLoginType);
+            const response = await UserController.login(payload as UserLoginType);
+            if (response) {
+              await UserController.getUser();
+              form.reset();
+              router.go("/messenger");
+            }
           }
-          UserController.getUser();
         },
       },
       attributes: {
@@ -133,7 +137,6 @@ export default class LoginView extends AbstractView {
     const page = new Pages.LoginPage({
       childrens: {
         Form: form,
-        // Navigation: NavigationComponent,
       },
     });
     return page;

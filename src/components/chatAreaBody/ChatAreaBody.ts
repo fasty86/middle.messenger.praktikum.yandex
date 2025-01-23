@@ -74,7 +74,6 @@ type ChatAreaBodyPropsType = PropsType & {
 export const withMessages = connect<ChatAreaBodyPropsType>((state) => {
   const storedState = state.activeChat?.messages || {};
   const messages = store.getState().activeChat?.messages;
-  // const userId = state.user?.id;
   const messageList: Message[] = [];
   messages?.forEach((message) => {
     const newMessage = createMessage(message);
@@ -93,6 +92,7 @@ export const withMessages = connect<ChatAreaBodyPropsType>((state) => {
 
 function createMessage(message: responseMessageType): Message {
   const userId = store.getState().user?.id;
+  const userLogin = getUserLogin(Number(message.user_id));
   let content: Block = null as unknown as Block;
   if (!message.file && message.type === MessageTypes.MESSAGE) {
     content = new Text({
@@ -125,6 +125,7 @@ function createMessage(message: responseMessageType): Message {
   const newMessage = new Message({
     rootData: {
       date: getDateInfo(message.time || ""),
+      author: userLogin,
     },
     childrens: {
       Content: content,
@@ -134,5 +135,11 @@ function createMessage(message: responseMessageType): Message {
     },
   });
   return newMessage;
+}
+
+function getUserLogin(userId: number) {
+  const chatUsers = store.getState().activeChat?.users || [];
+  const user = chatUsers.find((user) => user.id === userId);
+  return user?.display_name || user?.login || "Guest";
 }
 export const MessageListWithData = withMessages(ChatAreaBody);

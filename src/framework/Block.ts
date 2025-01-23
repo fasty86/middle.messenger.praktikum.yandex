@@ -21,7 +21,7 @@ export default class Block<T extends PropsType = PropsType> {
   events: EventsType;
   _id: number;
   eventBus: () => EventBus;
-  bindedEvents: never[];
+  bindedEvents: EventsType;
 
   constructor(props: T, tagName = "div") {
     const eventBus = new EventBus();
@@ -35,11 +35,11 @@ export default class Block<T extends PropsType = PropsType> {
     this.lists = this._makePropsProxy(lists);
     this.attributes = this._makePropsProxy(attributes);
     this.childrens = this._makePropsProxy(childrens);
-    this.events = this.bindEvents(events);
+    this.events = events;
     this._id = this.generateId();
     this.eventBus = (): EventBus => eventBus;
     this._registerEvents(eventBus);
-    this.bindedEvents = [];
+    this.bindedEvents = this.bindEvents(events);
     eventBus.emit(BusEvents.INIT);
   }
 
@@ -67,7 +67,6 @@ export default class Block<T extends PropsType = PropsType> {
       else if (Array.isArray(value)) lists = { ...lists, ...{ [key]: value } };
       else props = { ...props, ...{ [key]: value } };
     });
-    console.log("parsedProps", props, childrens);
     return [props, childrens];
   }
 
@@ -80,8 +79,6 @@ export default class Block<T extends PropsType = PropsType> {
   private _componentDidUpdate() {
     const response = this.componentDidUpdate();
     if (response) {
-      // console.log("call rerender");
-
       this.eventBus().emit(BusEvents.FLOW_RENDER);
     }
   }
@@ -91,8 +88,6 @@ export default class Block<T extends PropsType = PropsType> {
   }
 
   setProps = (nextProps: PropsType) => {
-    // console.log("props changed", nextProps);
-
     if (!nextProps) {
       return;
     }
@@ -101,10 +96,9 @@ export default class Block<T extends PropsType = PropsType> {
     Object.assign(this.attributes, attributes);
     Object.assign(this.childrens, childrens);
     Object.assign(this.lists, lists);
-    this.events = this.bindEvents(events);
+    Object.assign(this.events, events);
   };
   setChildrens = (nextProps: PropsType) => {
-    console.log("children props changed", nextProps);
     if (!nextProps) {
       return;
     }
@@ -117,12 +111,6 @@ export default class Block<T extends PropsType = PropsType> {
       return;
     }
     Object.assign(this.lists, nextProps.lists);
-    console.log(this.lists);
-
-    // this.lists.ActionButtons = nextProps.lists.ActionButtons;
-    // const lists = nextProps.lists as ListType;
-    // this.lists = this._makePropsProxy(lists);
-    // this._render();
   };
   setHtmlAttribute(attrs: { [key: string]: string }) {
     this.attributes = { ...this.attributes, ...attrs };
@@ -143,13 +131,16 @@ export default class Block<T extends PropsType = PropsType> {
     this.replaceChildrens(fragment);
     const newElement = fragment.content.firstElementChild as HTMLElement;
     if (this._element && newElement) {
-      this.addEventListeners(this.events, newElement);
+      // this.removeEventListeners();
       this._element.replaceWith(newElement);
       this._element = newElement;
+      this.bindedEvents = this.bindEvents(this.events);
+      this.addEventListeners(this.bindedEvents, newElement as HTMLElement);
     } else {
       this.removeEventListeners();
       this._element = newElement;
-      this.addEventListeners(this.events, this._element as HTMLElement);
+      this.bindedEvents = this.bindEvents(this.events);
+      this.addEventListeners(this.bindedEvents, this._element as HTMLElement);
     }
 
     this.eventBus().emit(BusEvents.FLOW_CDM);
@@ -198,11 +189,7 @@ export default class Block<T extends PropsType = PropsType> {
     if (isHTMLElement(this._element)) this._element = null;
   }
   setAtrributies(attributes: AttributeType) {
-    // this.attributes = { ...this.attributes, ...attributes };
     Object.assign(this.attributes, attributes);
-    // Object.entries(attributes).forEach(([key, value]) => {
-    //   if (isHTMLElement(this._element)) this._element.setAttribute(key, String(value));
-    // });
   }
   protected generateId() {
     const id = Math.floor(Math.random() * Date.now());
@@ -214,7 +201,7 @@ export default class Block<T extends PropsType = PropsType> {
     });
   }
   protected removeEventListeners() {
-    Object.entries(this.events).forEach(([eventName, callback]) => {
+    Object.entries(this.bindEvents).forEach(([eventName, callback]) => {
       if (isHTMLElement(this._element)) this._element.removeEventListener(eventName, callback);
     });
   }

@@ -1,5 +1,6 @@
 import { ChatController } from "../framework/store/controllers/chatController";
 import { UserController } from "../framework/store/controllers/userController";
+import store from "../framework/store/Store";
 import { isWindow } from "../types/typeguards";
 import ChatView from "../views/chatView";
 import LoginView from "../views/loginView";
@@ -46,8 +47,8 @@ export class Router {
         }, 5000);
       }
 
-      // if (store.getState().user) this.go("/messenger");
-      // else this._onRoute(window.location.pathname);
+      if (store.getState().user) this.go("/messenger");
+      else this._onRoute(window.location.pathname);
       this._onRoute(window.location.pathname);
     });
   }

@@ -2,9 +2,10 @@ import { ChatAPI, ChatCreateData } from "../../../services/api/chat-api";
 import { ResourceAPI } from "../../../services/api/resources-api";
 import WSSTransport, { Message, MessageTypes, responseMessageType } from "../../../services/WSS";
 import { sanitizeInput } from "../../../utils/sanitize";
+import { showToast } from "../../../utils/toast";
 import { DefaultObject } from "../../types";
 import store from "../Store";
-import { ChatListType, STATUS } from "../types";
+import { ChatListType, STATUS, UserChatInfo } from "../types";
 import { UserController } from "./userController";
 
 export class ChatController {
@@ -13,11 +14,16 @@ export class ChatController {
       title: chat_name,
     };
     const response = await ChatAPI.add_chat(data);
-    console.log(response.json(), `status:${response.status}`);
+    if (response.ok) {
+      showToast("Чат создан", "success");
+    } else {
+      const reason = response.json<{ reason: string }>().reason || "Ошибка";
+      showToast(`${reason}`, "error");
+    }
+    return response.ok;
   }
   public static async select_chat(chatId: string) {
     const response = await ChatAPI.get_active_chat_token(chatId);
-    console.log(response.json(), `status:${response.status}`);
     if (response.ok) {
       const { user = null, activeChat = null } = store.getState();
       const token = response.json<{ token: string }>();
@@ -30,7 +36,8 @@ export class ChatController {
       if (user) {
         const socket = new WSSTransport(WSSTransport.buildUrl(String(user.id), chatId, token.token));
         store.set("activeChat", { token, socket, chatId });
-        ChatController.get_chat_messages(0);
+        await ChatController.get_chat_messages(0);
+        await ChatController.get_chat_users(Number(chatId));
       }
     }
   }
@@ -58,10 +65,16 @@ export class ChatController {
       const data = response.json<ChatListType>();
       store.set("chatList", data);
     }
-    // console.log(response.json(), `status:${response.status}`);
     return response.ok;
   }
-  public static close_active_chat() {}
+  public static async get_chat_users(chatId: number) {
+    const response = await ChatAPI.get_chat_users(chatId);
+    if (response.ok) {
+      const data = response.json<UserChatInfo>();
+      store.set("activeChat.users", data);
+    }
+    return response.ok;
+  }
 
   public static async send_text_message(data: DefaultObject) {
     const socket = store.getState()?.activeChat?.socket;
@@ -79,6 +92,7 @@ export class ChatController {
     // загружаем файл на сервер ресурсов
     const response = await ResourceAPI.file_upload(data);
     if (response.ok) {
+      showToast("Файл загружен", "success");
       store.set("statuses.fileLoading", STATUS.SUCCESS);
       const responseData = response.json<FileUploadResponse>();
       const message: Message = {
@@ -88,7 +102,10 @@ export class ChatController {
       if (socket) {
         socket.sendMessage(message);
       }
-    } else store.set("statuses.fileLoading", STATUS.ERROR);
+    } else {
+      showToast(`Ошибка попробуйте еще раз}`, "error");
+      store.set("statuses.fileLoading", STATUS.ERROR);
+    }
     return response.ok;
   }
   public static async add_user_to_chat(login: string) {

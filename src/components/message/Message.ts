@@ -5,6 +5,7 @@ export default class Message extends Block<MessagePropsType> {
   render() {
     return `<div class="chat-area__message {{className}}">
                 <div class="chat-area__message-content ">
+                 <div class="chat-area__message-content__user">{{{author}}}</div>
                  {{{Content}}}
                 </div>
                 <div class="chat-area__message-data">{{date}}</div>
@@ -18,6 +19,7 @@ type MessagePropsType = PropsType & {
   };
   rootData: {
     date: string;
+    author: string;
   };
   attributes?: {
     className: string;

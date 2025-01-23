@@ -24,7 +24,7 @@ export type ImagePropsType = {
 };
 
 export const withUserAvatar = connect<ImagePropsType>((state) => {
-  const storedState = state.user;
+  const storedState = { avatar: state.user?.avatar };
   const component = {
     attributes: {
       src: state.user?.avatar ? `${ApiDestinations.RESOURCES}${state.user?.avatar}` : "/avatar_default.png",

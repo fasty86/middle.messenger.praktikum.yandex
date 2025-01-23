@@ -26,12 +26,20 @@ type ChatListPropsType = PropsType & {
 export const withChatList = connect<ChatListPropsType>((state) => {
   const storedState = state.chatList;
   const activeChatID = state.activeChat?.chatId || 0;
+  const userLogin = state.user?.login || "";
   let items: ChatListItem[] = [];
   if (storedState.length) {
     items = storedState.map((chat) => {
+      let lastMessage = "Еще нет сообщений";
+      if (chat.last_message) {
+        lastMessage =
+          chat.last_message?.user.login === userLogin
+            ? `Вы: ${chat.last_message?.content}`
+            : `${chat.last_message?.user.login}: ${chat.last_message?.content}`;
+      }
       return new ChatListItem({
         rootData: {
-          message: chat.last_message?.content || "",
+          message: lastMessage || "",
           time: getDateInfo(chat.last_message?.time || ""),
           unreadMessages: chat.unread_count || 0,
           username: chat.title,

@@ -1,5 +1,6 @@
 import { UserAPI } from "../../../services/api/user-api";
 import { UserAuthAPI } from "../../../services/api/user-auth-api";
+import { showToast } from "../../../utils/toast";
 import store from "../Store";
 
 import {
@@ -29,12 +30,24 @@ export class UserController {
   }
   public static async register(userData: UserAuthType) {
     const response = await UserAuthAPI.signup(userData);
-    console.log(response.json(), `status:${response.status}`);
+    if (response.ok) {
+      showToast("Пользователь зарегистрирован", "success");
+    } else {
+      const reason = response.json<{ reason: string }>().reason || "Ошибка";
+      showToast(`${reason}`, "error");
+    }
+    return response.ok;
   }
 
   public static async login(userData: UserLoginType) {
     const response = await UserAuthAPI.signin(userData);
-    console.log(response.json(), `status:${response.status}`);
+    if (response.ok) {
+      showToast("Успешный вход в систему", "success");
+    } else {
+      const reason = response.json<{ reason: string }>().reason || "Ошибка";
+      showToast(`${reason}`, "error");
+    }
+    return response.ok;
   }
   public static async profile(userData: UserProfile) {
     const response = await UserAPI.profile(userData);

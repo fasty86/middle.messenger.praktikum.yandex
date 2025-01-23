@@ -1,6 +1,6 @@
 import EventBus from "../EventBus";
 import { StoreEvents } from "../types";
-import { ApiStatus, ChatListType, OPaths, STATUS, UserInfoType } from "./types";
+import { ApiStatus, ChatListType, OPaths, STATUS, UserChatInfo, UserInfoType } from "./types";
 import { set as setProp } from "../../utils/setProp";
 import WSSTransport, { responseMessageType } from "../../services/WSS";
 
@@ -15,6 +15,7 @@ export type StateType = {
     token: string;
     socket: WSSTransport;
     messages: responseMessageType[];
+    users: UserChatInfo[];
   } | null;
 };
 export type StorePath = OPaths<StateType>;

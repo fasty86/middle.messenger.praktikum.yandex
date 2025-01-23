@@ -23,7 +23,18 @@ export type UserProfile = {
   email: string;
   password: string;
   phone: string;
+  login: string;
 };
+export type UserChatInfo = {
+  id: number;
+  first_name: string;
+  second_name: string;
+  display_name: string;
+  login: string;
+  avatar: string | null;
+  role: string;
+};
+
 export type UserProfilePassword = {
   oldPassword: string;
   newPassword: string;

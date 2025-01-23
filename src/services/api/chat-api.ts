@@ -25,6 +25,15 @@ export class ChatAPI extends BaseAPI {
       },
     });
   }
+  static async get_chat_users(chatId: number) {
+    return chatAPIInstance.get(`/${chatId}/users`, {
+      credentials: true,
+      headers: {
+        "Content-Type": "application/json",
+        accept: "application/json",
+      },
+    });
+  }
   static async get_active_chat_token(chatId: string) {
     return chatAPIInstance.post(`/token/${chatId}`, {
       credentials: true,

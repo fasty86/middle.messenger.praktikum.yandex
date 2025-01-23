@@ -99,10 +99,67 @@ img {
   margin-right: 10px;
 }
 
+.toast {
+  background-color: var(--primary-color);
+  border-radius: 5px;
+  bottom: 30px;
+  color: white;
+  font-size: 17px;
+  left: 51%;
+  margin-left: -125px;
+  max-height: 50px;
+  min-width: 250px;
+  padding: 16px;
+  position: fixed;
+  text-align: center;
+  top: 50%;
+  visibility: hidden;
+  z-index: 1;
+}
+
+.toast.show {
+  animation:
+    fadein 0.5s,
+    fadeout 0.5s 2.5s;
+  visibility: visible;
+}
+
+@keyframes fadein {
+  from {
+    bottom: 0;
+    opacity: 0;
+  }
+
+  to {
+    bottom: 30px;
+    opacity: 1;
+  }
+}
+
+@keyframes fadeout {
+  from {
+    bottom: 30px;
+    opacity: 1;
+  }
+
+  to {
+    bottom: 0;
+    opacity: 0;
+  }
+}
+
 .success {
   color: green;
 }
 
 .error {
   color: red;
+}
+
+.success-toast {
+  background-color: green;
+}
+
+.error-toast {
+  background-color: red;
 }
