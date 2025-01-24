@@ -1,4 +1,4 @@
-import { AddUserToChat } from "../../framework/store/controllers/chatController";
+import { AddUserToChat } from "../../framework/Store/controllers/chatController";
 import { HTTPTransport } from "../XHR";
 import { BaseAPI } from "./base-api";
 

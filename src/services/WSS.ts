@@ -1,4 +1,4 @@
-import { ChatController } from "../framework/store/controllers/chatController";
+import { ChatController } from "../framework/Store/controllers/chatController";
 
 class WSSTransport {
   private socket: WebSocket | null = null;

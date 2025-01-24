@@ -1,5 +1,5 @@
-import { ChatController } from "../framework/store/controllers/chatController";
-import { UserController } from "../framework/store/controllers/userController";
+import { ChatController } from "../framework/Store/controllers/chatController";
+import { UserController } from "../framework/Store/controllers/userController";
 import store from "../framework/Store/Store";
 import { isWindow } from "../types/typeguards";
 import ChatView from "../views/chatView";

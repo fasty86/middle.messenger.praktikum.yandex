@@ -36,7 +36,7 @@ import Text, {
 import { router } from "../router/router.ts";
 import store from "../framework/Store/Store.ts";
 import { closeModalOutside } from "../utils/modals.ts";
-import { ChatController } from "../framework/store/controllers/chatController.ts";
+import { ChatController } from "../framework/Store/controllers/chatController.ts";
 import { chats } from "../components/chatList/ChatList.ts";
 import { MessageListWithData } from "../components/chatAreaBody/ChatAreaBody.ts";
 

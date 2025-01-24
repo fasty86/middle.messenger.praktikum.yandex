@@ -24,7 +24,7 @@ import { router } from "../router/router.ts";
 import { closeModalOutside } from "../utils/modals.ts";
 import store from "../framework/Store/Store.ts";
 import { UserAvatar, UserProfile, UserProfilePassword } from "../framework/Store/types.ts";
-import { UserController } from "../framework/store/controllers/userController.ts";
+import { UserController } from "../framework/Store/controllers/userController.ts";
 import { modalAvatarTitle } from "../components/Text/Text.ts";
 export default class ProfileView extends AbstractView {
   constructor(protected root: HTMLElement) {

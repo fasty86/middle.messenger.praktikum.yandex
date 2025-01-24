@@ -11,7 +11,7 @@ import { isInputElement } from "../types/typeguards.ts";
 import { Validator } from "../utils/Validator.ts";
 import Tooltip from "../components/tooltip/Tooltip.ts";
 import { router } from "../router/router.ts";
-import { UserController } from "../framework/store/controllers/userController.ts";
+import { UserController } from "../framework/Store/controllers/userController.ts";
 import { UserLoginType } from "../framework/Store/types.ts";
 import store from "../framework/Store/Store.ts";
 export default class LoginView extends AbstractView {

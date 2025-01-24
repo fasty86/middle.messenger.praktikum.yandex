@@ -5,7 +5,7 @@ import ListElement from "../list/ListElement";
 import { connect, MapStateReturnType } from "../../utils/connect";
 import ChatListItem from "../chatListItem/ChatListItem";
 import Image from "../image/Image";
-import { ChatController } from "../../framework/store/controllers/chatController";
+import { ChatController } from "../../framework/Store/controllers/chatController";
 import { getDateInfo } from "../../utils/date";
 export default class ChatList extends Block<ChatListPropsType> {
   render() {
