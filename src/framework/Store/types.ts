@@ -13,6 +13,7 @@ export type StateType = {
     messages: responseMessageType[];
     users: UserChatInfo[];
   } | null;
+  chatInterValId: number | null;
 };
 export type StorePath = OPaths<StateType>;
 

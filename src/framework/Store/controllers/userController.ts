@@ -12,6 +12,7 @@ import {
   UserProfile,
   UserProfilePassword,
 } from "../types";
+import { watchChatData } from "../../../utils/watchChatData";
 
 export class UserController {
   public static async getUser() {
@@ -24,6 +25,11 @@ export class UserController {
   public static async logout() {
     const response = await UserAuthAPI.logout();
     if (response.ok) {
+      const chatInterValId = store.getState().chatInterValId;
+      if (chatInterValId) {
+        clearInterval(chatInterValId);
+        store.set("chatInterValId", null);
+      }
       store.set("user", null);
     }
     return response.ok;
@@ -31,6 +37,7 @@ export class UserController {
   public static async register(userData: UserAuthType) {
     const response = await UserAuthAPI.signup(userData);
     if (response.ok) {
+      watchChatData();
       showToast("Пользователь зарегистрирован", "success");
     } else {
       const reason = response.json<{ reason: string }>().reason || "Ошибка";
@@ -42,6 +49,7 @@ export class UserController {
   public static async login(userData: UserLoginType) {
     const response = await UserAuthAPI.signin(userData);
     if (response.ok) {
+      watchChatData();
       showToast("Успешный вход в систему", "success");
     } else {
       const reason = response.json<{ reason: string }>().reason || "Ошибка";

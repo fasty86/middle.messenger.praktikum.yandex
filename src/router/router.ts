@@ -1,14 +1,12 @@
-import { ChatController } from "../framework/Store/controllers/chatController";
 import { UserController } from "../framework/Store/controllers/userController";
-import store from "../framework/Store/Store";
 import { isWindow } from "../types/typeguards";
+import { watchChatData } from "../utils/watchChatData";
 import ChatView from "../views/chatView";
 import LoginView from "../views/loginView";
 import ProfileView from "../views/profileView";
 import RegistrationView from "../views/registarationView";
 import { Route } from "./route";
 import { Constructable, viewClassTypes } from "./types";
-// import store from "../framework/store/Store";
 
 export class Router {
   static __instance: Router | null = null;
@@ -32,23 +30,14 @@ export class Router {
     return this;
   }
 
-  start() {
+  async start() {
     window.onpopstate = ((event: Event) => {
       if (isWindow(event.currentTarget)) this._onRoute(event.currentTarget.location.pathname);
     }).bind(this);
-    // если пользователь уже успешно авторизован , напрявляем сразу на страницу чата
     UserController.getUser().then(async (status) => {
       if (status) {
-        await ChatController.get_chat_list();
-        setInterval(async () => {
-          const activeChatId = store.getState().activeChat?.chatId || null;
-          await ChatController.get_chat_list();
-          if (activeChatId) await ChatController.get_chat_users(Number(activeChatId));
-        }, 5000);
+        watchChatData();
       }
-
-      if (store.getState().user) this.go("/messenger");
-      else this._onRoute(window.location.pathname);
       this._onRoute(window.location.pathname);
     });
   }

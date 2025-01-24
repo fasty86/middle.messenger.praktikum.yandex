@@ -14,6 +14,7 @@ import { router } from "../router/router.ts";
 import { UserController } from "../framework/Store/controllers/userController.ts";
 import { UserLoginType } from "../framework/Store/types.ts";
 import store from "../framework/Store/Store.ts";
+import { checkUserAlreadyAutorized } from "../utils/checkUserAlreadyAutorized.ts";
 export default class LoginView extends AbstractView {
   constructor(protected root: HTMLElement) {
     super(root);
@@ -98,6 +99,7 @@ export default class LoginView extends AbstractView {
             const form = e.target as HTMLFormElement;
             const formData = new FormData(form);
             const payload = Object.fromEntries(formData.entries());
+            await checkUserAlreadyAutorized();
             const response = await UserController.login(payload as UserLoginType);
             if (response) {
               await UserController.getUser();

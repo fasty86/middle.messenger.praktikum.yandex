@@ -13,6 +13,7 @@ import Tooltip from "../components/tooltip/Tooltip.ts";
 import { UserController } from "../framework/Store/controllers/userController.ts";
 import { UserAuthType } from "../framework/Store/types.ts";
 import { router } from "../router/router.ts";
+import { checkUserAlreadyAutorized } from "../utils/checkUserAlreadyAutorized.ts";
 
 export default class RegistrationView extends AbstractView {
   constructor(protected root: HTMLElement) {
@@ -259,6 +260,7 @@ export default class RegistrationView extends AbstractView {
             const form = e.target as HTMLFormElement;
             const formData = new FormData(form);
             const payload = Object.fromEntries(formData.entries());
+            await checkUserAlreadyAutorized();
             const response = await UserController.register(payload as UserAuthType);
             if (response) {
               await UserController.getUser();
@@ -295,7 +297,6 @@ export default class RegistrationView extends AbstractView {
     const page = new Pages.RegistrationPage({
       childrens: {
         Form: form,
-        // Navigation: NavigationComponent,
       },
     });
     return page;

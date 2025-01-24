@@ -6,6 +6,7 @@ import { responseMessageType } from "../../services/WSS";
 
 // наследуем Store от EventBus, чтобы его методы были сразу доступны у экземпляра Store
 const initialState: StateType = {
+  chatInterValId: null,
   user: null,
   chatList: [],
   statuses: {
