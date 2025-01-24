@@ -119,33 +119,9 @@ img {
 
 .toast.show {
   animation:
-    fadein 0.5s,
-    fadeout 0.5s 2.5s;
+    opacity 2.5s ease-in-out 0.5s,
+    bottom 2.5s ease-in-out 0.5s;
   visibility: visible;
-}
-
-@keyframes fadein {
-  from {
-    bottom: 0;
-    opacity: 0;
-  }
-
-  to {
-    bottom: 30px;
-    opacity: 1;
-  }
-}
-
-@keyframes fadeout {
-  from {
-    bottom: 30px;
-    opacity: 1;
-  }
-
-  to {
-    bottom: 0;
-    opacity: 0;
-  }
 }
 
 .success {
