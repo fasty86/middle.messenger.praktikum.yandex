@@ -8,7 +8,7 @@ class WSSTransport {
   private pingTimer: ReturnType<typeof setTimeout> | null = null;
   private reconnectTimer: ReturnType<typeof setTimeout> | null = null;
 
-  constructor(url: string, reconnectInterval = 5000, pingInterval = 30000, pingTimeout = 5000) {
+  constructor(url: string, reconnectInterval = 5000, pingInterval = 30000) {
     this.url = url;
     this.reconnectInterval = reconnectInterval;
     this.pingInterval = pingInterval;
