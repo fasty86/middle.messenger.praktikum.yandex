@@ -1,4 +1,4 @@
-import { UserAvatar, UserProfile, UserProfilePassword } from "../../framework/store/types";
+import { UserAvatar, UserProfile, UserProfilePassword } from "../../framework/Store/types";
 import { HTTPTransport } from "../XHR";
 import { BaseAPI } from "./base-api";
 

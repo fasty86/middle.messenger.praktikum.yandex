@@ -1,6 +1,6 @@
 import "./text.pcss";
 import Block from "../../framework/Block";
-import { STATUS } from "../../framework/store/types";
+import { STATUS } from "../../framework/Store/types";
 import { PropsType } from "../../framework/types";
 import { connect } from "../../utils/connect";
 

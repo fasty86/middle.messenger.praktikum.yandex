@@ -12,8 +12,8 @@ import { Validator } from "../utils/Validator.ts";
 import Tooltip from "../components/tooltip/Tooltip.ts";
 import { router } from "../router/router.ts";
 import { UserController } from "../framework/store/controllers/userController.ts";
-import { UserLoginType } from "../framework/store/types.ts";
-import store from "../framework/store/Store.ts";
+import { UserLoginType } from "../framework/Store/types.ts";
+import store from "../framework/Store/Store.ts";
 export default class LoginView extends AbstractView {
   constructor(protected root: HTMLElement) {
     super(root);

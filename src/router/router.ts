@@ -1,6 +1,6 @@
 import { ChatController } from "../framework/store/controllers/chatController";
 import { UserController } from "../framework/store/controllers/userController";
-import store from "../framework/store/Store";
+import store from "../framework/Store/Store";
 import { isWindow } from "../types/typeguards";
 import ChatView from "../views/chatView";
 import LoginView from "../views/loginView";

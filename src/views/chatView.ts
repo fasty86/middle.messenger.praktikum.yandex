@@ -34,7 +34,7 @@ import Text, {
   userName,
 } from "../components/Text/Text.ts";
 import { router } from "../router/router.ts";
-import store from "../framework/store/Store.ts";
+import store from "../framework/Store/Store.ts";
 import { closeModalOutside } from "../utils/modals.ts";
 import { ChatController } from "../framework/store/controllers/chatController.ts";
 import { chats } from "../components/chatList/ChatList.ts";

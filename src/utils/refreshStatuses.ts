@@ -1,5 +1,5 @@
-import store from "../framework/store/Store";
-import { STATUS } from "../framework/store/types";
+import store from "../framework/Store/Store";
+import { STATUS } from "../framework/Store/types";
 
 export function refreshStatus() {
   store.set("statuses.avatarLoading", STATUS.PENDING);

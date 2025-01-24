@@ -9,7 +9,7 @@ import { getDateInfo } from "../../utils/date";
 import Image from "../image/Image";
 import { ApiDestinations } from "../../services/api/base-api";
 import Link from "../link/Link";
-import store from "../../framework/store/Store";
+import store from "../../framework/Store/Store";
 export default class ChatAreaBody extends Block<ChatAreaBodyPropsType> {
   observer: IntersectionObserver;
   constructor(props: ChatAreaBodyPropsType) {
@@ -74,7 +74,7 @@ export const withMessages = connect<ChatAreaBodyPropsType>((state) => {
   const storedState = state.activeChat?.messages || {};
   const messages = store.getState().activeChat?.messages;
   const messageList: Message[] = [];
-  messages?.forEach((message) => {
+  messages?.forEach((message: responseMessageType) => {
     const newMessage = createMessage(message);
     messageList.push(newMessage);
   });
@@ -138,7 +138,7 @@ function createMessage(message: responseMessageType): Message {
 
 function getUserLogin(userId: number) {
   const chatUsers = store.getState().activeChat?.users || [];
-  const user = chatUsers.find((user) => user.id === userId);
+  const user = chatUsers.find((user: { id: number }) => user.id === userId);
   return user?.display_name || user?.login || "Guest";
 }
 export const MessageListWithData = withMessages(ChatAreaBody);

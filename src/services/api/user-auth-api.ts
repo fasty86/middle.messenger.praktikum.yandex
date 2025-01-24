@@ -1,4 +1,4 @@
-import { UserAuthType, UserLoginType } from "../../framework/store/types";
+import { UserAuthType, UserLoginType } from "../../framework/Store/types";
 import { HTTPTransport } from "../XHR";
 import { BaseAPI } from "./base-api";
 

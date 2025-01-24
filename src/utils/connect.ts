@@ -1,6 +1,6 @@
 import Block from "../framework/Block";
-import store from "../framework/store/Store";
-import { StateType } from "../framework/store/types";
+import store from "../framework/Store/Store";
+import { StateType } from "../framework/Store/types";
 import { DefaultObject, PropsType, StoreEvents } from "../framework/types";
 import { isEqual } from "./isEqual";
 import { merge } from "./merge";

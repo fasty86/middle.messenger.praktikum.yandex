@@ -11,7 +11,7 @@ import { isInputElement } from "../types/typeguards.ts";
 import { Validator } from "../utils/Validator.ts";
 import Tooltip from "../components/tooltip/Tooltip.ts";
 import { UserController } from "../framework/store/controllers/userController.ts";
-import { UserAuthType } from "../framework/store/types.ts";
+import { UserAuthType } from "../framework/Store/types.ts";
 import { router } from "../router/router.ts";
 
 export default class RegistrationView extends AbstractView {

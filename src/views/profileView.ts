@@ -22,8 +22,8 @@ import { isInputElement } from "../types/typeguards.ts";
 import { Validator } from "../utils/Validator.ts";
 import { router } from "../router/router.ts";
 import { closeModalOutside } from "../utils/modals.ts";
-import store from "../framework/store/Store.ts";
-import { UserAvatar, UserProfile, UserProfilePassword } from "../framework/store/types.ts";
+import store from "../framework/Store/Store.ts";
+import { UserAvatar, UserProfile, UserProfilePassword } from "../framework/Store/types.ts";
 import { UserController } from "../framework/store/controllers/userController.ts";
 import { modalAvatarTitle } from "../components/Text/Text.ts";
 export default class ProfileView extends AbstractView {
