@@ -2,12 +2,9 @@ import AbstractView from "./abstractView";
 import * as Pages from "../pages/index.ts";
 import {
   chatListHeaderType,
-  // chatListItemType,
   menuType,
   headerInfoType,
-  // messageType,
   footerType,
-  // imageType,
   buttonType,
   modalType,
 } from "../types/components.ts";
@@ -15,8 +12,7 @@ import ChatListHeader from "../components/chatListHeader/ChatListHeader.ts";
 import Link from "../components/link/Link.ts";
 import Search from "../components/search/Search.ts";
 import Input from "../components/input/Input.ts";
-// import ChatList, { chats } from "../components/chatList/ChatList.ts";
-// import ChatListItem from "../components/chatListItem/ChatListItem.ts";
+
 import Image, { userAvatar } from "../components/image/Image.ts";
 import ChatAreaHeader from "../components/chatLAreaHeader/ChatAreaHeader.ts";
 import Menu from "../components/menu/Menu.ts";
@@ -25,8 +21,7 @@ import Button from "../components/button/Button.ts";
 import Modal from "../components/modal/Modal.ts";
 import FormGroup from "../components/formGroup/FormGroup.ts";
 import Label from "../components/label/Label.ts";
-// import ChatAreaBody, { MessageListWithData } from "../components/chatAreaBody/ChatAreaBody.ts";
-// import Message from "../components/message/Message.ts";
+
 import ChatFooter from "../components/chatFooter/ChatFooter.ts";
 import { NavigationComponent } from "../components/util/Navigation.ts";
 import Form from "../components/form/Form.ts";
@@ -41,7 +36,6 @@ import Text, {
 } from "../components/Text/Text.ts";
 import { router } from "../router/router.ts";
 import store from "../framework/store/Store.ts";
-// import { UserController } from "../framework/store/controllers/userController.ts";
 import { closeModalOutside } from "../utils/modals.ts";
 import { ChatController } from "../framework/store/controllers/chatController.ts";
 import { chats } from "../components/chatList/ChatList.ts";
