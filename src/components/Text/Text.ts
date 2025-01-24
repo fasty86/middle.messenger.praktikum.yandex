@@ -10,17 +10,6 @@ export default class Text extends Block<textPropsType> {
   }
 }
 
-type textPropsType = PropsType & {
-  rootData?: {
-    text: string;
-  };
-
-  attributes?: {
-    Tag: string;
-    className: string;
-  };
-};
-
 export const withUserName = connect<textPropsType>((state) => {
   const storedState = state.user || {};
   const component = {
@@ -129,7 +118,6 @@ export const withUserAddloadStatus = connect<textPropsType>((state) => {
 export const withFileUploadStatus = connect<textPropsType>((state) => {
   const storedState = state.statuses;
   const status = state.statuses.fileLoading;
-  console.log("Обновление статуса загрузки файла:", state.statuses.fileLoading);
 
   let text = "Загрузите файл";
   let className = "modal__title";
@@ -171,3 +159,14 @@ export const modalAvatarTitle = withAvatarStatus(Text);
 export const modalFileUploadTitle = withFileUploadStatus(Text);
 export const modalUserAddTitle = withUserAddloadStatus(Text);
 export const modalUserDeleteTitle = withUserDeleteloadStatus(Text);
+
+type textPropsType = PropsType & {
+  rootData?: {
+    text: string;
+  };
+
+  attributes?: {
+    Tag: string;
+    className: string;
+  };
+};

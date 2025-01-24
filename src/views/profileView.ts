@@ -1,7 +1,6 @@
 import AbstractView from "./abstractView.ts";
 import * as Pages from "../pages/index.ts";
 import { formGroupType, buttonType, imageType, modalType } from "../types/components.ts";
-// import { navigateTo } from "../router/router_OLD.ts";
 import FormGroup from "../components/formGroup/FormGroup.ts";
 import Button from "../components/button/Button.ts";
 import Input, {

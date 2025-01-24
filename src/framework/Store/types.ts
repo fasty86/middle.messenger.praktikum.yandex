@@ -1,4 +1,20 @@
-// import { StateType } from "./Store";
+import WSSTransport, { responseMessageType } from "../../services/WSS";
+
+export type StateType = {
+  user: UserInfoType | null;
+  statuses: {
+    [key in ApiStatus]: STATUS;
+  };
+  chatList: ChatListType;
+  activeChat: {
+    chatId: number | null;
+    token: string;
+    socket: WSSTransport;
+    messages: responseMessageType[];
+    users: UserChatInfo[];
+  } | null;
+};
+export type StorePath = OPaths<StateType>;
 
 export type UserAuthType = {
   first_name: string;

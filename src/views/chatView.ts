@@ -23,7 +23,6 @@ import FormGroup from "../components/formGroup/FormGroup.ts";
 import Label from "../components/label/Label.ts";
 
 import ChatFooter from "../components/chatFooter/ChatFooter.ts";
-import { NavigationComponent } from "../components/util/Navigation.ts";
 import Form from "../components/form/Form.ts";
 import Tooltip from "../components/tooltip/Tooltip.ts";
 import { isInputElement } from "../types/typeguards.ts";
@@ -614,7 +613,6 @@ export default class ChatView extends AbstractView {
                     events: {
                       blur: function (this: Input, e) {
                         e.preventDefault();
-                        this.validate(Validator.validateMessage);
                       },
                       focus: function (this: Input) {
                         this.hideTooltip();
@@ -653,7 +651,6 @@ export default class ChatView extends AbstractView {
     });
     const page = new Pages.ChatPage({
       childrens: {
-        Navigation: NavigationComponent,
         ChatListHeader: chatListHeader,
         ChatList: chatList,
         ChatAreaHeader: chatAreaHeader,

@@ -5,7 +5,6 @@ class WSSTransport {
   private url: string;
   private reconnectInterval: number;
   private pingInterval: number;
-  private pingTimeout: number;
   private pingTimer: ReturnType<typeof setTimeout> | null = null;
   private reconnectTimer: ReturnType<typeof setTimeout> | null = null;
 
@@ -13,7 +12,6 @@ class WSSTransport {
     this.url = url;
     this.reconnectInterval = reconnectInterval;
     this.pingInterval = pingInterval;
-    this.pingTimeout = pingTimeout;
     this.connect();
   }
   public static buildUrl(userId: string, chatId: string, token: string): string {
@@ -32,12 +30,10 @@ class WSSTransport {
     this.socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
       if (data.type === MessageTypes.PONG) {
-        // console.log("пинг от сервера", event);
         this.resetPing();
       } else if (data.type === MessageTypes.MESSAGE || data.type === MessageTypes.FILE) {
         ChatController.store_chat_message(data);
       } else if (Array.isArray(data)) {
-        console.log("Получены непрочитанные сообщения");
         ChatController.store_chat_message(data);
       }
     };
@@ -45,17 +41,14 @@ class WSSTransport {
     this.socket.onclose = (event) => {
       console.log("Соеднинение закрыто");
       this.stopPing();
-      console.log(event.code);
-
       if (event.reason !== "forced") {
         console.log(" попытка переподключения...");
-
         this.reconnect();
       }
     };
 
     this.socket.onerror = (error) => {
-      console.error("Ошибка вебсокета:", error);
+      console.warn("Ошибка вебсокета:", error);
       this.socket?.close();
     };
   }
@@ -63,19 +56,10 @@ class WSSTransport {
   private startPing() {
     this.pingTimer = setInterval(() => {
       if (this.socket?.readyState === WebSocket.OPEN) {
-        // console.log("Ответный пинг серверу...");
         this.sendMessage({ type: MessageTypes.PING });
-        // this.pingTimeoutHandler();
       }
     }, this.pingInterval);
   }
-
-  // private pingTimeoutHandler() {
-  //   setTimeout(() => {
-  //     console.warn("Время пинга вышло, закрытие соединения.");
-  //     this.socket?.close();
-  //   }, this.pingTimeout);
-  // }
 
   private resetPing() {
     if (this.pingTimer) {
@@ -111,8 +95,7 @@ class WSSTransport {
   }
 
   public close() {
-    console.log("Принудительное закрытие сокета");
-
+    console.warn("Принудительное закрытие сокета");
     this.stopPing();
     this.socket?.close(1000, "forced");
   }

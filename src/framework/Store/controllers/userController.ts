@@ -51,9 +51,12 @@ export class UserController {
   }
   public static async profile(userData: UserProfile) {
     const response = await UserAPI.profile(userData);
-    console.log(response.json(), `status:${response.status}`);
     if (response.ok) {
       store.set("user", response.json());
+      showToast("Данные профиля изменены", "success");
+    } else {
+      const reason = response.json<{ reason: string }>().reason || "Ошибка";
+      showToast(`${reason}`, "error");
     }
     return response.ok;
   }
@@ -62,7 +65,6 @@ export class UserController {
 
     const response = await UserAPI.search_user(loginData);
     const users = response.json<UserInfoType[]>();
-    console.log(response.json(), `status:${response.status}`);
     if (response.ok && users.length !== 0) {
       const userId = users[0].id;
       return userId;
@@ -70,7 +72,6 @@ export class UserController {
   }
   public static async password(userData: UserProfilePassword) {
     const response = await UserAPI.password(userData);
-    console.log(response.json(), `status:${response.status}`);
     if (response.ok) {
       store.set("user", response.json());
     }
@@ -78,7 +79,6 @@ export class UserController {
   }
   public static async avatar(userData: UserAvatar) {
     const response = await UserAPI.avatar(userData);
-    console.log(response.json(), `status:${response.status}`);
     if (response.ok) {
       store.set("user", response.json());
       store.set("statuses.avatarLoading", STATUS.SUCCESS);

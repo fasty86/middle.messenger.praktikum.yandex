@@ -17,7 +17,6 @@ export default class ChatAreaBody extends Block<ChatAreaBodyPropsType> {
     this.observer = new IntersectionObserver((entries, _observer) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          console.log("INtersection");
           this.scroll();
           this.observer.unobserve(entry.target);
         }

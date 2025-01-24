@@ -106,7 +106,6 @@ export default class Block<T extends PropsType = PropsType> {
     Object.assign(this.childrens, childrens);
   };
   setLists = (nextProps: PropsType) => {
-    console.log("list props changed", nextProps);
     if (!nextProps) {
       return;
     }

@@ -73,7 +73,6 @@ export const withChatList = connect<ChatListPropsType>((state) => {
 
   return { storedState, component: chatListItems } as unknown as MapStateReturnType;
 });
-export const chats = withChatList(ChatList);
 
 function clearChatListSelection() {
   const chatListItems = document.querySelectorAll(".chat-list__item-active");
@@ -81,3 +80,4 @@ function clearChatListSelection() {
     item.classList.remove("chat-list__item-active");
   });
 }
+export const chats = withChatList(ChatList);

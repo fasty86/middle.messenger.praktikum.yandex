@@ -1,15 +1,11 @@
-// import Handlebars from "handlebars";
 import AbstractView from "./abstractView.ts";
 import * as Pages from "../pages/index.ts";
-// import { NavigationComponent } from "../components/util/Navigation.ts";
+
 import LinkBlock from "../components/link/Link.ts";
-import { NavigationComponent } from "../components/util/Navigation.ts";
 
 export default class NotFoundView extends AbstractView {
-  // protected template: string;
   constructor(protected root: HTMLElement) {
     super(root);
-    // this.template = Pages.NotFoundPage;
     this.setTitle("404");
   }
   async render() {
@@ -20,7 +16,7 @@ export default class NotFoundView extends AbstractView {
     const link = new LinkBlock({
       attributes: {
         className: "util-link",
-        href: "/chat",
+        href: "/messenger",
         text: "назад к чатам",
       },
     });
@@ -30,7 +26,6 @@ export default class NotFoundView extends AbstractView {
         text: "не туда попали?",
       },
       childrens: {
-        Navigation: NavigationComponent,
         Link: link,
       },
     });

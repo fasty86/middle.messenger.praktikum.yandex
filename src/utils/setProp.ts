@@ -1,5 +1,4 @@
-import { merge } from "./merge";
-import { Indexed } from "./types";
+import { Indexed, merge } from "./merge";
 
 export function set(object: Indexed | unknown, path: string, value: unknown): Indexed | unknown {
   if (typeof object !== "object" || object === null) {

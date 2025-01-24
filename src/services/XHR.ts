@@ -32,7 +32,7 @@ function JsonString(str: string) {
   try {
     return JSON.parse(str);
   } catch (e) {
-    console.log("в ответе не Json", e);
+    console.warn("в ответе не Json", e);
     return str;
   }
 }
@@ -177,31 +177,3 @@ export class HTTPTransport {
     });
   };
 }
-
-export const testHttp = () => {
-  fetchWithRetry("https://jsonplaceholder.typicode.com/todos/1", {
-    ignoreCache: true,
-    headers: { "Content-Type": "application/json" },
-    tries: 3,
-    timeout: 10000,
-    method: METHODS.GET,
-  }).then((response) => {
-    console.log(response);
-    console.log(response.json());
-  });
-};
-export const testHttpQueryParams = () => {
-  fetchWithRetry("https://jsonplaceholder.typicode.com/posts", {
-    ignoreCache: true,
-    headers: { "Content-Type": "application/json" },
-    tries: 3,
-    timeout: 10000,
-    method: METHODS.GET,
-    data: {
-      userId: "1",
-    },
-  }).then((response) => {
-    console.log(response);
-    console.log(response.json());
-  });
-};

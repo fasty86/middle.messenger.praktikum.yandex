@@ -7,7 +7,6 @@ import Input from "../components/input/Input.ts";
 import Label from "../components/label/Label.ts";
 import Form from "../components/form/Form.ts";
 import Link from "../components/link/Link.ts";
-// import { NavigationComponent } from "../components/util/Navigation.ts";
 import { isInputElement } from "../types/typeguards.ts";
 import { Validator } from "../utils/Validator.ts";
 import Tooltip from "../components/tooltip/Tooltip.ts";

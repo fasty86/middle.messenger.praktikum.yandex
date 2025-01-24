@@ -34,16 +34,16 @@ export class Router {
 
   start() {
     window.onpopstate = ((event: Event) => {
-      console.log(event.currentTarget);
-
       if (isWindow(event.currentTarget)) this._onRoute(event.currentTarget.location.pathname);
     }).bind(this);
     // если пользователь уже успешно авторизован , напрявляем сразу на страницу чата
-    UserController.getUser().then((status) => {
+    UserController.getUser().then(async (status) => {
       if (status) {
-        ChatController.get_chat_list();
-        setInterval(() => {
-          ChatController.get_chat_list();
+        await ChatController.get_chat_list();
+        setInterval(async () => {
+          const activeChatId = store.getState().activeChat?.chatId || null;
+          await ChatController.get_chat_list();
+          if (activeChatId) await ChatController.get_chat_users(Number(activeChatId));
         }, 5000);
       }
 

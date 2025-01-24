@@ -36,17 +36,6 @@ export default class Input extends Block<InputPropsType> {
   }
 }
 
-export type InputPropsType = PropsType & {
-  attributes: {
-    className: string;
-    disabled?: string;
-    id: string;
-    name: string;
-    placeholder: string;
-    type: string;
-    value: string;
-  };
-};
 export const withUserFisrtName = connect<InputPropsType>((state) => {
   const storedState = state.user || {};
   const component = { attributes: { value: state.user?.first_name ?? "Guest" } };
@@ -89,3 +78,15 @@ export const userLogin = withUserLogin(Input);
 export const userPhone = withUserPhone(Input);
 export const userDisplayName = withUserDispayName(Input);
 export const userPassword = withUserPassword(Input);
+
+export type InputPropsType = PropsType & {
+  attributes: {
+    className: string;
+    disabled?: string;
+    id: string;
+    name: string;
+    placeholder: string;
+    type: string;
+    value: string;
+  };
+};

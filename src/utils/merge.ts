@@ -1,5 +1,3 @@
-import { Indexed } from "./types";
-
 export function merge(lhs: Indexed, rhs: Indexed): Indexed {
   for (const p in rhs) {
     if (!Object.prototype.hasOwnProperty.call(rhs, p)) {
@@ -19,3 +17,7 @@ export function merge(lhs: Indexed, rhs: Indexed): Indexed {
 
   return lhs;
 }
+
+export type Indexed<T = unknown> = {
+  [key in string]: T;
+};
