@@ -1,8 +1,8 @@
 import { UserAvatar, UserProfile, UserProfilePassword } from "../../framework/Store/types";
 import { HTTPTransport } from "../XHR";
-import { BaseAPI } from "./base-api";
+import { ApiDestinations, BaseAPI } from "./base-api";
 
-const userApiInstance = new HTTPTransport("https://ya-praktikum.tech/api/v2/user");
+const userApiInstance = new HTTPTransport(ApiDestinations.USER);
 
 export class UserAPI extends BaseAPI {
   static async profile(userData: UserProfile) {

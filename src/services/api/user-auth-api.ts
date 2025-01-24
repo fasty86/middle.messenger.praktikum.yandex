@@ -1,8 +1,8 @@
 import { UserAuthType, UserLoginType } from "../../framework/Store/types";
 import { HTTPTransport } from "../XHR";
-import { BaseAPI } from "./base-api";
+import { ApiDestinations, BaseAPI } from "./base-api";
 
-const chatAPIInstance = new HTTPTransport("https://ya-praktikum.tech/api/v2/auth");
+const chatAPIInstance = new HTTPTransport(ApiDestinations.AUTH);
 
 export class UserAuthAPI extends BaseAPI {
   static async signup(userData: UserAuthType) {

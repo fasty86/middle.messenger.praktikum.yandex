@@ -1,8 +1,8 @@
 import { AddUserToChat } from "../../framework/Store/controllers/chatController";
 import { HTTPTransport } from "../XHR";
-import { BaseAPI } from "./base-api";
+import { ApiDestinations, BaseAPI } from "./base-api";
 
-const chatAPIInstance = new HTTPTransport("https://ya-praktikum.tech/api/v2/chats");
+const chatAPIInstance = new HTTPTransport(ApiDestinations.CHATS);
 
 export class ChatAPI extends BaseAPI {
   static async add_chat(data: ChatCreateData) {

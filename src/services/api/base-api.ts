@@ -18,8 +18,9 @@ export class BaseAPI {
 }
 
 export enum ApiDestinations {
-  RESOURCES = "https://ya-praktikum.tech/api/v2/resources",
   BASE = "https://ya-praktikum.tech/api/v2",
-  AUTH = "https://ya-praktikum.tech/api/v2/auth",
-  USER = "https://ya-praktikum.tech/api/v2/user",
+  RESOURCES = `${ApiDestinations.BASE}/resources`,
+  AUTH = `${ApiDestinations.BASE}/auth`,
+  USER = `${ApiDestinations.BASE}/user`,
+  CHATS = `${ApiDestinations.BASE}/chats`,
 }

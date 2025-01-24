@@ -1,7 +1,7 @@
 import { HTTPTransport } from "../XHR";
-import { BaseAPI } from "./base-api";
+import { ApiDestinations, BaseAPI } from "./base-api";
 
-const resourceApiInstance = new HTTPTransport("https://ya-praktikum.tech/api/v2/resources");
+const resourceApiInstance = new HTTPTransport(ApiDestinations.RESOURCES);
 
 export class ResourceAPI extends BaseAPI {
   static async file_upload(file: FormData) {

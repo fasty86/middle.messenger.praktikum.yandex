@@ -155,8 +155,6 @@ export class HTTPTransport {
         resolve(parseXHRResult(xhr));
       };
 
-      // xhr.onabort = reject;
-      // xhr.onerror = reject;
       xhr.onabort = () => {
         resolve(errorResponse(xhr));
       };
