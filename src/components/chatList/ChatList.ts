@@ -7,6 +7,7 @@ import ChatListItem from "../chatListItem/ChatListItem";
 import Image from "../image/Image";
 import { ChatController } from "../../framework/Store/controllers/chatController";
 import { getDateInfo } from "../../utils/date";
+import { ApiDestinations } from "../../services/api/base-api";
 export default class ChatList extends Block<ChatListPropsType> {
   render() {
     return `<main class="chat-list">
@@ -58,7 +59,7 @@ export const withChatList = connect<ChatListPropsType>((state) => {
             attributes: {
               alt: "аватар",
               className: "chat_list__image",
-              src: chat.avatar || "/avatar.jpeg",
+              src: chat.avatar ? `${ApiDestinations.RESOURCES}${chat.avatar}` : "/avatar.jpeg",
             },
           }),
         },
