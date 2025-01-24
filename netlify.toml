@@ -7,69 +7,8 @@
 
 [build]
   publish = "dist"
-  [[redirects]]
-  from = "/"
-  to = "/"
-  status = 200
-
-[[redirects]]
-  from = "/login"
-  to = "/login"
-  status = 200
-
-[[redirects]]
-  from = "/login"
-  to = "/sign-up"
-  status = 200
-
-[[redirects]]
-  from = "/login"
-  to = "/messenger"
-  status = 200
-
-[[redirects]]
-  from = "/sign-up"
-  to = "/sign-up"
-  status = 200
-
-[[redirects]]
-  from = "/sign-up"
-  to = "/login"
-  status = 200
-
-[[redirects]]
-  from = "/sign-up"
-  to = "/settings"
-  status = 200
-
-[[redirects]]
-  from = "/sign-up"
-  to = "/messenger"
-  status = 200
-
-[[redirects]]
-  from = "/messenger"
-  to = "/messenger"
-  status = 200
-
-[[redirects]]
-  from = "/settings"
-  to = "/messenger"
-  status = 200
-
-[[redirects]]
-  from = "/settings"
-  to = "/login"
-  status = 200
-
-[[redirects]]
-  from = "/settings"
-  to = "/sign-up"
-  status = 200
-
 
   [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
-  force = true
