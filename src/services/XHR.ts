@@ -163,7 +163,9 @@ export class HTTPTransport {
       };
 
       xhr.timeout = options.timeout || 5000;
-      xhr.ontimeout = reject;
+      xhr.ontimeout = () => {
+        resolve(errorResponse(xhr));
+      };
 
       if (isGet || !data) {
         xhr.send();
