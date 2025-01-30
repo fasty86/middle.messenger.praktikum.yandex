@@ -1,4 +1,9 @@
-export default class {
+import Block from "../framework/Block";
+import { refreshStatus } from "../utils/refreshStatuses";
+
+export default abstract class {
+  block: Block | null = null;
+
   constructor(protected root: HTMLElement) {
     this.root = root;
   }
@@ -17,9 +22,10 @@ export default class {
         event.clientX <= rect.left + rect.width;
       if (!isInDialog) {
         dialog.close();
+        refreshStatus();
       }
     });
   }
-  protected buildComponents() {}
+  protected abstract buildComponents(): Block;
   protected addEvtListeners() {}
 }

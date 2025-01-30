@@ -1,14 +1,10 @@
-// import Handlebars from "handlebars";
 import AbstractView from "./abstractView.ts";
 import * as Pages from "../pages/index.ts";
-import { NavigationComponent } from "../components/util/Navigation.ts";
 import LinkBlock from "../components/link/Link.ts";
 
 export default class ServerErrorView extends AbstractView {
-  // protected template: string;
   constructor(protected root: HTMLElement) {
     super(root);
-    // this.template = Pages.NotFoundPage;
     this.setTitle("505");
   }
   async render() {
@@ -29,7 +25,6 @@ export default class ServerErrorView extends AbstractView {
         text: "мы уже фиксим",
       },
       childrens: {
-        Navigation: NavigationComponent,
         Link: link,
       },
     });

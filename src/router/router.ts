@@ -1,75 +1,88 @@
-import LoginView from "../views/loginView";
-import RegistrationView from "../views/registarationView";
+import { UserController } from "../framework/Store/controllers/userController";
+import { isWindow } from "../types/typeguards";
+import { watchChatData } from "../utils/watchChatData";
 import ChatView from "../views/chatView";
+import LoginView from "../views/loginView";
 import ProfileView from "../views/profileView";
-import NotFoundView from "../views/notFoundView";
-import ServerErrorView from "../views/serverErrorView";
-import ProfileEditData from "../views/profileEditDataView";
-import ProfileEditPassword from "../views/profileEditPasswordView";
-// import NotFoundViewBlock from "../views/notFoundView";
-// import ServerErrorViewBlock from "../views/serverErrorViewBlock";
-type route = { path: string; view: () => void };
+import RegistrationView from "../views/registarationView";
+import { Route } from "./route";
+import { Constructable, viewClassTypes } from "./types";
 
-const navigateTo = (url: string) => {
-  history.pushState(null, "", url);
-  router();
-};
-const router = async () => {
-  const root = document.getElementById("app")!;
-  const routes: Array<route> = [
-    {
-      path: "/",
-      view: () => new LoginView(root).render(),
-    },
-    {
-      path: "/login",
-      view: () => new LoginView(root).render(),
-    },
-    {
-      path: "/registration",
-      view: () => new RegistrationView(root).render(),
-    },
-    {
-      path: "/chat",
-      view: () => new ChatView(root).render(),
-    },
-    {
-      path: "/profile",
-      view: () => new ProfileView(root).render(),
-    },
-    {
-      path: "/profile/edit/data",
-      view: () => new ProfileEditData(root).render(),
-    },
-    {
-      path: "/profile/edit/password",
-      view: () => new ProfileEditPassword(root).render(),
-    },
-    {
-      path: "/notFound",
-      view: () => new NotFoundView(root).render(),
-    },
-    {
-      path: "/serverError",
-      view: () => new ServerErrorView(root).render(),
-    },
-  ];
-  const matchedRoutes = routes.map((route) => {
-    return {
-      route,
-      requested: location.pathname === route.path,
-    };
-  });
-  let requestedRoute = matchedRoutes.find((route) => route.requested);
-  requestedRoute =
-    requestedRoute !== undefined
-      ? requestedRoute
-      : {
-          route: routes[routes.length - 1],
-          requested: true,
-        };
+export class Router {
+  static __instance: Router | null = null;
+  routes: Route[] = [];
+  history: History = window.history;
+  _currentRoute: Route | null = null;
+  _rootQuery: string = "/";
+  constructor(rootQuery: string) {
+    if (Router.__instance) {
+      return Router.__instance;
+    }
+    this._rootQuery = rootQuery;
+    Router.__instance = this;
+  }
 
-  requestedRoute.route.view();
-};
+  use(pathname: string, block: Constructable<viewClassTypes>) {
+    const route = new Route(pathname, block, { rootQuery: this._rootQuery });
 
-export { router, navigateTo };
+    this.routes.push(route);
+
+    return this;
+  }
+
+  async start() {
+    window.onpopstate = ((event: Event) => {
+      if (isWindow(event.currentTarget)) this._onRoute(event.currentTarget.location.pathname);
+    }).bind(this);
+    UserController.getUser().then(async (status) => {
+      if (status) {
+        watchChatData();
+      }
+      this._onRoute(window.location.pathname);
+    });
+  }
+
+  _onRoute(pathname: string) {
+    const route = this.getRoute(pathname);
+    if (!route) {
+      return;
+    }
+
+    if (this._currentRoute && this._currentRoute !== route) {
+      this._currentRoute.leave();
+    }
+
+    this._currentRoute = route;
+    route.render();
+  }
+
+  go(pathname: string) {
+    this.history.pushState({}, "", pathname);
+    this._onRoute(pathname);
+  }
+
+  back() {
+    this.history.back();
+  }
+
+  forward() {
+    this.history.forward();
+  }
+
+  getRoute(pathname: string): Route {
+    const route = this.routes.find((route) => route.match(pathname)) || this.routes[0];
+    return route;
+  }
+}
+
+const router = new Router("#app");
+
+// Можно обновиться на /user и получить сразу пользователя
+router
+  .use("/", LoginView)
+  .use("/sign-up", RegistrationView)
+  .use("/messenger", ChatView)
+  .use("/settings", ProfileView)
+  .start();
+
+export { router };

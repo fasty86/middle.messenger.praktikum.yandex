@@ -7,10 +7,13 @@ import Input from "../components/input/Input.ts";
 import Label from "../components/label/Label.ts";
 import Form from "../components/form/Form.ts";
 import Link from "../components/link/Link.ts";
-import { NavigationComponent } from "../components/util/Navigation.ts";
 import { isInputElement } from "../types/typeguards.ts";
 import { Validator } from "../utils/Validator.ts";
 import Tooltip from "../components/tooltip/Tooltip.ts";
+import { UserController } from "../framework/Store/controllers/userController.ts";
+import { UserAuthType } from "../framework/Store/types.ts";
+import { router } from "../router/router.ts";
+import { checkUserAlreadyAutorized } from "../utils/checkUserAlreadyAutorized.ts";
 
 export default class RegistrationView extends AbstractView {
   constructor(protected root: HTMLElement) {
@@ -18,7 +21,8 @@ export default class RegistrationView extends AbstractView {
     this.setTitle("Registration");
   }
   async render() {
-    this.root.replaceChildren(this.buildComponents().getContent());
+    if (!this.block) this.block = this.buildComponents();
+    this.root.replaceChildren(this.block.getContent());
   }
   protected buildComponents() {
     const elements: FormGroup[] = [
@@ -36,9 +40,7 @@ export default class RegistrationView extends AbstractView {
               },
               keyup: function (this: Input, e) {
                 if (isInputElement(e.target)) {
-                  this.setAtrributies({
-                    value: e.target.value ? "nonempty" : "",
-                  });
+                  e.target.setAttribute("value", e.target.value);
                 }
               },
             },
@@ -47,7 +49,7 @@ export default class RegistrationView extends AbstractView {
                 rootData: {
                   text: "латиница, цифры ,- ,_ обязательно должна быть «собака»",
                 },
-                attributes: {},
+                attributes: { className: "" },
               }),
             },
           }),
@@ -70,9 +72,7 @@ export default class RegistrationView extends AbstractView {
               },
               keyup: function (this: Input, e) {
                 if (isInputElement(e.target)) {
-                  this.setAtrributies({
-                    value: e.target.value ? "nonempty" : "",
-                  });
+                  e.target.setAttribute("value", e.target.value);
                 }
               },
             },
@@ -81,7 +81,7 @@ export default class RegistrationView extends AbstractView {
                 rootData: {
                   text: "от 3 до 20 символов, латиница, может содержать цифры",
                 },
-                attributes: {},
+                attributes: { className: "" },
               }),
             },
           }),
@@ -104,9 +104,7 @@ export default class RegistrationView extends AbstractView {
               },
               keyup: function (this: Input, e) {
                 if (isInputElement(e.target)) {
-                  this.setAtrributies({
-                    value: e.target.value ? "nonempty" : "",
-                  });
+                  e.target.setAttribute("value", e.target.value);
                 }
               },
             },
@@ -115,7 +113,7 @@ export default class RegistrationView extends AbstractView {
                 rootData: {
                   text: "латиница или кириллица, первая буква должна быть заглавной",
                 },
-                attributes: {},
+                attributes: { className: "" },
               }),
             },
           }),
@@ -138,9 +136,7 @@ export default class RegistrationView extends AbstractView {
               },
               keyup: function (this: Input, e) {
                 if (isInputElement(e.target)) {
-                  this.setAtrributies({
-                    value: e.target.value ? "nonempty" : "",
-                  });
+                  e.target.setAttribute("value", e.target.value);
                 }
               },
             },
@@ -149,7 +145,7 @@ export default class RegistrationView extends AbstractView {
                 rootData: {
                   text: "латиница или кириллица, первая буква должна быть заглавной",
                 },
-                attributes: {},
+                attributes: { className: "" },
               }),
             },
           }),
@@ -172,9 +168,7 @@ export default class RegistrationView extends AbstractView {
               },
               keyup: function (this: Input, e) {
                 if (isInputElement(e.target)) {
-                  this.setAtrributies({
-                    value: e.target.value ? "nonempty" : "",
-                  });
+                  e.target.setAttribute("value", e.target.value);
                 }
               },
             },
@@ -183,7 +177,7 @@ export default class RegistrationView extends AbstractView {
                 rootData: {
                   text: "от 10 до 15 символов, состоит из цифр, может начинается с плюса",
                 },
-                attributes: {},
+                attributes: { className: "" },
               }),
             },
           }),
@@ -206,9 +200,7 @@ export default class RegistrationView extends AbstractView {
               },
               keyup: function (this: Input, e) {
                 if (isInputElement(e.target)) {
-                  this.setAtrributies({
-                    value: e.target.value ? "nonempty" : "",
-                  });
+                  e.target.setAttribute("value", e.target.value);
                 }
               },
             },
@@ -217,7 +209,7 @@ export default class RegistrationView extends AbstractView {
                 rootData: {
                   text: "от 8 до 40 символов,  одна заглавная буква и цифра",
                 },
-                attributes: {},
+                attributes: { className: "" },
               }),
             },
           }),
@@ -240,9 +232,7 @@ export default class RegistrationView extends AbstractView {
               },
               keyup: function (this: Input, e) {
                 if (isInputElement(e.target)) {
-                  this.setAtrributies({
-                    value: e.target.value ? "nonempty" : "",
-                  });
+                  e.target.setAttribute("value", e.target.value);
                 }
               },
             },
@@ -251,7 +241,7 @@ export default class RegistrationView extends AbstractView {
                 rootData: {
                   text: "от 8 до 40 символов,  одна заглавная буква и цифра",
                 },
-                attributes: {},
+                attributes: { className: "" },
               }),
             },
           }),
@@ -263,9 +253,21 @@ export default class RegistrationView extends AbstractView {
     ];
     const form = new Form({
       events: {
-        submit: function (this: Form, e: Event) {
+        submit: async function (this: Form, e: Event) {
           e.preventDefault();
-          this.validateForm();
+          const isValid = this.validateForm();
+          if (isValid) {
+            const form = e.target as HTMLFormElement;
+            const formData = new FormData(form);
+            const payload = Object.fromEntries(formData.entries());
+            await checkUserAlreadyAutorized();
+            const response = await UserController.register(payload as UserAuthType);
+            if (response) {
+              await UserController.getUser();
+              form.reset();
+              router.go("/messenger");
+            }
+          }
         },
       },
       attributes: {
@@ -280,6 +282,12 @@ export default class RegistrationView extends AbstractView {
         }),
         Link: new Link({
           attributes: linkData,
+          events: {
+            click: function (this: Link, e: Event) {
+              e.preventDefault();
+              router.go("/");
+            },
+          },
         }),
       },
       lists: {
@@ -289,7 +297,6 @@ export default class RegistrationView extends AbstractView {
     const page = new Pages.RegistrationPage({
       childrens: {
         Form: form,
-        Navigation: NavigationComponent,
       },
     });
     return page;

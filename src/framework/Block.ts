@@ -4,7 +4,7 @@ import { AttributeType, BusEvents, ChildrensType, DefaultObject, EventsType, Lis
 import { PropsType } from "./types";
 import { isFunction, isHTMLElement } from "../types/typeguards";
 
-export default class Block {
+export default class Block<T extends PropsType = PropsType> {
   static EVENTS = {
     INIT: "init",
     FLOW_CDM: "flow:component-did-mount",
@@ -21,9 +21,9 @@ export default class Block {
   events: EventsType;
   _id: number;
   eventBus: () => EventBus;
-  bindedEvents: never[];
+  bindedEvents: EventsType;
 
-  constructor(props: PropsType, tagName = "div") {
+  constructor(props: T, tagName = "div") {
     const eventBus = new EventBus();
     this._meta = {
       tagName,
@@ -33,13 +33,13 @@ export default class Block {
     const { rootData = {}, attributes = {}, childrens = {}, lists = {}, events = {} } = props;
     this.rootData = this._makePropsProxy(rootData);
     this.lists = this._makePropsProxy(lists);
-    this.attributes = attributes;
+    this.attributes = this._makePropsProxy(attributes);
     this.childrens = this._makePropsProxy(childrens);
-    this.events = this.bindEvents(events);
+    this.events = events;
     this._id = this.generateId();
     this.eventBus = (): EventBus => eventBus;
     this._registerEvents(eventBus);
-    this.bindedEvents = [];
+    this.bindedEvents = this.bindEvents(events);
     eventBus.emit(BusEvents.INIT);
   }
 
@@ -67,7 +67,6 @@ export default class Block {
       else if (Array.isArray(value)) lists = { ...lists, ...{ [key]: value } };
       else props = { ...props, ...{ [key]: value } };
     });
-    console.log("parsedProps", props, childrens);
     return [props, childrens];
   }
 
@@ -88,12 +87,29 @@ export default class Block {
     return true;
   }
 
-  setProps = (nextProps: RootDataType) => {
+  setProps = (nextProps: PropsType) => {
     if (!nextProps) {
       return;
     }
-
-    Object.assign(this.rootData, nextProps.rootData);
+    const { rootData = {}, attributes = {}, childrens = {}, lists = {}, events = {} } = nextProps;
+    Object.assign(this.rootData, rootData);
+    Object.assign(this.attributes, attributes);
+    Object.assign(this.childrens, childrens);
+    Object.assign(this.lists, lists);
+    Object.assign(this.events, events);
+  };
+  setChildrens = (nextProps: PropsType) => {
+    if (!nextProps) {
+      return;
+    }
+    const childrens = nextProps.childrens;
+    Object.assign(this.childrens, childrens);
+  };
+  setLists = (nextProps: PropsType) => {
+    if (!nextProps) {
+      return;
+    }
+    Object.assign(this.lists, nextProps.lists);
   };
   setHtmlAttribute(attrs: { [key: string]: string }) {
     this.attributes = { ...this.attributes, ...attrs };
@@ -114,12 +130,16 @@ export default class Block {
     this.replaceChildrens(fragment);
     const newElement = fragment.content.firstElementChild as HTMLElement;
     if (this._element && newElement) {
-      this.addEventListeners(this.events, newElement);
+      // this.removeEventListeners();
       this._element.replaceWith(newElement);
+      this._element = newElement;
+      this.bindedEvents = this.bindEvents(this.events);
+      this.addEventListeners(this.bindedEvents, newElement as HTMLElement);
     } else {
       this.removeEventListeners();
       this._element = newElement;
-      this.addEventListeners(this.events, this._element as HTMLElement);
+      this.bindedEvents = this.bindEvents(this.events);
+      this.addEventListeners(this.bindedEvents, this._element as HTMLElement);
     }
 
     this.eventBus().emit(BusEvents.FLOW_CDM);
@@ -164,11 +184,11 @@ export default class Block {
     if (isHTMLElement(this._element)) this._element.style.display = "none";
   }
 
+  destroy() {
+    if (isHTMLElement(this._element)) this._element = null;
+  }
   setAtrributies(attributes: AttributeType) {
-    this.attributes = { ...this.attributes, ...attributes };
-    Object.entries(attributes).forEach(([key, value]) => {
-      if (isHTMLElement(this._element)) this._element.setAttribute(key, String(value));
-    });
+    Object.assign(this.attributes, attributes);
   }
   protected generateId() {
     const id = Math.floor(Math.random() * Date.now());
@@ -180,7 +200,7 @@ export default class Block {
     });
   }
   protected removeEventListeners() {
-    Object.entries(this.events).forEach(([eventName, callback]) => {
+    Object.entries(this.bindEvents).forEach(([eventName, callback]) => {
       if (isHTMLElement(this._element)) this._element.removeEventListener(eventName, callback);
     });
   }

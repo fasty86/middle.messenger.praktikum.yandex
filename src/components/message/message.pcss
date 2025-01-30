@@ -5,6 +5,7 @@
   font-weight: 500;
   line-height: 15px;
   max-width: 400px;
+  min-width: 100px;
   position: relative;
   text-align: start;
 }
@@ -13,12 +14,18 @@
   padding: 11px;
 }
 
+.chat-area__message-content-author {
+  align-self: flex-end;
+  background-color: var(--active-elem-color);
+}
+
 .chat-area__message-content:has(img) {
+  /* min-height: 150px; */
   padding: 0;
 }
 
 .chat-area__message-data {
-  bottom: 11px;
+  bottom: 3px;
   color: var(--chat-data-elements-color);
   font-size: 9px;
   line-height: 9px;
@@ -35,4 +42,12 @@
   padding: 2px 0;
   text-align: center;
   width: 37px;
+}
+
+.chat-area__message-content__user {
+  color: var(--primary-color);
+  font-size: 12px;
+  font-weight: bold;
+  position: absolute;
+  top: -15px;
 }

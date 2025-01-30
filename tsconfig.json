@@ -19,7 +19,9 @@
     "strictNullChecks": true,
     "strict": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+    "useUnknownInCatchVariables": false,
+    "forceConsistentCasingInFileNames": false
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]

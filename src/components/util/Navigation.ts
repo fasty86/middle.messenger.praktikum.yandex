@@ -1,5 +1,6 @@
 import Block from "../../framework/Block";
 import { PropsType } from "../../framework/types";
+import { router } from "../../router/router";
 import Link from "../link/Link";
 import ListElement from "../list/ListElement";
 export default class Navigation extends Block {
@@ -31,6 +32,12 @@ const NavigationComponent = new Navigation({
             attributes: {
               href: "/login",
             },
+            events: {
+              click: function (this: Link, e: Event) {
+                e.preventDefault();
+                router.go("/");
+              },
+            },
           }),
         },
       }),
@@ -45,6 +52,12 @@ const NavigationComponent = new Navigation({
             },
             attributes: {
               href: "/registration",
+            },
+            events: {
+              click: function (this: Link, e: Event) {
+                e.preventDefault();
+                router.go("/sign-up");
+              },
             },
           }),
         },
@@ -61,6 +74,12 @@ const NavigationComponent = new Navigation({
             attributes: {
               href: "/chat",
             },
+            events: {
+              click: function (this: Link, e: Event) {
+                e.preventDefault();
+                router.go("/messenger");
+              },
+            },
           }),
         },
       }),
@@ -75,6 +94,12 @@ const NavigationComponent = new Navigation({
             },
             attributes: {
               href: "/profile",
+            },
+            events: {
+              click: function (this: Link, e: Event) {
+                e.preventDefault();
+                router.go("/settings");
+              },
             },
           }),
         },

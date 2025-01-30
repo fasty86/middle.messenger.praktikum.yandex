@@ -6,13 +6,17 @@ enum METHODS {
   PUT = "PUT",
   DELETE = "DELETE",
 }
+export type BadRequest = {
+  reason: string;
+};
 export type Options = {
   ignoreCache?: boolean;
   headers?: { [key: string]: string };
-  tries: number;
+  tries?: number;
   timeout?: number;
   method: METHODS;
-  data?: DefaultObject;
+  data?: DefaultObject | FormData;
+  credentials?: boolean;
 };
 export type RequestResult = {
   ok: boolean;
@@ -22,7 +26,16 @@ export type RequestResult = {
   json: <T>() => T;
   headers: string;
 };
-
+type XHRMethod = (url: string, options: Options) => Promise<RequestResult>;
+type XHRMethodInstance = (url: string, options?: Partial<Options>) => Promise<RequestResult>;
+function JsonString(str: string) {
+  try {
+    return JSON.parse(str);
+  } catch (e) {
+    console.warn("в ответе не Json", e);
+    return str;
+  }
+}
 function parseXHRResult(xhr: XMLHttpRequest): RequestResult {
   return {
     ok: xhr.status >= 200 && xhr.status < 300,
@@ -30,7 +43,7 @@ function parseXHRResult(xhr: XMLHttpRequest): RequestResult {
     statusText: xhr.statusText,
     headers: xhr.getAllResponseHeaders(),
     data: xhr.responseText,
-    json: <T>() => JSON.parse(xhr.responseText) as T,
+    json: <T>() => JsonString(xhr.responseText) as T,
   };
 }
 function errorResponse(xhr: XMLHttpRequest, message: string | null = null): RequestResult {
@@ -40,7 +53,7 @@ function errorResponse(xhr: XMLHttpRequest, message: string | null = null): Requ
     statusText: xhr.statusText,
     headers: xhr.getAllResponseHeaders(),
     data: message || xhr.statusText,
-    json: <T>() => JSON.parse(message || xhr.statusText) as T,
+    json: <T = BadRequest>() => JSON.parse(message || xhr.statusText) as T,
   };
 }
 export function fetchWithRetry(url: string, options: Options): Promise<RequestResult> {
@@ -64,8 +77,40 @@ function queryStringify<T extends DefaultObject>(data: T): string {
     return `${acc}${String(current)}=${value !== null && value !== undefined ? encodeURIComponent(value.toString()) : ""}`;
   }, "");
 }
-type XHRMethod = (url: string, options: Options) => Promise<RequestResult>;
-class HTTPTransport {
+
+export class HTTPTransport {
+  baseUrl: string;
+  constructor(baseUrl: string) {
+    this.baseUrl = baseUrl;
+  }
+  get: XHRMethodInstance = (url, options) => {
+    if (!options || !options.method) {
+      options = { ...options, method: METHODS.GET };
+    }
+    const fullUrl = this.baseUrl + url;
+    return HTTPTransport.GET(fullUrl, options as Options);
+  };
+  post: XHRMethodInstance = (url, options) => {
+    if (!options || !options.method) {
+      options = { ...options, method: METHODS.POST };
+    }
+    const fullUrl = this.baseUrl + url;
+    return HTTPTransport.POST(fullUrl, options as Options);
+  };
+  put: XHRMethodInstance = (url, options) => {
+    if (!options || !options.method) {
+      options = { ...options, method: METHODS.PUT };
+    }
+    const fullUrl = this.baseUrl + url;
+    return HTTPTransport.PUT(fullUrl, options as Options);
+  };
+  delete: XHRMethodInstance = (url, options) => {
+    if (!options || !options.method) {
+      options = { ...options, method: METHODS.DELETE };
+    }
+    const fullUrl = this.baseUrl + url;
+    return HTTPTransport.DELETE(fullUrl, options as Options);
+  };
   static GET: XHRMethod = (url, options) => {
     return this.request(url, { ...options, method: METHODS.GET });
   };
@@ -83,7 +128,7 @@ class HTTPTransport {
   };
 
   static request: XHRMethod = (url, options) => {
-    const { headers = {}, method, data, ignoreCache } = options;
+    const { headers = {}, method, data, ignoreCache, credentials } = options;
 
     return new Promise<RequestResult>(function (resolve, reject) {
       if (!method) {
@@ -94,11 +139,14 @@ class HTTPTransport {
       const xhr = new XMLHttpRequest();
       const isGet = method === METHODS.GET;
 
-      xhr.open(method, isGet && !!data ? `${url}${queryStringify(data)}` : url);
+      xhr.open(method, isGet && !!data && !(data instanceof FormData) ? `${url}${queryStringify(data)}` : url);
 
       Object.keys(headers).forEach((key) => {
         xhr.setRequestHeader(key, headers[key]);
       });
+      // подставлять куки если нужно
+      if (credentials) xhr.withCredentials = true;
+
       if (ignoreCache) {
         xhr.setRequestHeader("Cache-Control", "no-cache");
       }
@@ -107,45 +155,25 @@ class HTTPTransport {
         resolve(parseXHRResult(xhr));
       };
 
-      xhr.onabort = reject;
-      xhr.onerror = reject;
+      xhr.onabort = () => {
+        resolve(errorResponse(xhr));
+      };
+      xhr.onerror = () => {
+        resolve(errorResponse(xhr));
+      };
 
       xhr.timeout = options.timeout || 5000;
-      xhr.ontimeout = reject;
+      xhr.ontimeout = () => {
+        resolve(errorResponse(xhr));
+      };
 
       if (isGet || !data) {
         xhr.send();
+      } else if (data instanceof FormData) {
+        xhr.send(data);
       } else {
         xhr.send(JSON.stringify(data));
       }
     });
   };
 }
-
-export const testHttp = () => {
-  fetchWithRetry("https://jsonplaceholder.typicode.com/todos/1", {
-    ignoreCache: true,
-    headers: { "Content-Type": "application/json" },
-    tries: 3,
-    timeout: 10000,
-    method: METHODS.GET,
-  }).then((response) => {
-    console.log(response);
-    console.log(response.json());
-  });
-};
-export const testHttpQueryParams = () => {
-  fetchWithRetry("https://jsonplaceholder.typicode.com/posts", {
-    ignoreCache: true,
-    headers: { "Content-Type": "application/json" },
-    tries: 3,
-    timeout: 10000,
-    method: METHODS.GET,
-    data: {
-      userId: "1",
-    },
-  }).then((response) => {
-    console.log(response);
-    console.log(response.json());
-  });
-};

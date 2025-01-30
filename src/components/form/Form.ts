@@ -5,10 +5,14 @@ import { Validator, ValidatorMapping } from "../../utils/Validator";
 import FormGroup from "../formGroup/FormGroup";
 import Input from "../input/Input";
 import { isValidatorExist } from "../../types/typeguards";
-export default class Form extends Block {
-  constructor(props: PropsType) {
+import Link from "../link/Link";
+import Button from "../button/Button";
+
+export default class Form extends Block<FormPropsType> {
+  constructor(props: FormPropsType) {
     super(props);
   }
+
   protected validateForm() {
     const report: {
       [key in ValidatorMapping]?: {
@@ -32,6 +36,7 @@ export default class Form extends Block {
       });
     }
     console.table(report);
+    return Object.entries(report).every(([, value]) => value.isValid);
   }
   render() {
     return `<form class="{{formClassName}}">
@@ -41,3 +46,16 @@ export default class Form extends Block {
                 </form>`;
   }
 }
+
+type FormPropsType = PropsType & {
+  attributes: {
+    formClassName: string;
+  };
+  childrens: {
+    Link?: Link;
+    Button?: Button;
+  };
+  lists: {
+    Elements: FormGroup[];
+  };
+};

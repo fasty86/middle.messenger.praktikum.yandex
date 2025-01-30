@@ -1,5 +1,6 @@
 import { PropsType } from "../../framework/types";
 import Block from "../../framework/Block";
+
 class LoginPage extends Block {
   constructor(props: PropsType) {
     super(props);

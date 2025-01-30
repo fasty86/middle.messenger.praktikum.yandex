@@ -3,29 +3,34 @@ import * as Pages from "../pages/index.ts";
 import { formGroupType, buttonType, linkType } from "../types/components.ts";
 import FormGroup from "../components/formGroup/FormGroup.ts";
 import Button from "../components/button/Button.ts";
-import Input from "../components/input/Input.ts";
+import Input, { userLogin } from "../components/input/Input.ts";
 import Label from "../components/label/Label.ts";
 import Form from "../components/form/Form.ts";
 import Link from "../components/link/Link.ts";
-import { NavigationComponent } from "../components/util/Navigation.ts";
 import { isInputElement } from "../types/typeguards.ts";
 import { Validator } from "../utils/Validator.ts";
 import Tooltip from "../components/tooltip/Tooltip.ts";
+import { router } from "../router/router.ts";
+import { UserController } from "../framework/Store/controllers/userController.ts";
+import { UserLoginType } from "../framework/Store/types.ts";
+import store from "../framework/Store/Store.ts";
+import { checkUserAlreadyAutorized } from "../utils/checkUserAlreadyAutorized.ts";
 export default class LoginView extends AbstractView {
   constructor(protected root: HTMLElement) {
     super(root);
     this.setTitle("Login");
   }
   async render() {
-    this.root.replaceChildren(this.buildComponents().getContent());
+    if (!this.block) this.block = this.buildComponents();
+    this.root.replaceChildren(this.block.getContent());
   }
 
   protected buildComponents() {
     const elements: FormGroup[] = [
       new FormGroup({
         childrens: {
-          Input: new Input({
-            attributes: loginFormData[0].input,
+          Input: new userLogin({
+            attributes: { ...loginFormData[0].input, value: store.getState().user?.login ?? "" },
             events: {
               blur: function (this: Input, e) {
                 e.preventDefault();
@@ -36,9 +41,7 @@ export default class LoginView extends AbstractView {
               },
               keyup: function (this: Input, e) {
                 if (isInputElement(e.target)) {
-                  this.setAtrributies({
-                    value: e.target.value ? "nonempty" : "",
-                  });
+                  e.target.setAttribute("value", e.target.value);
                 }
               },
             },
@@ -47,10 +50,10 @@ export default class LoginView extends AbstractView {
                 rootData: {
                   text: "от 3 до 20 символов, латиница/кириллица,",
                 },
-                attributes: {},
+                attributes: { className: "" },
               }),
             },
-          }),
+          }) as Input,
           Label: new Label({ attributes: loginFormData[0].label }),
         },
       }),
@@ -68,9 +71,7 @@ export default class LoginView extends AbstractView {
               },
               keyup: function (this: Input, e) {
                 if (isInputElement(e.target)) {
-                  this.setAtrributies({
-                    value: e.target.value ? "nonempty" : "",
-                  });
+                  e.target.setAttribute("value", e.target.value);
                 }
               },
             },
@@ -79,7 +80,9 @@ export default class LoginView extends AbstractView {
                 rootData: {
                   text: "от 8 до 40 символов, хотя бы одна заглавная буква и цифра",
                 },
-                attributes: {},
+                attributes: {
+                  className: "",
+                },
               }),
             },
           }),
@@ -89,9 +92,21 @@ export default class LoginView extends AbstractView {
     ];
     const form = new Form({
       events: {
-        submit: function (this: Form, e) {
+        submit: async function (this: Form, e) {
           e.preventDefault();
-          this.validateForm();
+          const isValid = this.validateForm();
+          if (isValid) {
+            const form = e.target as HTMLFormElement;
+            const formData = new FormData(form);
+            const payload = Object.fromEntries(formData.entries());
+            await checkUserAlreadyAutorized();
+            const response = await UserController.login(payload as UserLoginType);
+            if (response) {
+              await UserController.getUser();
+              form.reset();
+              router.go("/messenger");
+            }
+          }
         },
       },
       attributes: {
@@ -109,6 +124,12 @@ export default class LoginView extends AbstractView {
         }),
         Link: new Link({
           attributes: linkData,
+          events: {
+            click: function (this: Link, e: Event) {
+              e.preventDefault();
+              router.go("/sign-up");
+            },
+          },
         }),
       },
       lists: {
@@ -118,7 +139,6 @@ export default class LoginView extends AbstractView {
     const page = new Pages.LoginPage({
       childrens: {
         Form: form,
-        Navigation: NavigationComponent,
       },
     });
     return page;
@@ -167,6 +187,6 @@ const buttonData: buttonType = {
 };
 const linkData: linkType = {
   className: "link form__link",
-  href: "/registration",
+  href: "/sign-up",
   text: "Нет аккаунта?",
 };

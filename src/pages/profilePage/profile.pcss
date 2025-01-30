@@ -44,7 +44,7 @@
   width: 130px;
 
   &:hover::after {
-    content: 'Загрузить аватар';
+    content: "Загрузить аватар";
     cursor: pointer;
     font-size: 13px;
     opacity: 0.5;
@@ -52,22 +52,13 @@
 
   &::after {
     border-radius: 50%;
-    content: '';
+    content: "";
     display: block;
     height: 130px;
     position: absolute;
     transform: translate(0%, 50px);
     vertical-align: middle;
     width: 130px;
-  }
-}
-
-.profile_image {
-  position: relative;
-
-  &:hover {
-    cursor: pointer;
-    transition: 0.5s;
   }
 }
 
@@ -92,6 +83,11 @@
   padding-bottom: 2px;
   text-align: end;
   width: 510px;
+
+  &:focus {
+    background-color: var(--active-form-input);
+    color: black;
+  }
 }
 
 .profile__label {

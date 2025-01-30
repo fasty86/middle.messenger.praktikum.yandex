@@ -19,3 +19,7 @@ export function isInputElement(element: unknown): element is HTMLInputElement {
 export function isValidatorExist(value: string): value is ValidatorMapping {
   return value in Validator.mapping;
 }
+
+export function isWindow(element: unknown): element is Window {
+  return element instanceof Window;
+}

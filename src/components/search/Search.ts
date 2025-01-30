@@ -1,12 +1,8 @@
 import "./search.pcss";
-
 import Block from "../../framework/Block";
 import { PropsType } from "../../framework/types";
-export default class Search extends Block {
-  constructor(props: PropsType) {
-    super(props);
-  }
-
+import Input from "../input/Input";
+export default class Search extends Block<searchPropsType> {
   render() {
     return `<div class='header__search-container'>
                   <i class='header__search-icon'></i>
@@ -14,3 +10,9 @@ export default class Search extends Block {
                 </div>`;
   }
 }
+
+type searchPropsType = PropsType & {
+  childrens: {
+    Input: Input;
+  };
+};

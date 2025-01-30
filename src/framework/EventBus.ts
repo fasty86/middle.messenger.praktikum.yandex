@@ -1,4 +1,4 @@
-import { Listener, Cb, BusEvents } from "./types";
+import { Listener, Cb, BusEvents, StoreEvents } from "./types";
 
 export default class EventBus {
   listeners: Listener;
@@ -6,7 +6,7 @@ export default class EventBus {
     this.listeners = {};
   }
 
-  on(event: BusEvents, callback: Cb) {
+  on(event: BusEvents | StoreEvents, callback: Cb) {
     if (!this.listeners[event]) {
       this.listeners[event] = [];
     }
@@ -14,7 +14,7 @@ export default class EventBus {
     this.listeners[event].push(callback);
   }
 
-  off(event: BusEvents, callback: Cb) {
+  off(event: BusEvents | StoreEvents, callback: Cb) {
     if (!this.listeners[event]) {
       throw new Error(`Нет события: ${event}`);
     }
@@ -22,13 +22,13 @@ export default class EventBus {
     this.listeners[event] = this.listeners[event].filter((listener) => listener !== callback);
   }
 
-  emit(event: BusEvents, ...args: unknown[]) {
+  emit(event: BusEvents | StoreEvents, ...args: unknown[]) {
     if (!this.listeners[event]) {
-      throw new Error(`Нет события: ${event}`);
+      console.error(`Нет обработчиков на событие: ${event}`);
+    } else {
+      this.listeners[event].forEach(function (listener) {
+        listener(...args);
+      });
     }
-
-    this.listeners[event].forEach(function (listener) {
-      listener(...args);
-    });
   }
 }

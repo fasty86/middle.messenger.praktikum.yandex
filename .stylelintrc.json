@@ -10,6 +10,8 @@
       }
     ],
     "no-descending-specificity": null,
-    "selector-class-pattern": null
+    "selector-class-pattern": null,
+    "no-duplicate-selectors": true,
+    "keyframe-block-no-duplicate-selectors": true
   }
 }

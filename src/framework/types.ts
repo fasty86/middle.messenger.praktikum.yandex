@@ -5,11 +5,16 @@ export enum BusEvents {
   FLOW_CDM = "flow:component-did-mount",
   FLOW_CDU = "flow:component-did-update",
   FLOW_RENDER = "flow:render",
+  STATE_CHANGE = "state:change",
+}
+export enum StoreEvents {
+  Updated = "store:updated",
+  NEW_MESSAGE = "new:message",
 }
 
 export type Cb = (...args: unknown[]) => void;
 export type Listener = {
-  [key in BusEvents]?: Array<(...args: unknown[]) => void>;
+  [key in BusEvents | StoreEvents]?: Array<(...args: unknown[]) => void>;
 };
 
 export type PropsType = {
@@ -34,7 +39,7 @@ export type ListType = {
   [key: string]: Array<Block | string>;
 };
 export type EventsType = {
-  [key: string]: (e: Event) => void;
+  [key: string]: (e: Event | CustomEvent) => void;
 };
 
 export type DefaultObject = {
