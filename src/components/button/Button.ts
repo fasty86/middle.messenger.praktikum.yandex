@@ -8,6 +8,6 @@ export default class Button extends Block<ButtonPropsType> {
   }
 }
 
-type ButtonPropsType = PropsType & {
+export type ButtonPropsType = PropsType & {
   attributes: buttonType;
 };
