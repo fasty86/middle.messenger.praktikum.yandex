@@ -31,6 +31,11 @@ describe("HTTPTransport", () => {
       onabort: jest.fn(),
       ontimeout: jest.fn(),
     };
+    jest.useFakeTimers();
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
   });
 
   it("должен вызвать метод с переданным url", () => {
@@ -57,5 +62,38 @@ describe("HTTPTransport", () => {
 
     expect(result).toEqual(mockResponse);
     expect(result.json()).toEqual({ message: "success" });
+  });
+
+  it("должен возварщать ошибку при таймауте", async () => {
+    const transport = new HTTPTransport("https://api.example.com");
+    const mockErrorResponse = {
+      ok: false,
+      status: 0,
+      statusText: "timeout",
+      headers: "Content-Type: application/json",
+      data: '{"message":"error"}',
+      json: jest.fn().mockReturnValue({ message: "timeout" }),
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    global.XMLHttpRequest = jest.fn(() => mockXHR) as any;
+
+    jest.spyOn(HTTPTransport, "request").mockImplementation(() => {
+      return new Promise((resolve) => {
+        mockXHR.ontimeout = () => resolve(mockErrorResponse);
+        setTimeout(() => {
+          mockXHR.ontimeout();
+        }, 100);
+        jest.advanceTimersByTime(100);
+      });
+    });
+
+    const promise = await transport.get("/test", { timeout: 100 });
+
+    const result = await promise;
+
+    expect(result.ok).toBe(false);
+    expect(result.status).toBe(0);
+    expect(result.statusText).toBe("timeout");
   });
 });
