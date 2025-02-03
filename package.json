@@ -16,7 +16,7 @@
     "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\"",
     "lint:style": "stylelint \"**/*.pcss\"",
     "lint:style:fix": "stylelint \"**/*.pcss\" --fix",
-    "precommit": "npm run lint:fix && npm run format && npm run lint:style:fix",
+    "precommit": "npm run lint:fix && npm run format && npm run lint:style:fix && npm run test",
     "test": "jest"
   },
   "devDependencies": {
