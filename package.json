@@ -55,5 +55,10 @@
   "dependencies": {
     "express": "^4.19.1",
     "handlebars": "^4.7.7"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm-run precommit"
+    }
   }
 }
