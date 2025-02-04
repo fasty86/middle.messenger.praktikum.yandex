@@ -1,4 +1,4 @@
-import { HTTPTransport } from "./XHR";
+import { HTTPTransport, METHODS } from "./XHR";
 
 describe("HTTPTransport", () => {
   type MockXMLHttpRequest = {
@@ -95,5 +95,26 @@ describe("HTTPTransport", () => {
     expect(result.ok).toBe(false);
     expect(result.status).toBe(0);
     expect(result.statusText).toBe("timeout");
+  });
+
+  it("должен послать POST Запрос с заданным url и данными", async () => {
+    const baseUrl = "https://api.example.com";
+    const httpTransport = new HTTPTransport(baseUrl);
+    const url = "/submit";
+    const data = { key: "value" };
+    const options = { headers: { "Content-Type": "application/json" }, data };
+    jest.spyOn(HTTPTransport, "POST").mockResolvedValue({
+      ok: true,
+      status: 201,
+      statusText: "Created",
+      data: "",
+      json: jest.fn(),
+      headers: "",
+    });
+
+    const result = await httpTransport.post(url, options);
+
+    expect(HTTPTransport.POST).toHaveBeenCalledWith(`${baseUrl}${url}`, { ...options, method: METHODS.POST });
+    expect(result.ok).toBe(true);
   });
 });

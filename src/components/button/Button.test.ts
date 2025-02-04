@@ -1,7 +1,7 @@
 import Block from "../../framework/Block";
 import Button, { ButtonPropsType } from "./Button";
 
-describe("кейс на компонент Button", () => {
+describe("Button", () => {
   let props: ButtonPropsType;
 
   beforeEach(() => {
