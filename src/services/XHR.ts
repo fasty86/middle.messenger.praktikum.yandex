@@ -1,6 +1,6 @@
 import { DefaultObject } from "../framework/types";
 
-enum METHODS {
+export enum METHODS {
   GET = "GET",
   POST = "POST",
   PUT = "PUT",

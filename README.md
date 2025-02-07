@@ -31,6 +31,8 @@
 - `npm format` — форматирование кода согласно Prettier
 - `npm lint:style` — проверка кода на ошибки стилей stylelint
 - `npm run lint:style:fix` — автоматическое исправление ошибок стилей stylelint
+- `npm run precommit` — скрипт вызываемый husky перед коммитом
+- `npm run test` — запуск тестов
 
 ### Использованные технологии
 
@@ -41,3 +43,5 @@
 - [Prettier](https://prettier.io/)
 - [Stylelint](https://stylelint.io/)
 - [ESlint](https://eslint.org/)
+- [Husky](https://github.com/typicode/husky)
+- [Jest](https://jestjs.io/)

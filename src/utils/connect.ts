@@ -13,7 +13,7 @@ export type MapStateReturnType = {
   component: DefaultObject;
 };
 export type MapStateFn = (state: StateType) => MapStateReturnType;
-// export type MapStateFn = (state: StateType) => DefaultObject;
+
 export function connect<T extends PropsType = PropsType>(mapStateToProps: MapStateFn) {
   return function <K extends Block<T>>(Component: Constructor<T, K>) {
     return class extends (Component as Constructor<T, Block<T>>) {
